@@ -25,9 +25,9 @@ class KorisnikDAO {
 		return true;
 	}
 
-	obrisi = async function (korime) {
-		let sql = "DELETE FROM kontakt WHERE korime=?";
-		await this.baza.izvrsiUpit(sql,[korime]);
+	obrisi = async function (korisnik_id) {
+		let sql = "DELETE FROM kontakt WHERE korisnik_id=?";
+		await this.baza.izvrsiUpit(sql,[korisnik_id]);
 		return true;
 	}
 }

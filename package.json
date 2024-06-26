@@ -12,7 +12,6 @@
     "nodejs",
     "express",
     "websocket",
-    "postgresql",
     "chat",
     "real-time"
   ],
@@ -24,7 +23,6 @@
     "dotenv": "file:../../../../usr/lib/node_modules/dotenv",
     "express": "file:../../../../usr/lib/node_modules/express",
     "express-session": "file:../../../../usr/lib/node_modules/express-session",
-    "pg": "file:../../../../usr/lib/node_modules/pg",
     "sqlite3": "file:../../../../../../../usr/lib/node_modules/sqlite3",
     "ws": "file:../../../../usr/lib/node_modules/ws"
   },

@@ -1,10 +1,6 @@
-require('dotenv').config();
 const express = require('express');
 const sesija = require('express-session');
 const WebSocket = require('ws');
-const fs = require('fs');
-const path = require('path');
-const pool = require('./servis/baza/baza');
 
 const server = express();
 const port = process.env.PORT || 3000;
@@ -18,18 +14,6 @@ server.use(sesija({
 
 server.use(express.urlencoded({ extended: true }));
 server.use(express.json());
-
-const initDatabase = async () => {
-  try {
-    const sql = fs.readFileSync(path.join(__dirname, 'servis/baza', 'init.sql')).toString();
-    await pool.query(sql);
-    console.log('Baza podataka je inicijalizirana');
-  } catch (err) {
-    console.error('Greška pri inicijalizaciji baze podataka:', err);
-  }
-};
-
-initDatabase();
 
 const wss = new WebSocket.Server({ server });
 
