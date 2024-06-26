@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",
-    "pripremi": "npm link --save express pg ws dotenv express-session cookie-parser"
+    "pripremi": "npm link --save express sqlite3 ws express-session cookie-parser"
   },
   "keywords": [
     "nodejs",
@@ -25,6 +25,7 @@
     "express": "file:../../../../usr/lib/node_modules/express",
     "express-session": "file:../../../../usr/lib/node_modules/express-session",
     "pg": "file:../../../../usr/lib/node_modules/pg",
+    "sqlite3": "file:../../../../../../../usr/lib/node_modules/sqlite3",
     "ws": "file:../../../../usr/lib/node_modules/ws"
   },
   "devDependencies": {

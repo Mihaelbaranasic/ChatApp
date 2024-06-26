@@ -4,7 +4,7 @@ const sesija = require('express-session');
 const WebSocket = require('ws');
 const fs = require('fs');
 const path = require('path');
-const pool = require('./baza/baza');
+const pool = require('./servis/baza/baza');
 
 const server = express();
 const port = process.env.PORT || 3000;
@@ -21,7 +21,7 @@ server.use(express.json());
 
 const initDatabase = async () => {
   try {
-    const sql = fs.readFileSync(path.join(__dirname, 'baza', 'init.sql')).toString();
+    const sql = fs.readFileSync(path.join(__dirname, 'servis/baza', 'init.sql')).toString();
     await pool.query(sql);
     console.log('Baza podataka je inicijalizirana');
   } catch (err) {
