@@ -1,9 +1,11 @@
 const express = require('express');
 const sesija = require('express-session');
 const WebSocket = require('ws');
+const FetchUpravitelj = require('./aplikacija/fetchUpravitelj');
 
 const server = express();
-const port = process.env.PORT || 3000;
+const port = 3000;
+const fetchUpravitelj = new FetchUpravitelj(port);
 
 server.use(sesija({
   secret: 'abc', 
@@ -15,6 +17,7 @@ server.use(sesija({
 server.use(express.urlencoded({ extended: true }));
 server.use(express.json());
 
+server.get('/', fetchUpravitelj.prijava.bind(fetchUpravitelj));
 
 const wss = new WebSocket.Server({ server });
 
