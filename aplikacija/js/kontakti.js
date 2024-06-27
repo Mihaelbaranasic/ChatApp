@@ -5,6 +5,10 @@ window.addEventListener('load', async ()=>{
 })
 
 async function ucitaj(){
+    ucitajSveKorisnike();
+}
+
+async function ucitajSveKorisnike(){
     let korime = document.getElementById('korime').innerHTML;
     let parametri = {
         method: "GET",
