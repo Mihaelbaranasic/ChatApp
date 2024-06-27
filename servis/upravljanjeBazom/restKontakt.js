@@ -6,8 +6,9 @@ exports.getKontakti = function (zahtjev, odgovor) {
 		odgovor.status(403);
 		odgovor.send({ opis: "Zabranjen pristup!" });
 	}else{
+		let korime = zahtjev.session.korisnik.korime;
 		let kdao = new KontaktDAO();
-		kdao.dajSve().then((kontakti) => {
+		kdao.dajSve(korime).then((kontakti) => {
 			console.log(kontakti);
 			odgovor.status(200);
 			odgovor.send(JSON.stringify(kontakti));

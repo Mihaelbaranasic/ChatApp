@@ -28,6 +28,7 @@ server.get('/prijava', fetchUpravitelj.prijava.bind(fetchUpravitelj));
 server.get('/registracija', fetchUpravitelj.registracija.bind(fetchUpravitelj));
 server.post('/prijava', fetchUpravitelj.prijava.bind(fetchUpravitelj));
 server.post('/registracija', fetchUpravitelj.registracija.bind(fetchUpravitelj));
+server.get('/odjava', fetchUpravitelj.odjava.bind(fetchUpravitelj));
 
 server.get('/baza/korisnici', restKorisnik.getKorisnici);
 server.post('/baza/korisnici', restKorisnik.postKorisnici);
