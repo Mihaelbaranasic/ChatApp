@@ -31,6 +31,19 @@ class KontaktDAO {
 		await this.baza.izvrsiUpit(sql,podaci);
 		return true;
 	}
+	dajSveKojiNisuKontakti = async function (Korime) {
+		this.baza.spojiSeNaBazu();
+		let sql = `
+		  SELECT * FROM korisnik 
+		  WHERE uloge_id = 3
+			AND korime != ?
+			AND id NOT IN (SELECT kontakt_korisnik_id FROM kontakt WHERE korisnik_id = (SELECT id FROM korisnik WHERE korime = ?))
+		`;
+		let podaci = [Korime, Korime];
+		this.baza.izvrsiUpit(sql, podaci);
+		this.baza.zatvoriVezu();
+		return podaci;
+	  }
 }
 
 module.exports = KontaktDAO;
