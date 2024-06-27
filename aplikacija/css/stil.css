@@ -1,0 +1,78 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 0;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+}
+
+nav {
+    margin-top: 10px;
+}
+
+nav a {
+    color: #fff;
+    margin: 0 10px;
+    text-decoration: none;
+}
+
+main {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+#korisnici {
+    width: 60%;
+    background: #fff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.scrollable {
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
+    padding: 10px;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+}
+
+h2 {
+    margin-top: 0;
+}
+
+h3 {
+    margin-bottom: 10px;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    padding: 5px 0;
+    cursor: pointer;
+}
+
+li:hover {
+    background-color: #f0f0f0;
+}

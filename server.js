@@ -19,6 +19,10 @@ server.use(sesija({
 server.use(express.urlencoded({ extended: true }));
 server.use(express.json());
 
+server.use('/css', express.static('./aplikacija/css'));
+server.use('/js', express.static('./aplikacija/js'));
+
+
 server.get('/', fetchUpravitelj.glavna.bind(fetchUpravitelj));
 server.get('/prijava', fetchUpravitelj.prijava.bind(fetchUpravitelj));
 server.get('/registracija', fetchUpravitelj.registracija.bind(fetchUpravitelj));
