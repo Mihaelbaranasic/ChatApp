@@ -33,6 +33,7 @@ server.get("/baza/korisnici/:korime", restKorisnik.getKorisnik);
 server.post("/baza/korisnici/:korime", restKorisnik.postKorisnik);
 server.delete("/baza/korisnici/:korime", restKorisnik.deleteKorisnik);
 server.put("/baza/korisnici/:korime", restKorisnik.putKorisnik);
+server.post("/baza/korisnici/:korime/prijava", restKorisnik.getKorisnikPrijava);
 
 
 const wss = new WebSocket.Server({ server });

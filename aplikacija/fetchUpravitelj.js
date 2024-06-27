@@ -53,7 +53,17 @@ class FetchUpravitelj {
 		let stranica = await ucitajStranicu("prijava", greska);
 		odgovor.send(stranica);
 	};
-
+	glavna = async (zahtjev, odgovor) => {
+		let korisnik = zahtjev.session.korisnik;
+		if (!korisnik) {
+		  odgovor.redirect('/prijava');
+		  return;
+		}
+		console.log(korisnik);
+		let stranica = await this.ucitajStranicu("glavna");
+		stranica = stranica.replace("#korime#", korisnik.korisnicko_ime);
+		odgovor.send(stranica);
+	  };	
 }
 module.exports = FetchUpravitelj;
 
