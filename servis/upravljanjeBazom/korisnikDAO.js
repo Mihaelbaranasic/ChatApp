@@ -3,7 +3,7 @@ const Baza = require("./baza.js");
 class KorisnikDAO {
 
 	constructor() {
-		this.baza = new Baza("../../servis/baza/ChatApp_baza.sqlite");
+		this.baza = new Baza("/home/NPK_01/mbaranasi21/ChatApp/servis/baza/ChatApp_baza.sqlite");
 	}
 
 	dajSve = async function () {
@@ -26,10 +26,13 @@ class KorisnikDAO {
 	}
 
 	dodaj = async function (korisnik) {
+		this.baza.spojiSeNaBazu();
 		console.log(korisnik)
 		let sql = `INSERT INTO korisnik (punoIme,lozinka,email,korime,uloge_id,zadnjaPrijava) VALUES (?,?,?,?,?,?)`;
-        let podaci = [korisnik.punoIme,korisnik.lozinka,korisnik.email,korisnik.korime,3, Date.now()];
+		let trenutniDatum = new Date().toISOString();
+        let podaci = [korisnik.punoIme,korisnik.lozinka,korisnik.email,korisnik.korime,3, trenutniDatum];
 		await this.baza.izvrsiUpit(sql,podaci);
+		this.baza.zatvoriVezu();
 		return true;
 	}
 

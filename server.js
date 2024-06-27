@@ -2,6 +2,8 @@ const express = require('express');
 const sesija = require('express-session');
 const WebSocket = require('ws');
 const FetchUpravitelj = require('./aplikacija/fetchUpravitelj');
+const restKorisnik = require('./servis/upravljanjeBazom/restKorisnik');
+const restKontakt = require('./servis/upravljanjeBazom/restKontakt');
 
 const server = express();
 const port = 3000;
@@ -18,6 +20,20 @@ server.use(express.urlencoded({ extended: true }));
 server.use(express.json());
 
 server.get('/', fetchUpravitelj.prijava.bind(fetchUpravitelj));
+server.get('/prijava', fetchUpravitelj.prijava.bind(fetchUpravitelj));
+server.get('/registracija', fetchUpravitelj.registracija.bind(fetchUpravitelj));
+server.post('/privaja', fetchUpravitelj.prijava.bind(fetchUpravitelj));
+server.post('/registracija', fetchUpravitelj.registracija.bind(fetchUpravitelj));
+
+server.get('/baza/korisnici', restKorisnik.getKorisnici);
+server.post('/baza/korisnici', restKorisnik.postKorisnici);
+server.delete("/baza/korisnici", restKorisnik.deleteKorisnici);
+server.put("/baza/korisnici", restKorisnik.putKorisnici);
+server.get("/baza/korisnici/:korime", restKorisnik.getKorisnik);
+server.post("/baza/korisnici/:korime", restKorisnik.postKorisnik);
+server.delete("/baza/korisnici/:korime", restKorisnik.deleteKorisnik);
+server.put("/baza/korisnici/:korime", restKorisnik.putKorisnik);
+
 
 const wss = new WebSocket.Server({ server });
 

@@ -86,4 +86,4 @@ CREATE TABLE "blokiranKorisnik"(
 CREATE INDEX "blokiranKorisnik.fk_blokiranKorisnik_korisnik1_idx" ON "blokiranKorisnik" ("korisnik_id");
 CREATE INDEX "blokiranKorisnik.fk_blokiranKorisnik_korisnik2_idx" ON "blokiranKorisnik" ("blokiran_korisnik_id");
 
-INSERT INTO uloga (naziv) VALUES ('administrator'), ('moderator'), ('registriran korisnik');
+--INSERT INTO uloga (naziv) VALUES ('administrator'), ('moderator'), ('registriran korisnik');

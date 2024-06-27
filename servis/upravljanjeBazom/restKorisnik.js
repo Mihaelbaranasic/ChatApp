@@ -22,7 +22,7 @@ exports.postKorisnici = function (zahtjev, odgovor) {
 	console.log(podaci);
 	let kdao = new KorisnikDAO();
 	kdao.dodaj(podaci).then((poruka) => {
-		odgovor.status(201);
+		odgovor.status(200);
 		odgovor.send(JSON.stringify(poruka));
 	});
 };
