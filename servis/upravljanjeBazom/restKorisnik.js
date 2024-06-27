@@ -102,10 +102,13 @@ exports.putKorisnik = function (zahtjev, odgovor) {
 
 exports.getNisuKontakti = function (zahtjev, odgovor) {
 	odgovor.type("application/json");
+	if (!zahtjev.session.korisnik) {
+        odgovor.status(403).json({ opis: "Zabranjen pristup!" });
+    }
 	let korime = zahtjev.params.korime;
 	let kdao = new KorisnikDAO();
-	kdao.dajSveKojiNisuKontakti(korime).then(() =>{
+	kdao.dajSveKojiNisuKontakti(korime).then((korisnici) =>{
 		odgovor.status(200);
-		odgovor.send(JSON.stringify(korisnik));
+		odgovor.send(JSON.stringify(korisnici));
 	})
 }

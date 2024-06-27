@@ -51,14 +51,8 @@ class KorisnikDAO {
 	}
 	dajSveKojiNisuKontakti = async function (korime) {
 		this.baza.spojiSeNaBazu();
-		let sql = `
-		  SELECT * FROM korisnik 
-		  WHERE uloge_id = 3
-			AND korime != ?
-			AND id NOT IN (SELECT kontakt_korisnik_id FROM kontakt WHERE korisnik_id = (SELECT id FROM korisnik WHERE korime = ?))
-		`;
-		let podaci = [korime, korime];
-		this.baza.izvrsiUpit(sql, podaci);
+		let sql = `SELECT * FROM korisnik WHERE uloge_id = 3 AND korime!=? AND id NOT IN (SELECT korisnik_id FROM kontakt WHERE korime = ?)`;
+		let podaci = await this.baza.izvrsiUpit(sql, [korime, korime]);
 		this.baza.zatvoriVezu();
 		return podaci;
 	  }
