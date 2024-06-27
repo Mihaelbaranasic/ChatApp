@@ -1,9 +1,9 @@
 const Baza = require("./baza.js");
 
-class KorisnikDAO {
+class KontaktDAO {
 
 	constructor() {
-		this.baza = new Baza("../baza/ChatApp_baza.sqlite");
+		this.baza = new Baza("/home/NPK_01/mbaranasi21/ChatApp/servis/baza/ChatApp_baza.sqlite");
 	}
 
 	daj = async function (korime) {
@@ -33,4 +33,4 @@ class KorisnikDAO {
 	}
 }
 
-module.exports = KorisnikDAO;
+module.exports = KontaktDAO;
