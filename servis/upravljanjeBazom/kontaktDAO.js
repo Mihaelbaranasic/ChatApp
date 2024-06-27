@@ -8,7 +8,10 @@ class KontaktDAO {
 
 	dajSve = async function (korime) {
 	this.baza.spojiSeNaBazu();
-	let sql = "SELECT * FROM kontakt WHERE korime=?";
+	let sql = `SELECT k.id, k.korime, k.korisnik_id, u.korime AS kontakt_korime 
+	FROM kontakt k 
+	JOIN korisnik u ON k.korisnik_id = u.id
+	WHERE k.korime = ?`;
 	var podaci = await this.baza.izvrsiUpit(sql, [korime]);
 	this.baza.zatvoriVezu();
 	return podaci;
@@ -16,7 +19,10 @@ class KontaktDAO {
 
 	daj = async function (korime) {
 		this.baza.spojiSeNaBazu();
-		let sql = "SELECT * FROM kontakt WHERE korime=?";
+		let sql = `SELECT k.id, k.korime, k.korisnik_id, u.korime AS kontakt_korime 
+		FROM kontakt k 
+		JOIN korisnik u ON k.korisnik_id = u.id
+		WHERE k.korime = ?`;
 		var podaci = await this.baza.izvrsiUpit(sql, [korime]);
 		this.baza.zatvoriVezu();
 		if(podaci.length == 1)

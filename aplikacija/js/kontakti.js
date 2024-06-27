@@ -22,7 +22,7 @@ async function ucitajKontakte() {
     let popisKontakata = document.getElementById('listaKontakata');
     let html = ""
     for (let korisnik of korisnici) {
-        html += "<li>" + korisnik.korime + "</li>";
+        html += "<li>" + korisnik.kontakt_korime + "</li>";
     }
     popisKontakata.innerHTML = html;
 }
@@ -55,7 +55,9 @@ async function dodajKontakt(korisnik, korime) {
         body: JSON.stringify({ korisnik })
     };
     let odgovor = await fetch(`${url}/baza/kontakti/${korime}`, parametri);
-    let kontakt = await odgovor.json();
-    console.log(odgovor.status);
-    console.log(kontakt);
+    if(odgovor.status == 201){
+        ucitaj();
+    }else{
+        console.error("Greška kod dodavanja kontakta!");
+    }
 }

@@ -20,9 +20,6 @@ exports.postKontakti = function (zahtjev, odgovor) {
 	odgovor.type("application/json");
 	let id = zahtjev.body.korisnik;
 	let korime = zahtjev.session.korisnik.korime;
-	console.log("POST korisnik:");
-	console.log(id, korime);
-	console.log("to je ovo");
 	let kdao = new KontaktDAO();
 	kdao.dodaj(id, korime).then((poruka) => {
 		odgovor.status(201);
