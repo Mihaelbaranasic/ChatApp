@@ -99,3 +99,13 @@ exports.putKorisnik = function (zahtjev, odgovor) {
 		odgovor.send({opis: "izvrseno"});
 	});
 };
+
+exports.getNisuKontakti = function (zahtjev, odgovor) {
+	odgovor.type("application/json");
+	let korime = zahtjev.params.korime;
+	let kdao = new KorisnikDAO();
+	kdao.dajSveKojiNisuKontakti(korime).then(() =>{
+		odgovor.status(200);
+		odgovor.send(JSON.stringify(korisnik));
+	})
+}
