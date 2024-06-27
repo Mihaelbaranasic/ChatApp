@@ -5,7 +5,26 @@ window.addEventListener('load', async ()=>{
 })
 
 async function ucitaj(){
+    ucitajKontakte();
     ucitajSveKorisnike();
+}
+
+async function ucitajKontakte() {
+    let korime = document.getElementById('korime').innerHTML;
+    let parametri = {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    };
+    let odgovor = await fetch(`${url}/baza/kontakti/${korime}`, parametri);
+    let korisnici = await odgovor.json();
+    let popisKontakata = document.getElementById('listaKontakata');
+    let html = ""
+    for (let korisnik of korisnici) {
+        html += "<li>" + korisnik.korime + "</li>";
+    }
+    popisKontakata.innerHTML = html;
 }
 
 async function ucitajSveKorisnike(){
@@ -17,14 +36,25 @@ async function ucitajSveKorisnike(){
         }
     };
     let odgovor = await fetch(`${url}/baza/nisuKontakti/${korime}`, parametri);
-    console.log("odgovor: ", odgovor);
     let korisnici = await odgovor.json();
     let popisKorisnikaHTML = document.getElementById('sviKorisnici');
-    console.log("html: ", popisKorisnikaHTML.innerHTML);
-    console.log("korisnici: ", korisnici);
     let html = "";
     for (let korisnik of korisnici) {
-        html += "<li>" + korisnik.korime + "</li>";
+        html += `<li onclick='dodajKontakt("${korisnik.korime}", "${korime}")'>${korisnik.korime}</li>`;
     }
     popisKorisnikaHTML.innerHTML = html;
+}
+
+async function dodajKontakt(korisnik, korime){
+    let parametri = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: korisnik
+    };
+    let odgovor = await fetch(`${url}/baza/kontakti/${korime}`, parametri);
+    let kontakt = await odgovor.json();
+    console.log(odgovor.status);
+    console.log(kontakt);
 }

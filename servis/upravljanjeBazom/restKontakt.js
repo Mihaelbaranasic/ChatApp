@@ -2,7 +2,7 @@ const KontaktDAO = require("./kontaktDAO");
 
 exports.getKontakti = function (zahtjev, odgovor) {
 	odgovor.type("application/json");
-	if(!zahtjev.session.kontakt){
+	if(!zahtjev.session.korisnik){
 		odgovor.status(403);
 		odgovor.send({ opis: "Zabranjen pristup!" });
 	}else{

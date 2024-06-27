@@ -6,9 +6,17 @@ class KontaktDAO {
 		this.baza = new Baza("/home/NPK_01/mbaranasi21/ChatApp/servis/baza/ChatApp_baza.sqlite");
 	}
 
+	dajSve = async function (korime) {
+	this.baza.spojiSeNaBazu();
+	let sql = "SELECT * FROM kontakt WHERE korime=?";
+	var podaci = await this.baza.izvrsiUpit(sql, [korime]);
+	this.baza.zatvoriVezu();
+	return podaci;
+	};
+
 	daj = async function (korime) {
 		this.baza.spojiSeNaBazu();
-		let sql = "SELECT * FROM kontakt WHERE korime=?;"
+		let sql = "SELECT * FROM kontakt WHERE korime=?";
 		var podaci = await this.baza.izvrsiUpit(sql, [korime]);
 		this.baza.zatvoriVezu();
 		if(podaci.length == 1)

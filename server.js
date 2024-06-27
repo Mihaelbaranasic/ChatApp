@@ -42,6 +42,10 @@ server.post("/baza/korisnici/:korime/prijava", restKorisnik.getKorisnikPrijava);
 
 server.get("/baza/nisuKontakti/:korime", restKorisnik.getNisuKontakti);
 
+
+server.get('/baza/kontakti/:korime', restKontakt.getKontakti);
+server.post('/baza/kontakti/:korime', restKontakt.postKontakti);
+
 const wss = new WebSocket.Server({ server });
 
 wss.on('connection', (ws) => {
