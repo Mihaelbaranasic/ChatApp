@@ -25,10 +25,9 @@ class KontaktDAO {
 			return null;
 	}
 
-	dodaj = async function (korisnik, korime) {
-		console.log(korisnik)
-		let sql = `INSERT INTO kontakt (korime, korisnik_id) VALUES (?,?,?,?,?,?)`;
-        let podaci = [korime, korisnik.id];
+	dodaj = async function (id, korime) {
+		let sql = `INSERT INTO kontakt (korime, korisnik_id) VALUES (?,?)`;
+        let podaci = [korime, id];
 		await this.baza.izvrsiUpit(sql,podaci);
 		return true;
 	}

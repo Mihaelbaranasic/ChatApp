@@ -40,18 +40,19 @@ async function ucitajSveKorisnike(){
     let popisKorisnikaHTML = document.getElementById('sviKorisnici');
     let html = "";
     for (let korisnik of korisnici) {
-        html += `<li onclick='dodajKontakt("${korisnik.korime}", "${korime}")'>${korisnik.korime}</li>`;
+        html += `<li onclick='dodajKontakt("${korisnik.id}", "${korime}")'>${korisnik.korime}</li>`;
+        console.log(korisnik.id);
     }
     popisKorisnikaHTML.innerHTML = html;
 }
 
-async function dodajKontakt(korisnik, korime){
+async function dodajKontakt(korisnik, korime) {
     let parametri = {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
-        body: korisnik
+        body: JSON.stringify({ korisnik })
     };
     let odgovor = await fetch(`${url}/baza/kontakti/${korime}`, parametri);
     let kontakt = await odgovor.json();

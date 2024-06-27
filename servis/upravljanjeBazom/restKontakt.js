@@ -17,11 +17,13 @@ exports.getKontakti = function (zahtjev, odgovor) {
 
 exports.postKontakti = function (zahtjev, odgovor) {
 	odgovor.type("application/json");
-	let podaci = zahtjev.body;
-	console.log("POST podaci:");
-	console.log(podaci);
+	let id = zahtjev.body.korisnik;
+	let korime = zahtjev.session.korisnik.korime;
+	console.log("POST korisnik:");
+	console.log(id, korime);
+	console.log("to je ovo");
 	let kdao = new KontaktDAO();
-	kdao.dodaj(podaci).then((poruka) => {
+	kdao.dodaj(id, korime).then((poruka) => {
 		odgovor.status(201);
 		odgovor.send(JSON.stringify(poruka));
 	});
