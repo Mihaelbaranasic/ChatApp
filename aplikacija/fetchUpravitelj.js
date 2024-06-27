@@ -60,8 +60,8 @@ class FetchUpravitelj {
 		  return;
 		}
 		console.log(korisnik);
-		let stranica = await this.ucitajStranicu("glavna");
-		stranica = stranica.replace("#korime#", korisnik.korisnicko_ime);
+		let stranica = await ucitajStranicu("glavna");
+		stranica = stranica.replace("#korime#", korisnik.korime);
 		odgovor.send(stranica);
 	  };	
 }

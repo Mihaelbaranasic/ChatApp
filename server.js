@@ -19,10 +19,10 @@ server.use(sesija({
 server.use(express.urlencoded({ extended: true }));
 server.use(express.json());
 
-server.get('/', fetchUpravitelj.prijava.bind(fetchUpravitelj));
+server.get('/', fetchUpravitelj.glavna.bind(fetchUpravitelj));
 server.get('/prijava', fetchUpravitelj.prijava.bind(fetchUpravitelj));
 server.get('/registracija', fetchUpravitelj.registracija.bind(fetchUpravitelj));
-server.post('/privaja', fetchUpravitelj.prijava.bind(fetchUpravitelj));
+server.post('/prijava', fetchUpravitelj.prijava.bind(fetchUpravitelj));
 server.post('/registracija', fetchUpravitelj.registracija.bind(fetchUpravitelj));
 
 server.get('/baza/korisnici', restKorisnik.getKorisnici);
