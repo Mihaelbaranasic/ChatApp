@@ -5,6 +5,7 @@ const FetchUpravitelj = require('./aplikacija/fetchUpravitelj');
 const restKorisnik = require('./servis/upravljanjeBazom/restKorisnik');
 const restKontakt = require('./servis/upravljanjeBazom/restKontakt');
 const restPoruka = require('./servis/upravljanjeBazom/restPoruke');
+const http = require('http');
 
 const server = express();
 const port = 3000;
@@ -52,14 +53,30 @@ server.post('/baza/kontakti/:korime', restKontakt.postKontakti);
 server.get('/baza/poruke/:posiljatelj/:primatelj', restPoruka.dajPoruke);
 server.post('/baza/poruke', restPoruka.posaljiPoruku);
 
-const wss = new WebSocket.Server({ server });
+const httpServer = http.createServer(server);
+const wss = new WebSocket.Server({ server: httpServer });
 
-wss.on('connection', (ws) => {
-  console.log('Novi WebSocket klijent povezan');
-
-  ws.on('message', (message) => {
-    console.log(`Primljena poruka: ${message}`);
-    ws.send('Poruka primljena');
+wss.on('connection', (ws, req) => {
+  ws.on('message', async (message) => {
+    const data = JSON.parse(message);
+    if (data.type === 'new_message') {
+      const { posiljatelj, primatelj, sadrzaj } = data;
+      const zahtjev = {
+        body: { posiljatelj, primatelj, sadrzaj }
+      };
+      const odgovor = {
+        type: (type) => {},
+        status: (status) => {},
+        send: (data) => {}
+      };
+      await restPoruka.posaljiPoruku(zahtjev, odgovor);
+      
+      wss.clients.forEach(client => {
+        if (client.readyState === WebSocket.OPEN) {
+          client.send(JSON.stringify({ type: 'new_message', posiljatelj, primatelj, sadrzaj, vrijemeSlanja: new Date() }));
+        }
+      });
+    }
   });
 
   ws.on('close', () => {
@@ -67,6 +84,6 @@ wss.on('connection', (ws) => {
   });
 });
 
-server.listen(port, () => {
+httpServer.listen(port, () => {
   console.log(`Server je pokrenut na http://localhost:${port}`);
 });

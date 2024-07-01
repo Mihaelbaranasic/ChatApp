@@ -8,9 +8,11 @@ exports.dajPoruke = async function (zahtjev, odgovor) {
     try {
         let poruke = await pdao.dajPoruke(posiljatelj, primatelj);
         await pdao.oznaciPorukeKaoProcitane(posiljatelj, primatelj);
-        odgovor.status(200).json(poruke);
+        odgovor.status(200);
+        odgovor.send(JSON.stringify(poruke));
     } catch (error) {
-        odgovor.status(500).json({ greska: "Greška pri dohvaćanju poruka!" });
+        odgovor.status(500);
+        odgovor.send(JSON.stringify({ greska: "Greška pri dohvaćanju poruka!" }));
     }
 };
 
@@ -20,8 +22,10 @@ exports.posaljiPoruku = async function (zahtjev, odgovor) {
     let pdao = new PorukaDAO();
     try {
         await pdao.posaljiPoruku(posiljatelj, primatelj, sadrzaj);
-        odgovor.status(201).json({ opis: "Poruka poslana!" });
+        odgovor.status(201);
+        odgovor.send(JSON.stringify({ opis: "Poruka poslana!" }));
     } catch (error) {
-        odgovor.status(500).json({ greska: "Greška pri slanju poruke!" });
+        odgovor.status(500);
+        odgovor.send(JSON.stringify({ greska: "Greška pri slanju poruke!" }))
     }
 };

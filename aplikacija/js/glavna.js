@@ -2,10 +2,13 @@ let url = "http://localhost:3000";
 let sviKorisnici = [];
 let kontakti = [];
 let trenutniKontakt = null;
+let ws;
 
 window.addEventListener('load', async () => {
     await ucitaj();
+    postaviWebSocket();
     document.getElementById('pretraga-korisnici').addEventListener('input', pretraziKorisnike);
+    document.getElementById('posaljiPoruku').addEventListener('click', posaljiPoruku);
 });
 
 async function ucitaj() {
@@ -51,6 +54,7 @@ function prikaziKontakte(kontakti) {
 
 function prikaziSveKorisnike(korisnici) {
     let popisKorisnikaHTML = document.getElementById('sviKorisnici');
+    let korime = document.getElementById('korime').innerHTML;
     let html = "";
     for (let korisnik of korisnici) {
         html += `<li onclick='dodajKontakt("${korisnik.id}", "${korime}")'>${korisnik.korime}</li>`;
@@ -115,20 +119,26 @@ function prikaziPoruke(poruke) {
 async function posaljiPoruku() {
     let korime = document.getElementById('korime').innerHTML;
     let sadrzaj = document.getElementById('novaPoruka').value;
-    let parametri = {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ posiljatelj: korime, primatelj: trenutniKontakt, sadrzaj })
-    };
-    let odgovor = await fetch(`${url}/baza/poruke`, parametri);
-    if (odgovor.status == 201) {
-        document.getElementById('novaPoruka').value = '';
-        await ucitajPoruke();
-    } else {
-        console.error("Greška kod slanja poruke!");
-    }
+
+
+    document.getElementById('novaPoruka').value = '';
+    await ucitajPoruke();
+    ws.send(JSON.stringify({ type: 'new_message', posiljatelj: korime, primatelj: trenutniKontakt, sadrzaj }));
+
+    console.error("Greška kod slanja poruke!");
+
 }
 
-document.getElementById('posaljiPoruku').addEventListener('click', posaljiPoruku);
+function postaviWebSocket() {
+    ws = new WebSocket('ws://localhost:3000');
+    ws.onopen = () => console.log('WebSocket veza otvorena');
+    ws.onmessage = (event) => {
+        let data = JSON.parse(event.data);
+        if (data.type === 'new_message') {
+            if (data.posiljatelj === trenutniKontakt || data.primatelj === trenutniKontakt) {
+                ucitajPoruke();
+            }
+        }
+    };
+    ws.onclose = () => console.log('WebSocket veza zatvorena');
+}
