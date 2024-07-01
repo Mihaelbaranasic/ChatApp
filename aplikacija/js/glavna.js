@@ -1,6 +1,7 @@
 let url = "http://localhost:3000";
 let sviKorisnici = [];
 let kontakti = [];
+let trenutniKontakt = null;
 
 window.addEventListener('load', async () => {
     await ucitaj();
@@ -40,9 +41,9 @@ async function ucitajSveKorisnike() {
 
 function prikaziKontakte(kontakti) {
     let popisKontakata = document.getElementById('listaKontakata');
-    let html = "";
+    let html = ""
     for (let korisnik of kontakti) {
-        html += `<li>${korisnik.kontakt_korime}</li>`;
+        html += `<li onclick='otvoriRazgovor("${korisnik.kontakt_korime}")'>${korisnik.kontakt_korime}</li>`;
     }
     popisKontakata.innerHTML = html;
     document.getElementById('broj-kontakata').innerText = kontakti.length;
@@ -80,3 +81,54 @@ function pretraziKorisnike() {
     prikaziKontakte(filtriraniKontakti);
     prikaziSveKorisnike(filtriraniKorisnici);
 }
+
+async function otvoriRazgovor(kontaktKorime) {
+    trenutniKontakt = kontaktKorime;
+    document.getElementById('razgovor-korime').innerText = kontaktKorime;
+    document.getElementById('razgovor').style.display = 'block';
+    await ucitajPoruke();
+}
+
+async function ucitajPoruke() {
+    let korime = document.getElementById('korime').innerHTML;
+    let parametri = {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        }
+    };
+    let odgovor = await fetch(`${url}/baza/poruke/${korime}/${trenutniKontakt}`, parametri);
+    let poruke = await odgovor.json();
+    prikaziPoruke(poruke);
+}
+
+function prikaziPoruke(poruke) {
+    let popisPorukaHTML = document.getElementById('listaPoruka');
+    let html = "";
+    for (let poruka of poruke) {
+        let procitano = poruka.procitano ? "✓" : "";
+        html += `<li><small>${poruka.korime}</small><br>${poruka.sadrzaj}<br><small>${poruka.vrijemeSlanja}</small> ${procitano}</li>`;
+    }
+    popisPorukaHTML.innerHTML = html;
+}
+
+async function posaljiPoruku() {
+    let korime = document.getElementById('korime').innerHTML;
+    let sadrzaj = document.getElementById('novaPoruka').value;
+    let parametri = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ posiljatelj: korime, primatelj: trenutniKontakt, sadrzaj })
+    };
+    let odgovor = await fetch(`${url}/baza/poruke`, parametri);
+    if (odgovor.status == 201) {
+        document.getElementById('novaPoruka').value = '';
+        await ucitajPoruke();
+    } else {
+        console.error("Greška kod slanja poruke!");
+    }
+}
+
+document.getElementById('posaljiPoruku').addEventListener('click', posaljiPoruku);

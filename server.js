@@ -4,6 +4,7 @@ const WebSocket = require('ws');
 const FetchUpravitelj = require('./aplikacija/fetchUpravitelj');
 const restKorisnik = require('./servis/upravljanjeBazom/restKorisnik');
 const restKontakt = require('./servis/upravljanjeBazom/restKontakt');
+const restPoruka = require('./servis/upravljanjeBazom/restPoruke');
 
 const server = express();
 const port = 3000;
@@ -46,6 +47,10 @@ server.get("/baza/nisuKontakti/:korime", restKorisnik.getNisuKontakti);
 
 server.get('/baza/kontakti/:korime', restKontakt.getKontakti);
 server.post('/baza/kontakti/:korime', restKontakt.postKontakti);
+
+
+server.get('/baza/poruke/:posiljatelj/:primatelj', restPoruka.dajPoruke);
+server.post('/baza/poruke', restPoruka.posaljiPoruku);
 
 const wss = new WebSocket.Server({ server });
 
