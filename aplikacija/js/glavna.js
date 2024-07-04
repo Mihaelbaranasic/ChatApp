@@ -121,7 +121,7 @@ function prikaziPorukeIDatoteke(poruke, datoteke) {
     for (let item of svePorukeIDatoteke) {
         if (item.sadrzaj) {
             let procitano = item.procitano ? "✓" : "";
-            html += `<li><small>${item.korime}</small><br>${item.sadrzaj}<br><small>${item.vrijemeSlanja}</small> ${procitano}</li>`;
+            html += `<li onmouseover='oznaciPorukuProcitanom(${item.id})'><small>${item.korime}</small><br>${item.sadrzaj}<br><small>${item.vrijemeSlanja}</small> ${procitano}</li>`;
         } else if (item.naziv) {
             html += `<li><small>${item.korime}</small><br><a href="${item.putanja}" target="_blank">${item.naziv}</a><br><small>${item.vrijemePrimitka}</small></li>`;
         }
@@ -132,9 +132,9 @@ function prikaziPorukeIDatoteke(poruke, datoteke) {
 async function posaljiPoruku() {
     let korime = document.getElementById('korime').innerHTML;
     let sadrzaj = document.getElementById('novaPoruka').value;
-        document.getElementById('novaPoruka').value = '';
-        await ucitajPoruke();
-        ws.send(JSON.stringify({ type: 'new_message', posiljatelj: korime, primatelj: trenutniKontakt, sadrzaj }));
+    document.getElementById('novaPoruka').value = '';
+    await ucitajPoruke();
+    ws.send(JSON.stringify({ type: 'new_message', posiljatelj: korime, primatelj: trenutniKontakt, sadrzaj }));
 }
 
 async function posaljiDatoteku() {
