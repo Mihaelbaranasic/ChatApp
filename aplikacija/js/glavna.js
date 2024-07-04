@@ -9,6 +9,7 @@ window.addEventListener('load', async () => {
     postaviWebSocket();
     document.getElementById('pretraga-korisnici').addEventListener('input', pretraziKorisnike);
     document.getElementById('posaljiPoruku').addEventListener('click', posaljiPoruku);
+    document.getElementById('posaljiDatoteku').addEventListener('click', posaljiDatoteku);
 });
 
 async function ucitaj() {
@@ -111,7 +112,11 @@ function prikaziPoruke(poruke) {
     let html = "";
     for (let poruka of poruke) {
         let procitano = poruka.procitano ? "✓" : "";
-        html += `<li><small>${poruka.korime}</small><br>${poruka.sadrzaj}<br><small>${poruka.vrijemeSlanja}</small> ${procitano}</li>`;
+        if (poruka.sadrzaj) {
+            html += `<li><small>${poruka.korime}</small><br>${poruka.sadrzaj}<br><small>${poruka.vrijemeSlanja}</small> ${procitano}</li>`;
+        } else if (poruka.datoteka) {
+            html += `<li><small>${poruka.korime}</small><br><a href="/uploads/${poruka.datoteka}" download>${poruka.datoteka}</a><br><small>${poruka.vrijemeSlanja}</small> ${procitano}</li>`;
+        }
     }
     popisPorukaHTML.innerHTML = html;
 }
@@ -119,15 +124,55 @@ function prikaziPoruke(poruke) {
 async function posaljiPoruku() {
     let korime = document.getElementById('korime').innerHTML;
     let sadrzaj = document.getElementById('novaPoruka').value;
-
-
-    document.getElementById('novaPoruka').value = '';
-    await ucitajPoruke();
-    ws.send(JSON.stringify({ type: 'new_message', posiljatelj: korime, primatelj: trenutniKontakt, sadrzaj }));
-
-    console.error("Greška kod slanja poruke!");
-
+    let parametri = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ posiljatelj: korime, primatelj: trenutniKontakt, sadrzaj })
+    };
+    let odgovor = await fetch(`${url}/baza/poruke`, parametri);
+    if (odgovor.status == 201) {
+        document.getElementById('novaPoruka').value = '';
+        await ucitajPoruke();
+        ws.send(JSON.stringify({ type: 'new_message', posiljatelj: korime, primatelj: trenutniKontakt, sadrzaj }));
+    } else {
+        console.error("Greška kod slanja poruke!");
+    }
 }
+
+async function posaljiDatoteku() {
+    let korime = document.getElementById('korime').innerHTML;
+    let datotekaInput = document.getElementById('datotekaInput');
+    let datoteka = datotekaInput.files[0];
+
+    if (!datoteka) {
+        console.error("Nijedna datoteka nije odabrana!");
+        return;
+    }
+
+    let formData = new FormData();
+    formData.append('datoteka', datoteka);
+
+    let xhr = new XMLHttpRequest();
+    xhr.open('POST', `${url}/baza/datoteke`);
+    xhr.onload = function () {
+        if (xhr.status === 201) {
+            ws.send(JSON.stringify({
+                type: 'new_file',
+                posiljatelj: korime,
+                primatelj: trenutniKontakt,
+                naziv: datoteka.name,
+                putanja: xhr.responseText
+            }));
+            document.getElementById('datotekaInput').value = '';
+        } else {
+            console.error("Greška kod slanja datoteke!");
+        }
+    };
+    xhr.send(formData);
+}
+
 
 function postaviWebSocket() {
     ws = new WebSocket('ws://localhost:3000');
@@ -135,6 +180,10 @@ function postaviWebSocket() {
     ws.onmessage = (event) => {
         let data = JSON.parse(event.data);
         if (data.type === 'new_message') {
+            if (data.posiljatelj === trenutniKontakt || data.primatelj === trenutniKontakt) {
+                ucitajPoruke();
+            }
+        } else if (data.type === 'new_file') {
             if (data.posiljatelj === trenutniKontakt || data.primatelj === trenutniKontakt) {
                 ucitajPoruke();
             }

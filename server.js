@@ -5,7 +5,10 @@ const FetchUpravitelj = require('./aplikacija/fetchUpravitelj');
 const restKorisnik = require('./servis/upravljanjeBazom/restKorisnik');
 const restKontakt = require('./servis/upravljanjeBazom/restKontakt');
 const restPoruka = require('./servis/upravljanjeBazom/restPoruke');
+const restDatoteka = require('./servis/upravljanjeBazom/restDatoteka');
 const http = require('http');
+const multer = require('multer');
+const upload = multer({ dest: 'uploads/' });
 
 const server = express();
 const port = 3000;
@@ -53,8 +56,8 @@ server.post('/baza/kontakti/:korime', restKontakt.postKontakti);
 server.get('/baza/poruke/:posiljatelj/:primatelj', restPoruka.dajPoruke);
 server.post('/baza/poruke', restPoruka.posaljiPoruku);
 
-app.get('/baza/datoteke/:posiljatelj/:primatelj', restDatoteka.dajDatoteke);
-app.post('/baza/datoteke', upload.single('datoteka'), restDatoteka.posaljiDatoteku);
+server.get('/baza/datoteke/:posiljatelj/:primatelj', restDatoteka.dajDatoteke);
+server.post('/baza/datoteke', upload.single('datoteka'), restDatoteka.posaljiDatoteku);
 
 const httpServer = http.createServer(server);
 const wss = new WebSocket.Server({ server: httpServer });
@@ -80,9 +83,9 @@ wss.on('connection', (ws, req) => {
         }
       });
     } else if (data.type === 'new_file') {
-      const { posiljatelj, primatelj, datoteka } = data;
+      const { posiljatelj, primatelj, naziv, putanja } = data;
       const zahtjev = {
-        body: { posiljatelj, primatelj, datoteka }
+        body: { posiljatelj, primatelj, naziv, putanja }
       };
       const odgovor = {
         type: (type) => {},
@@ -93,11 +96,12 @@ wss.on('connection', (ws, req) => {
       
       wss.clients.forEach(client => {
         if (client.readyState === WebSocket.OPEN) {
-          client.send(JSON.stringify({ type: 'new_file', posiljatelj, primatelj, datoteka, vrijemePrimitka: new Date() }));
+          client.send(JSON.stringify({ type: 'new_file', posiljatelj, primatelj, naziv, putanja, vrijemePrimitka: new Date() }));
         }
       });
     }
   });
+
 
   ws.on('close', () => {
     console.log('WebSocket klijent se odspojio');

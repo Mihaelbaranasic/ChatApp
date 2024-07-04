@@ -21,12 +21,18 @@ exports.posaljiDatoteku = async function (zahtjev, odgovor) {
     let datoteka = zahtjev.file;
     let ddao = new DatotekaDAO();
     try {
-        let nazivDatoteke = datoteka.originalname;
-        let putanjaDatoteke = path.join('/uploads', datoteka.filename);
-        await ddao.posaljiDatoteku(posiljatelj, primatelj, nazivDatoteke, putanjaDatoteke);
-        odgovor.status(201).json({ opis: "Datoteka poslana!" });
+        if (datoteka) {
+            let nazivDatoteke = datoteka.originalname;
+            let putanjaDatoteke = path.join('/uploads', datoteka.filename);
+            await ddao.posaljiDatoteku(posiljatelj, primatelj, nazivDatoteke, putanjaDatoteke);
+            odgovor.status(201).json(putanjaDatoteke);
+        } else {
+            odgovor.status(400).json({ greska: "Nijedna datoteka nije odabrana!" });
+        }
     } catch (error) {
-        fs.unlinkSync(datoteka.path);
+        if (datoteka && fs.existsSync(datoteka.path)) {
+            fs.unlinkSync(datoteka.path);
+        }
         odgovor.status(500).json({ greska: "Greška pri slanju datoteke!" });
     }
 };
