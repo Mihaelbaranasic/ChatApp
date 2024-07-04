@@ -92,6 +92,7 @@ async function otvoriRazgovor(kontaktKorime) {
     document.getElementById('razgovor-korime').innerText = kontaktKorime;
     document.getElementById('razgovor').style.display = 'block';
     await ucitajPoruke();
+    await ucitajDatoteke();
 }
 
 async function ucitajPoruke() {
@@ -112,13 +113,31 @@ function prikaziPoruke(poruke) {
     let html = "";
     for (let poruka of poruke) {
         let procitano = poruka.procitano ? "✓" : "";
-        if (poruka.sadrzaj) {
-            html += `<li><small>${poruka.korime}</small><br>${poruka.sadrzaj}<br><small>${poruka.vrijemeSlanja}</small> ${procitano}</li>`;
-        } else if (poruka.datoteka) {
-            html += `<li><small>${poruka.korime}</small><br><a href="/uploads/${poruka.datoteka}" download>${poruka.datoteka}</a><br><small>${poruka.vrijemeSlanja}</small> ${procitano}</li>`;
-        }
+        html += `<li><small>${poruka.korime}</small><br>${poruka.sadrzaj}<br><small>${poruka.vrijemeSlanja}</small> ${procitano}</li>`;
     }
     popisPorukaHTML.innerHTML = html;
+}
+
+async function ucitajDatoteke() {
+    let korime = document.getElementById('korime').innerHTML;
+    let parametri = {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        }
+    };
+    let odgovor = await fetch(`${url}/baza/datoteke/${korime}/${trenutniKontakt}`, parametri);
+    let datoteke = await odgovor.json();
+    prikaziDatoteke(datoteke);
+}
+
+function prikaziDatoteke(datoteke) {
+    let popisPorukaHTML = document.getElementById('listaPoruka');
+    let html = "";
+    for (let datoteka of datoteke) {
+        html += `<li><small>${datoteka.korime}</small><br><a href="${datoteka.putanja}" download>${datoteka.naziv}</a><br><small>${datoteka.vrijemePrimitka}</small></li>`;
+    }
+    popisPorukaHTML.innerHTML += html;
 }
 
 async function posaljiPoruku() {
@@ -143,36 +162,26 @@ async function posaljiPoruku() {
 
 async function posaljiDatoteku() {
     let korime = document.getElementById('korime').innerHTML;
-    let datotekaInput = document.getElementById('datotekaInput');
-    let datoteka = datotekaInput.files[0];
-
-    if (!datoteka) {
-        console.error("Nijedna datoteka nije odabrana!");
-        return;
-    }
-
+    let fileInput = document.getElementById('datoteka');
+    let file = fileInput.files[0];
     let formData = new FormData();
-    formData.append('datoteka', datoteka);
+    formData.append('datoteka', file);
+    formData.append('posiljatelj', korime);
+    formData.append('primatelj', trenutniKontakt);
 
     let xhr = new XMLHttpRequest();
-    xhr.open('POST', `${url}/baza/datoteke`);
+    xhr.open('POST', `${url}/baza/datoteke`, true);
     xhr.onload = function () {
         if (xhr.status === 201) {
-            ws.send(JSON.stringify({
-                type: 'new_file',
-                posiljatelj: korime,
-                primatelj: trenutniKontakt,
-                naziv: datoteka.name,
-                putanja: xhr.responseText
-            }));
-            document.getElementById('datotekaInput').value = '';
+            console.log('Datoteka poslana');
+            ws.send(JSON.stringify({ type: 'new_file', posiljatelj: korime, primatelj: trenutniKontakt, naziv: file.name }));
+            fileInput.value = ''; 
         } else {
-            console.error("Greška kod slanja datoteke!");
+            console.error('Greška kod slanja datoteke');
         }
     };
     xhr.send(formData);
 }
-
 
 function postaviWebSocket() {
     ws = new WebSocket('ws://localhost:3000');
@@ -185,7 +194,7 @@ function postaviWebSocket() {
             }
         } else if (data.type === 'new_file') {
             if (data.posiljatelj === trenutniKontakt || data.primatelj === trenutniKontakt) {
-                ucitajPoruke();
+                ucitajDatoteke();
             }
         }
     };
