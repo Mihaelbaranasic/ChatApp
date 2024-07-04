@@ -53,6 +53,9 @@ server.post('/baza/kontakti/:korime', restKontakt.postKontakti);
 server.get('/baza/poruke/:posiljatelj/:primatelj', restPoruka.dajPoruke);
 server.post('/baza/poruke', restPoruka.posaljiPoruku);
 
+app.get('/baza/datoteke/:posiljatelj/:primatelj', restDatoteka.dajDatoteke);
+app.post('/baza/datoteke', upload.single('datoteka'), restDatoteka.posaljiDatoteku);
+
 const httpServer = http.createServer(server);
 const wss = new WebSocket.Server({ server: httpServer });
 
@@ -74,6 +77,23 @@ wss.on('connection', (ws, req) => {
       wss.clients.forEach(client => {
         if (client.readyState === WebSocket.OPEN) {
           client.send(JSON.stringify({ type: 'new_message', posiljatelj, primatelj, sadrzaj, vrijemeSlanja: new Date() }));
+        }
+      });
+    } else if (data.type === 'new_file') {
+      const { posiljatelj, primatelj, datoteka } = data;
+      const zahtjev = {
+        body: { posiljatelj, primatelj, datoteka }
+      };
+      const odgovor = {
+        type: (type) => {},
+        status: (status) => {},
+        send: (data) => {}
+      };
+      await restDatoteka.posaljiDatoteku(zahtjev, odgovor);
+      
+      wss.clients.forEach(client => {
+        if (client.readyState === WebSocket.OPEN) {
+          client.send(JSON.stringify({ type: 'new_file', posiljatelj, primatelj, datoteka, vrijemePrimitka: new Date() }));
         }
       });
     }
