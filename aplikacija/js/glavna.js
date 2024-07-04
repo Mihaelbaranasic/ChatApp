@@ -92,7 +92,6 @@ async function otvoriRazgovor(kontaktKorime) {
     document.getElementById('razgovor-korime').innerText = kontaktKorime;
     document.getElementById('razgovor').style.display = 'block';
     await ucitajPoruke();
-    await ucitajDatoteke();
 }
 
 async function ucitajPoruke() {
@@ -105,59 +104,37 @@ async function ucitajPoruke() {
     };
     let odgovor = await fetch(`${url}/baza/poruke/${korime}/${trenutniKontakt}`, parametri);
     let poruke = await odgovor.json();
-    prikaziPoruke(poruke);
+    
+    let datoteke = await fetch(`${url}/baza/datoteke/${korime}/${trenutniKontakt}`, parametri);
+    let datotekeData = await datoteke.json();
+
+    prikaziPorukeIDatoteke(poruke, datotekeData);
 }
 
-function prikaziPoruke(poruke) {
+function prikaziPorukeIDatoteke(poruke, datoteke) {
     let popisPorukaHTML = document.getElementById('listaPoruka');
+    let svePorukeIDatoteke = [...poruke, ...datoteke];
+
+    svePorukeIDatoteke.sort((a, b) => new Date(a.vrijemeSlanja || a.vrijemePrimitka) - new Date(b.vrijemeSlanja || b.vrijemePrimitka));
+
     let html = "";
-    for (let poruka of poruke) {
-        let procitano = poruka.procitano ? "✓" : "";
-        html += `<li><small>${poruka.korime}</small><br>${poruka.sadrzaj}<br><small>${poruka.vrijemeSlanja}</small> ${procitano}</li>`;
+    for (let item of svePorukeIDatoteke) {
+        if (item.sadrzaj) {
+            let procitano = item.procitano ? "✓" : "";
+            html += `<li><small>${item.korime}</small><br>${item.sadrzaj}<br><small>${item.vrijemeSlanja}</small> ${procitano}</li>`;
+        } else if (item.naziv) {
+            html += `<li><small>${item.korime}</small><br><a href="${item.putanja}" target="_blank">${item.naziv}</a><br><small>${item.vrijemePrimitka}</small></li>`;
+        }
     }
     popisPorukaHTML.innerHTML = html;
-}
-
-async function ucitajDatoteke() {
-    let korime = document.getElementById('korime').innerHTML;
-    let parametri = {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-        }
-    };
-    let odgovor = await fetch(`${url}/baza/datoteke/${korime}/${trenutniKontakt}`, parametri);
-    let datoteke = await odgovor.json();
-    prikaziDatoteke(datoteke);
-}
-
-function prikaziDatoteke(datoteke) {
-    let popisPorukaHTML = document.getElementById('listaPoruka');
-    let html = "";
-    for (let datoteka of datoteke) {
-        html += `<li><small>${datoteka.korime}</small><br><a href="${datoteka.putanja}" download>${datoteka.naziv}</a><br><small>${datoteka.vrijemePrimitka}</small></li>`;
-    }
-    popisPorukaHTML.innerHTML += html;
 }
 
 async function posaljiPoruku() {
     let korime = document.getElementById('korime').innerHTML;
     let sadrzaj = document.getElementById('novaPoruka').value;
-    let parametri = {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ posiljatelj: korime, primatelj: trenutniKontakt, sadrzaj })
-    };
-    let odgovor = await fetch(`${url}/baza/poruke`, parametri);
-    if (odgovor.status == 201) {
         document.getElementById('novaPoruka').value = '';
         await ucitajPoruke();
         ws.send(JSON.stringify({ type: 'new_message', posiljatelj: korime, primatelj: trenutniKontakt, sadrzaj }));
-    } else {
-        console.error("Greška kod slanja poruke!");
-    }
 }
 
 async function posaljiDatoteku() {
@@ -174,8 +151,8 @@ async function posaljiDatoteku() {
     xhr.onload = function () {
         if (xhr.status === 201) {
             console.log('Datoteka poslana');
-            ws.send(JSON.stringify({ type: 'new_file', posiljatelj: korime, primatelj: trenutniKontakt, naziv: file.name }));
-            fileInput.value = ''; 
+            ws.send(JSON.stringify({ type: 'new_file', posiljatelj: korime, primatelj: trenutniKontakt, naziv: file.name, putanja: xhr.responseURL }));
+            fileInput.value = '';
         } else {
             console.error('Greška kod slanja datoteke');
         }
@@ -192,9 +169,10 @@ function postaviWebSocket() {
             if (data.posiljatelj === trenutniKontakt || data.primatelj === trenutniKontakt) {
                 ucitajPoruke();
             }
-        } else if (data.type === 'new_file') {
+        }
+        if (data.type === 'new_file') {
             if (data.posiljatelj === trenutniKontakt || data.primatelj === trenutniKontakt) {
-                ucitajDatoteke();
+                ucitajPoruke();
             }
         }
     };
