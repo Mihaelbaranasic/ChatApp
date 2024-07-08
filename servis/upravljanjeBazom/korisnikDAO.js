@@ -37,8 +37,10 @@ class KorisnikDAO {
 	}
 
 	obrisi = async function (korime) {
-		let sql = "DELETE FROM korisnik WHERE korime=?";
-		await this.baza.izvrsiUpit(sql,[korime]);
+		this.baza.spojiSeNaBazu();
+		let sql = `DELETE FROM korisnik WHERE korime = ?`;
+		await this.baza.izvrsiUpit(sql, [korime]);
+		this.baza.zatvoriVezu();
 		return true;
 	}
 

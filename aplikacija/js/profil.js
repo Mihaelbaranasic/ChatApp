@@ -1,6 +1,7 @@
 window.addEventListener('load', async () => {
     await ucitajPostavkeObavijesti();
     PromjenaObavijesti();
+    document.getElementById('delete-profile').addEventListener('click', obrisiProfil);
 });
 
 async function ucitajPostavkeObavijesti() {
@@ -44,10 +45,31 @@ function PromjenaObavijesti() {
         };
         
         let odgovor = await fetch(`/baza/korisnici/${korime}`, parametri);
+        console.log(odgovor.status);
         if (odgovor.status == 201) {
             alert('Postavke spremljene!');
         } else {
             console.error('Greška pri spremanju postavki!');
         }
     });
+}
+
+async function obrisiProfil() {
+    let korime = document.getElementById('korime').innerText;
+    let potvrda = confirm("Jeste li sigurni da želite obrisati profil?");
+    if (potvrda) {
+        let parametri = {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        };
+        let odgovor = await fetch(`/baza/korisnici/${korime}`, parametri);
+        if (odgovor.status == 200) {
+            alert("Profil uspješno obrisan.");
+            window.location.href = "/odjava";
+        } else {
+            console.error("Greška pri brisanju profila!");
+        }
+    }
 }

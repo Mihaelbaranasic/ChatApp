@@ -1,5 +1,3 @@
-
-
 CREATE TABLE "uloga"(
   "id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
   "naziv" VARCHAR(50) NOT NULL,
@@ -14,11 +12,15 @@ CREATE TABLE "korisnik"(
   "punoIme" VARCHAR(100) NOT NULL,
   "zadnjaPrijava" TIMESTAMP,
   "uloge_id" INTEGER,
+  "notif_dashboard" INTEGER DEFAULT 0,
+  "notif_popup" INTEGER DEFAULT 0,
+  "notif_email" INTEGER DEFAULT 0,
   CONSTRAINT "korime_UNIQUE"
     UNIQUE("korime"),
   CONSTRAINT "fk_korisnici_uloge1"
     FOREIGN KEY("uloge_id")
     REFERENCES "uloga"("id")
+    ON DELETE CASCADE
 );
 CREATE INDEX "korisnik.fk_korisnici_uloge1_idx" ON "korisnik" ("uloge_id");
 CREATE TABLE "kontakt"(
@@ -47,9 +49,6 @@ CREATE TABLE "poruka"(
   "procitano" INTEGER NOT NULL DEFAULT 0,
   "kontakt_id" INTEGER NOT NULL,
   "korisnik_id" INTEGER NOT NULL,
-  "notif_dashboard" INTEGER DEFAULT 0,
-  "notif-popup" INTEGER DEFAULT 0,
-  "notif-email" INTEGER DEFAULT 0,
   CONSTRAINT "fk_poruka_kontakt1"
     FOREIGN KEY("kontakt_id")
     REFERENCES "kontakt"("id"),
@@ -89,4 +88,12 @@ CREATE TABLE "blokiranKorisnik"(
 CREATE INDEX "blokiranKorisnik.fk_blokiranKorisnik_korisnik1_idx" ON "blokiranKorisnik" ("korisnik_id");
 CREATE INDEX "blokiranKorisnik.fk_blokiranKorisnik_korisnik2_idx" ON "blokiranKorisnik" ("blokiran_korisnik_id");
 
---INSERT INTO uloga (naziv) VALUES ('administrator'), ('moderator'), ('registriran korisnik');
+INSERT INTO uloga (naziv) VALUES ('administrator'), ('moderator'), ('registriran korisnik');
+
+-- DROP TABLE uloga;
+-- DROP TABLE blokiranKorisnik;
+-- DROP TABLE poruka;
+-- DROP TABLE datoteka;
+-- DROP TABLE dnevnik;
+-- DROP TABLE kontakt;
+-- DROP TABLE korisnik;

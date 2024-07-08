@@ -83,7 +83,7 @@ exports.deleteKorisnik = function (zahtjev, odgovor) {
 		odgovor.send({opis: "Zabranjeno je brisanje admina"});
 	}else{
 		kdao.obrisi(korime).then(() => {
-		odgovor.status(201);
+		odgovor.status(200);
 		odgovor.send({opis: "izvrseno"});
 		});
 	}
@@ -98,6 +98,7 @@ exports.putKorisnik = function (zahtjev, odgovor) {
 	  odgovor.status(201);
 	  odgovor.send({opis: "izvrseno"});
 	}).catch((error) => {
+		console.log({opis: "greska", detalji: error});
 	  odgovor.status(500);
 	  odgovor.send({opis: "greska", detalji: error});
 	});

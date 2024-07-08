@@ -1,5 +1,4 @@
 window.addEventListener('load', async () => {
-    document.getElementById('posaljiPoruku').addEventListener('click', sendEmailNotification);
     postaviWebSocket();
 });
 
