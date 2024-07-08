@@ -43,10 +43,10 @@ class KorisnikDAO {
 	}
 
 	azuriraj = async function (korime, korisnik) {
-		let sql = `UPDATE korisnik SET punoIme=?, email=?  WHERE korime=?`;
-        let podaci = [korisnik.punoIme,
-                      korisnik.email,korime];
-		await this.baza.izvrsiUpit(sql,podaci);
+		console.log(korisnik);
+		let sql = `UPDATE korisnik SET punoIme=?, email=?, notif_dashboard=?, notif_popup=?, notif_email=? WHERE korime=?`;
+		let podaci = [korisnik.punoIme, korisnik.email, korisnik.notif_dashboard, korisnik.notif_popup, korisnik.notif_email, korime];
+		await this.baza.izvrsiUpit(sql, podaci);
 		return true;
 	}
 	dajSveKojiNisuKontakti = async function (korime) {
@@ -56,13 +56,6 @@ class KorisnikDAO {
 		this.baza.zatvoriVezu();
 		return podaci;
 	  }
-	  
-	  async saveNotificationPreferences(korime, dashboard, popup, email) {
-        this.baza.spojiSeNaBazu();
-        let sql = `UPDATE korisnik SET notif_dashboard = ?, notif_popup = ?, notif_email = ? WHERE korime = ?`;
-        await this.baza.izvrsiUpit(sql, [dashboard, popup, email, korime]);
-        this.baza.zatvoriVezu();
-    }
 }
 
 module.exports = KorisnikDAO;

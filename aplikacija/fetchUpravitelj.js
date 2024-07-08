@@ -59,11 +59,21 @@ class FetchUpravitelj {
 		  odgovor.redirect('/prijava');
 		  return;
 		}
-		console.log(korisnik);
 		let stranica = await ucitajStranicu("glavna");
 		stranica = stranica.replace("#korime#", korisnik.korime);
 		odgovor.send(stranica);
-	  };	
+	  };
+	  
+	profil = async (zahtjev, odgovor) =>{
+		let korisnik = zahtjev.session.korisnik;
+		if (!korisnik) {
+		  odgovor.redirect('/prijava');
+		  return;
+		}
+		let stranica = await ucitajStranicu("profil");
+		stranica = stranica.replace("#korime#", korisnik.korime);
+		odgovor.send(stranica);
+	};
 }
 module.exports = FetchUpravitelj;
 

@@ -32,6 +32,7 @@ server.get('/registracija', fetchUpravitelj.registracija.bind(fetchUpravitelj));
 server.post('/prijava', fetchUpravitelj.prijava.bind(fetchUpravitelj));
 server.post('/registracija', fetchUpravitelj.registracija.bind(fetchUpravitelj));
 server.get('/odjava', fetchUpravitelj.odjava.bind(fetchUpravitelj));
+server.get('/profil', fetchUpravitelj.profil.bind(fetchUpravitelj));
 
 server.get('/baza/korisnici', restKorisnik.getKorisnici);
 server.post('/baza/korisnici', restKorisnik.postKorisnici);
@@ -42,8 +43,6 @@ server.post('/baza/korisnici/:korime', restKorisnik.postKorisnik);
 server.delete('/baza/korisnici/:korime', restKorisnik.deleteKorisnik);
 server.put('/baza/korisnici/:korime', restKorisnik.putKorisnik);
 server.post('/baza/korisnici/:korime/prijava', restKorisnik.getKorisnikPrijava);
-server.post("/baza/korisnici/obavjesti", restKorisnik.saveNotifications);
-
 
 server.get('/baza/nisuKontakti/:korime', restKorisnik.getNisuKontakti);
 

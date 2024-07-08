@@ -16,6 +16,8 @@
             <span id="korime">#korime#</span>
         </div>
 
+        <div id="dashboard-notifications"></div>
+
         <div id="korisnici">
             <h2>Korisnici</h2>
             <input type="text" id="pretraga-korisnici" placeholder="Pretraži korisnike...">
@@ -33,7 +35,7 @@
             </div>
         </div>
 
-        <div id="razgovor" style="display: none;">
+        <div id="razgovor" style="display: none;" class="scrollable">
             <h3>Razgovor s <span id="razgovor-korime"></span></h3>
             <ul id="listaPoruka"></ul>
             <input type="file" id="datoteka">
@@ -46,6 +48,6 @@
     <script src="/js/kontakti.js"></script>
     <script src="/js/datoteke.js"></script>
     <script src="/js/poruke.js"></script>
-    <script src="/js/WebSocket.js"></script>
+    <script src="/js/chat.js"></script>
 </body>
 </html>

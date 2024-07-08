@@ -76,3 +76,31 @@ li {
 li:hover {
     background-color: #f0f0f0;
 }
+
+.dashboard-notifications {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    width: 300px;
+}
+
+.dashboard-notification {
+    background-color: #f8f9fa;
+    border: 1px solid #ced4da;
+    padding: 10px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    position: relative;
+}
+
+.dashboard-notification strong {
+    display: block;
+}
+
+.dashboard-notification .close-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    cursor: pointer;
+    color: #dc3545;
+}

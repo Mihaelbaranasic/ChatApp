@@ -13,6 +13,12 @@ async function ucitajPoruke() {
     let datotekeData = await datoteke.json();
 
     prikaziPorukeIDatoteke(poruke, datotekeData);
+    scrollajNaKraj();
+}
+
+function scrollajNaKraj() {
+    let razgovorDiv = document.getElementById('razgovor');
+    razgovorDiv.scrollTop = razgovorDiv.scrollHeight;
 }
 
 function prikaziPorukeIDatoteke(poruke, datoteke) {
