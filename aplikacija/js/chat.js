@@ -1,3 +1,8 @@
+window.addEventListener('load', async () => {
+    document.getElementById('posaljiPoruku').addEventListener('click', sendEmailNotification);
+    postaviWebSocket();
+});
+
 function postaviWebSocket() {
     ws = new WebSocket('ws://localhost:3000');
     ws.onopen = () => console.log('WebSocket veza otvorena');
@@ -64,7 +69,7 @@ function sendEmailNotification(posiljatelj, sadrzaj) {
         },
         body: JSON.stringify({ posiljatelj, sadrzaj, korime })
     };
-    fetch('/baza/korisnici/emailNotification', parametri)
+    fetch('/baza/korisnici/emailObavijest', parametri)
     .then(response => {
         if (response.status == 200) {
             console.log('Email obavijest poslana');

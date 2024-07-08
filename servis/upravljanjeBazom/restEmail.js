@@ -1,18 +1,29 @@
 const nodemailer = require('nodemailer');
+const KorisnikDAO = require('./korisnikDAO');
+require('dotenv').config();
 
 exports.sendEmailNotification = async function (zahtjev, odgovor) {
     let { posiljatelj, sadrzaj, korime } = zahtjev.body;
+
+    let korisnikDAO = new KorisnikDAO();
+    let korisnik = await korisnikDAO.daj(korime);
+
+    if (!korisnik) {
+        odgovor.status(404).json({ greska: "Korisnik nije pronađen!" });
+        return;
+    }
+
     let transporter = nodemailer.createTransport({
         service: 'Gmail',
         auth: {
-            user: 'mbaranasic100@gmail.com',
-            pass: 'vatra100'
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASS
         }
     });
 
     let mailOptions = {
-        from: 'mbaranasic100@gmail.com',
-        to: 'recipient-email@gmail.com',
+        from: process.env.EMAIL_USER,
+        to: korisnik.email,
         subject: 'Nova poruka od ' + posiljatelj,
         text: sadrzaj
     };

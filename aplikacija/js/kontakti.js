@@ -6,7 +6,6 @@ let ws;
 
 window.addEventListener('load', async () => {
     await ucitaj();
-    postaviWebSocket();
     document.getElementById('pretraga-korisnici').addEventListener('input', pretraziKorisnike);
     document.getElementById('posaljiPoruku').addEventListener('click', posaljiPoruku);
     document.getElementById('posaljiDatoteku').addEventListener('click', posaljiDatoteku);

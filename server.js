@@ -6,6 +6,7 @@ const restKorisnik = require('./servis/upravljanjeBazom/restKorisnik');
 const restKontakt = require('./servis/upravljanjeBazom/restKontakt');
 const restPoruka = require('./servis/upravljanjeBazom/restPoruke');
 const restDatoteka = require('./servis/upravljanjeBazom/restDatoteka');
+const restEmail = require('./servis/upravljanjeBazom/restEmail');
 const http = require('http');
 
 const server = express();
@@ -21,7 +22,7 @@ server.use(sesija({
 
 server.use(express.urlencoded({ extended: true }));
 server.use(express.json());
-server.use('/uploads', express.static('uploads')); // Serve static files
+server.use('/uploads', express.static('uploads'));
 
 server.use('/css', express.static('./aplikacija/css'));
 server.use('/js', express.static('./aplikacija/js'));
@@ -54,6 +55,8 @@ server.post('/baza/poruke', restPoruka.posaljiPoruku);
 
 server.get('/baza/datoteke/:posiljatelj/:primatelj', restDatoteka.dajDatoteke);
 server.post('/baza/datoteke', restDatoteka.posaljiDatoteku);
+
+server.post('/baza/korisnici/emailObavijest', restEmail.sendEmailNotification);
 
 const httpServer = http.createServer(server);
 const wss = new WebSocket.Server({ server: httpServer });
