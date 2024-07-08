@@ -42,6 +42,8 @@ server.post('/baza/korisnici/:korime', restKorisnik.postKorisnik);
 server.delete('/baza/korisnici/:korime', restKorisnik.deleteKorisnik);
 server.put('/baza/korisnici/:korime', restKorisnik.putKorisnik);
 server.post('/baza/korisnici/:korime/prijava', restKorisnik.getKorisnikPrijava);
+server.post("/baza/korisnici/obavjesti", restKorisnik.saveNotifications);
+
 
 server.get('/baza/nisuKontakti/:korime', restKorisnik.getNisuKontakti);
 

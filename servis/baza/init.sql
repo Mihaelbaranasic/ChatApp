@@ -47,6 +47,9 @@ CREATE TABLE "poruka"(
   "procitano" INTEGER NOT NULL DEFAULT 0,
   "kontakt_id" INTEGER NOT NULL,
   "korisnik_id" INTEGER NOT NULL,
+  "notif_dashboard" INTEGER DEFAULT 0,
+  "notif-popup" INTEGER DEFAULT 0,
+  "notif-email" INTEGER DEFAULT 0,
   CONSTRAINT "fk_poruka_kontakt1"
     FOREIGN KEY("kontakt_id")
     REFERENCES "kontakt"("id"),

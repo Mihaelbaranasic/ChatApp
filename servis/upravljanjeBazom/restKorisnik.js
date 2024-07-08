@@ -112,3 +112,15 @@ exports.getNisuKontakti = function (zahtjev, odgovor) {
 		odgovor.send(JSON.stringify(korisnici));
 	})
 }
+
+exports.saveNotifications = async function (zahtjev, odgovor) {
+    odgovor.type("application/json");
+    let { korime, dashboard, popup, email } = zahtjev.body;
+    let kdao = new KorisnikDAO();
+    try {
+        await kdao.saveNotificationPreferences(korime, dashboard, popup, email);
+        odgovor.status(200).json({ opis: "Postavke spremljene!" });
+    } catch (error) {
+        odgovor.status(500).json({ greska: "Greška pri spremanju postavki!" });
+    }
+};

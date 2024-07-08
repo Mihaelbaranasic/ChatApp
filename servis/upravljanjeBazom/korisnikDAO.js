@@ -56,6 +56,13 @@ class KorisnikDAO {
 		this.baza.zatvoriVezu();
 		return podaci;
 	  }
+	  
+	  async saveNotificationPreferences(korime, dashboard, popup, email) {
+        this.baza.spojiSeNaBazu();
+        let sql = `UPDATE korisnik SET notif_dashboard = ?, notif_popup = ?, notif_email = ? WHERE korime = ?`;
+        await this.baza.izvrsiUpit(sql, [dashboard, popup, email, korime]);
+        this.baza.zatvoriVezu();
+    }
 }
 
 module.exports = KorisnikDAO;
