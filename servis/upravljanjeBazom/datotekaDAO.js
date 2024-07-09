@@ -2,7 +2,7 @@ const Baza = require("./baza.js");
 
 class DatotekaDAO {
     constructor() {
-        this.baza = new Baza("/home/NPK_01/mbaranasi21/ChatApp/servis/baza/ChatApp_baza.sqlite");
+		this.baza = new Baza("./servis/baza/ChatApp_baza.sqlite");
     }
 
     async posaljiDatoteku(posiljatelj, primatelj, naziv, putanja) {

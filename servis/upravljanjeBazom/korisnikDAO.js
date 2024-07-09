@@ -3,7 +3,7 @@ const Baza = require("./baza.js");
 class KorisnikDAO {
 
 	constructor() {
-		this.baza = new Baza("/home/NPK_01/mbaranasi21/ChatApp/servis/baza/ChatApp_baza.sqlite");
+		this.baza = new Baza("./servis/baza/ChatApp_baza.sqlite");
 	}
 
 	dajSve = async function () {
