@@ -62,53 +62,62 @@ const wss = new WebSocket.Server({ server: httpServer });
 wss.on('connection', (ws, req) => {
   ws.on('message', async (message) => {
     const data = JSON.parse(message);
-    if (data.type === 'new_message') {
-      const { posiljatelj, primatelj, sadrzaj } = data;
 
-      const korisnikOdgovor = await fetch(`http://localhost:3000/baza/korisnici/${primatelj}`);
-      if (korisnikOdgovor.status !== 200) {
-        console.error('Korisnik nije pronađen!');
-        return;
-      }
-      const korisnik = await korisnikOdgovor.json();
-      const zahtjev = {
-        body: { posiljatelj, primatelj, sadrzaj }
-      };
-      const odgovor = {
-        type: (type) => {},
-        status: (status) => {},
-        send: (data) => {}
-      };
-      await restPoruka.posaljiPoruku(zahtjev, odgovor);
+    if (data.type === 'new_message' || data.type === 'new_file') {
+      const rezultat = await obradiPoruku(data);
+      if (!rezultat) return;
 
-      wss.clients.forEach(client => {
-        if (client.readyState === WebSocket.OPEN) {
-          client.send(JSON.stringify({ type: 'new_message', posiljatelj, primatelj, sadrzaj, vrijemeSlanja: new Date() }));
-        }
-      });
-
-      if (korisnik.notif_email) {
-        fetchUpravitelj.saljiMail({ body: { posiljatelj, sadrzaj, korime: primatelj } }, {
-          status: () => {},
-          json: () => {}
-        });
-      }
-
-    } else if (data.type === 'new_file') {
+      const { korisnik, stvarniSadrzaj } = rezultat;
+      
       wss.clients.forEach(client => {
         if (client.readyState === WebSocket.OPEN) {
           client.send(JSON.stringify({
-            type: 'new_file',
+            type: data.type,
             posiljatelj: data.posiljatelj,
             primatelj: data.primatelj,
-            naziv: data.naziv,
-            putanja: data.putanja,
-            vrijemePrimitka: new Date()
+            sadrzaj: stvarniSadrzaj,
+            vrijemeSlanja: new Date()
           }));
         }
       });
+
+      posaljiEmailObavijest(data.posiljatelj, stvarniSadrzaj, data.primatelj, korisnik);
     }
   });
+
+  async function obradiPoruku(data) {
+    const { posiljatelj, primatelj, sadrzaj, naziv, type } = data;
+  
+    let stvarniSadrzaj = sadrzaj;
+    if (type === 'new_file') {
+      stvarniSadrzaj = naziv;
+    }
+  
+    const korisnikOdgovor = await fetch(`http://localhost:3000/baza/korisnici/${primatelj}`);
+    if (korisnikOdgovor.status !== 200) {
+      console.error('Korisnik nije pronađen!');
+      return null;
+    }
+    const korisnik = await korisnikOdgovor.json();
+  
+    if (type === 'new_message') {
+      const zahtjev = { body: { posiljatelj, primatelj, sadrzaj } };
+      const odgovor = { type: () => {}, status: () => {}, send: () => {} };
+      await restPoruka.posaljiPoruku(zahtjev, odgovor);
+    }
+  
+    return { korisnik, stvarniSadrzaj };
+  }
+  
+  function posaljiEmailObavijest(posiljatelj, sadrzaj, primatelj, korisnik) {
+    if (korisnik.notif_email) {
+      fetchUpravitelj.saljiMail({ body: { posiljatelj, sadrzaj, korime: primatelj } }, {
+        status: () => {},
+        json: () => {}
+      });
+    }
+  }
+  
 
 
   ws.on('close', () => {
