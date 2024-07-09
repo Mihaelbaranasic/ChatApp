@@ -1,5 +1,6 @@
 const Autentifikacija = require("./autentifikacija.js");
 const ds = require("fs/promises");
+const mail = require("./moduli/email.js");
 
 class FetchUpravitelj {
 	constructor(port) {
@@ -74,6 +75,17 @@ class FetchUpravitelj {
 		stranica = stranica.replace("#korime#", korisnik.korime);
 		odgovor.send(stranica);
 	};
+
+	saljiMail = async (zahtjev, odgovor) => {
+		let { posiljatelj, sadrzaj, korime } = zahtjev.body;
+        try {
+            await mail.posaljiMail(posiljatelj, korime, "Nova poruka", sadrzaj);
+            odgovor.status(200);
+        } catch (error) {
+            console.error('Greška pri slanju email obavijesti:', error);
+            odgovor.status(500);
+        }
+	}
 }
 module.exports = FetchUpravitelj;
 

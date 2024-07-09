@@ -6,7 +6,6 @@ const restKorisnik = require('./servis/upravljanjeBazom/restKorisnik');
 const restKontakt = require('./servis/upravljanjeBazom/restKontakt');
 const restPoruka = require('./servis/upravljanjeBazom/restPoruke');
 const restDatoteka = require('./servis/upravljanjeBazom/restDatoteka');
-const restEmail = require('./servis/upravljanjeBazom/restEmail');
 const http = require('http');
 
 const server = express();
@@ -56,7 +55,6 @@ server.post('/baza/poruke', restPoruka.posaljiPoruku);
 server.get('/baza/datoteke/:posiljatelj/:primatelj', restDatoteka.dajDatoteke);
 server.post('/baza/datoteke', restDatoteka.posaljiDatoteku);
 
-server.post('/baza/korisnici/emailObavijest', restEmail.sendEmailNotification);
 
 const httpServer = http.createServer(server);
 const wss = new WebSocket.Server({ server: httpServer });
@@ -66,6 +64,13 @@ wss.on('connection', (ws, req) => {
     const data = JSON.parse(message);
     if (data.type === 'new_message') {
       const { posiljatelj, primatelj, sadrzaj } = data;
+
+      const korisnikOdgovor = await fetch(`http://localhost:3000/baza/korisnici/${primatelj}`);
+      if (korisnikOdgovor.status !== 200) {
+        console.error('Korisnik nije pronađen!');
+        return;
+      }
+      const korisnik = await korisnikOdgovor.json();
       const zahtjev = {
         body: { posiljatelj, primatelj, sadrzaj }
       };
@@ -81,6 +86,14 @@ wss.on('connection', (ws, req) => {
           client.send(JSON.stringify({ type: 'new_message', posiljatelj, primatelj, sadrzaj, vrijemeSlanja: new Date() }));
         }
       });
+
+      if (korisnik.notif_email) {
+        fetchUpravitelj.saljiMail({ body: { posiljatelj, sadrzaj, korime: primatelj } }, {
+          status: () => {},
+          json: () => {}
+        });
+      }
+
     } else if (data.type === 'new_file') {
       wss.clients.forEach(client => {
         if (client.readyState === WebSocket.OPEN) {
@@ -96,6 +109,7 @@ wss.on('connection', (ws, req) => {
       });
     }
   });
+
 
   ws.on('close', () => {
     console.log('WebSocket klijent se odspojio');

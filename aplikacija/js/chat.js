@@ -33,9 +33,9 @@ async function showNotification(data) {
         if (korisnik.notif_dashboard) {
             updateDashboardNotification(data.posiljatelj, data.sadrzaj);
         }
-        if (korisnik.notif_email) {
-            sendEmailNotification(data.posiljatelj, data.sadrzaj);
-        }
+        // if (korisnik.notif_email) {
+        //     sendEmailNotification(data.posiljatelj, data.sadrzaj);
+        // }
     } else {
         console.error('Greška pri dohvaćanju postavki obavijesti');
     }
@@ -59,21 +59,21 @@ function ukloniObavijest(element) {
     element.parentElement.remove();
 }
 
-function sendEmailNotification(posiljatelj, sadrzaj) {
-    let korime = document.getElementById('korime').innerHTML;
-    let parametri = {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ posiljatelj, sadrzaj, korime })
-    };
-    fetch('/baza/korisnici/emailObavijest', parametri)
-    .then(response => {
-        if (response.status == 200) {
-            console.log('Email obavijest poslana');
-        } else {
-            console.error('Greška kod slanja email obavijesti');
-        }
-    });
-}
+// function sendEmailNotification(posiljatelj, sadrzaj) {
+//     let korime = document.getElementById('korime').innerHTML;
+//     let parametri = {
+//         method: "POST",
+//         headers: {
+//             "Content-Type": "application/json"
+//         },
+//         body: JSON.stringify({ posiljatelj, sadrzaj, korime })
+//     };
+//     fetch('/baza/korisnici/emailObavijest', parametri)
+//     .then(response => {
+//         if (response.status == 200) {
+//             console.log('Email obavijest poslana');
+//         } else {
+//             console.error('Greška kod slanja email obavijesti');
+//         }
+//     });
+// }
