@@ -27,7 +27,28 @@ async function ucitajPostavkeObavijesti() {
 }
 
 function PromjenaObavijesti() {
-    document.getElementById('save-notifications').addEventListener('click', async () => {
+    document.getElementById('save-notifications').addEventListener('click', async (event) => {
+        event.preventDefault();
+
+        let punoIme = document.getElementById('punoIme').value;
+        let email = document.getElementById('email').value; 
+        let poruka = document.getElementById('poruka');
+        poruka.id = 'poruka';
+        document.body.appendChild(poruka);
+
+        let regexIme = /^[A-Za-zčćžšđČĆŽŠĐ\s]+$/;
+        let regexEmail = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+
+        if (!regexIme.test(punoIme)) {
+            poruka.innerText = "Puno ime smije sadržavati samo slova i razmak.";
+            return;
+        } else if (!regexEmail.test(email)) {
+            poruka.innerText = "Email nije ispravan.";
+            return;
+        } else {
+            poruka.innerText = "";
+        }
+
         if (Notification.permission !== 'granted') {
             Notification.requestPermission().then(permission => {
                 if (permission === 'granted') {
@@ -37,8 +58,6 @@ function PromjenaObavijesti() {
         }
         
         let korime = document.getElementById('korime').innerText;
-        let punoIme = document.getElementById('punoIme').value;
-        let email = document.getElementById('email').value; 
         let notif_dashboard = document.getElementById('notif-dashboard').checked ? 1 : 0;
         let notif_popup = document.getElementById('notif-popup').checked ? 1 : 0;
         let notif_email = document.getElementById('notif-email').checked ? 1 : 0;
