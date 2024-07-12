@@ -6,7 +6,7 @@
     <title>Registracija</title>
 </head>
 <body>
-    <form action="/registracija" method="POST">
+    <form action="/registracija" method="POST" id="registracija">
         <label for="punoIme">Ime i prezime: </label>
         <input type="text" name="punoIme" id="punoIme">
         <label for="email">Email: </label>
@@ -15,7 +15,10 @@
         <input type="text" name="korime" id="korime">
         <label for="lozinka">Lozinka: </label>
         <input type="password" name="lozinka" id="lozinka">
-        <button type="submit">Registriraj se</button>
+        <button type="submit" id="submit">Registriraj se</button>
     </form>
+    <a href="/prijava">Vrati se na prijavu</a>
+    <div id="poruka"></div>
+    <script src="/js/registracija.js"></script>
 </body>
 </html>
