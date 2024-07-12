@@ -18,54 +18,63 @@ server.use(sesija({
   saveUninitialized: true,
   cookie: { secure: false }
 }));
+pokreniServer();
+pripremiPutanjeKorisnik();
+pripremiPutanjeKontakt();
+pripremiPutanjePorukeIDatoteke();
 
-server.use(express.urlencoded({ extended: true }));
-server.use(express.json());
-server.use('/uploads', express.static('uploads'));
+function pokreniServer(){
+  server.use(express.urlencoded({ extended: true }));
+  server.use(express.json());
+  server.use('/uploads', express.static('uploads'));
 
-server.use('/css', express.static('./aplikacija/css'));
-server.use('/js', express.static('./aplikacija/js'));
+  server.use('/css', express.static('./aplikacija/css'));
+  server.use('/js', express.static('./aplikacija/js'));
 
-server.get('/', fetchUpravitelj.glavna.bind(fetchUpravitelj));
-server.get('/prijava', fetchUpravitelj.prijava.bind(fetchUpravitelj));
-server.get('/registracija', fetchUpravitelj.registracija.bind(fetchUpravitelj));
-server.post('/prijava', fetchUpravitelj.prijava.bind(fetchUpravitelj));
-server.post('/registracija', fetchUpravitelj.registracija.bind(fetchUpravitelj));
-server.get('/odjava', fetchUpravitelj.odjava.bind(fetchUpravitelj));
-server.get('/profil', fetchUpravitelj.profil.bind(fetchUpravitelj));
-server.get('/statistika', fetchUpravitelj.statistika.bind(fetchUpravitelj));
+  server.get('/', fetchUpravitelj.glavna.bind(fetchUpravitelj));
+  server.get('/prijava', fetchUpravitelj.prijava.bind(fetchUpravitelj));
+  server.get('/registracija', fetchUpravitelj.registracija.bind(fetchUpravitelj));
+  server.post('/prijava', fetchUpravitelj.prijava.bind(fetchUpravitelj));
+  server.post('/registracija', fetchUpravitelj.registracija.bind(fetchUpravitelj));
+  server.get('/odjava', fetchUpravitelj.odjava.bind(fetchUpravitelj));
+  server.get('/profil', fetchUpravitelj.profil.bind(fetchUpravitelj));
+  server.get('/statistika', fetchUpravitelj.statistika.bind(fetchUpravitelj));
+}
+
+function pripremiPutanjeKorisnik(){
+  server.get('/baza/korisnici', restKorisnik.getKorisnici);
+  server.post('/baza/korisnici', restKorisnik.postKorisnici);
+  server.delete('/baza/korisnici', restKorisnik.deleteKorisnici);
+  server.put('/baza/korisnici', restKorisnik.putKorisnici);
+  server.get('/baza/korisnici/:korime', restKorisnik.getKorisnik);
+  server.post('/baza/korisnici/:korime', restKorisnik.postKorisnik);
+  server.delete('/baza/korisnici/:korime', restKorisnik.deleteKorisnik);
+  server.put('/baza/korisnici/:korime', restKorisnik.putKorisnik);
+  server.post('/baza/korisnici/:korime/prijava', restKorisnik.getKorisnikPrijava);
+
+  server.get('/baza/nisuKontakti/:korime', restKorisnik.getNisuKontakti);
+  server.post('/baza/blokiraj', restKorisnik.blokirajKorisnika);
+  server.delete('/baza/odblokiraj', restKorisnik.odblokirajKorisnika);
+  server.get('/baza/korisnici/:korime/blokirani', restKorisnik.dajBlokirane);
+}
+
+function pripremiPutanjeKontakt(){
+  server.get('/baza/kontakti/:korime', restKontakt.getKontakti);
+  server.post('/baza/kontakti/:korime', restKontakt.postKontakti);
+}
+
+function pripremiPutanjePorukeIDatoteke(){
+  server.get('/baza/poruke/:posiljatelj/:primatelj', restPoruka.dajPoruke);
+  server.post('/baza/poruke', restPoruka.posaljiPoruku);
+
+  server.get('/baza/datoteke/:posiljatelj/:primatelj', restDatoteka.dajDatoteke);
+  server.post('/baza/datoteke', restDatoteka.posaljiDatoteku);
 
 
-server.get('/baza/korisnici', restKorisnik.getKorisnici);
-server.post('/baza/korisnici', restKorisnik.postKorisnici);
-server.delete('/baza/korisnici', restKorisnik.deleteKorisnici);
-server.put('/baza/korisnici', restKorisnik.putKorisnici);
-server.get('/baza/korisnici/:korime', restKorisnik.getKorisnik);
-server.post('/baza/korisnici/:korime', restKorisnik.postKorisnik);
-server.delete('/baza/korisnici/:korime', restKorisnik.deleteKorisnik);
-server.put('/baza/korisnici/:korime', restKorisnik.putKorisnik);
-server.post('/baza/korisnici/:korime/prijava', restKorisnik.getKorisnikPrijava);
+  server.get('/baza/zaprimljene/:korime', restDatoteka.dajZaprimljeneDatoteke);
 
-server.get('/baza/nisuKontakti/:korime', restKorisnik.getNisuKontakti);
-server.post('/baza/blokiraj', restKorisnik.blokirajKorisnika);
-server.delete('/baza/odblokiraj', restKorisnik.odblokirajKorisnika);
-server.get('/baza/korisnici/:korime/blokirani', restKorisnik.dajBlokirane);
-
-
-server.get('/baza/kontakti/:korime', restKontakt.getKontakti);
-server.post('/baza/kontakti/:korime', restKontakt.postKontakti);
-
-server.get('/baza/poruke/:posiljatelj/:primatelj', restPoruka.dajPoruke);
-server.post('/baza/poruke', restPoruka.posaljiPoruku);
-
-server.get('/baza/datoteke/:posiljatelj/:primatelj', restDatoteka.dajDatoteke);
-server.post('/baza/datoteke', restDatoteka.posaljiDatoteku);
-
-
-server.get('/baza/zaprimljene/:korime', restDatoteka.dajZaprimljeneDatoteke);
-
-server.get('/baza/statistika/:korime', restKorisnik.dajStatistike);
-
+  server.get('/baza/statistika/:korime', restKorisnik.dajStatistike);
+}
 
 const httpServer = http.createServer(server);
 const wss = new WebSocket.Server({ server: httpServer });
