@@ -9,6 +9,7 @@ window.addEventListener('load', async () => {
     document.getElementById('pretraga-korisnici').addEventListener('input', pretraziKorisnike);
     document.getElementById('posaljiPoruku').addEventListener('click', posaljiPoruku);
     document.getElementById('posaljiDatoteku').addEventListener('click', posaljiDatoteku);
+    document.getElementById('blokiraj').addEventListener('click', blokirajKorisnika);
 });
 
 async function ucitaj() {
@@ -91,4 +92,24 @@ async function otvoriRazgovor(kontaktKorime) {
     document.getElementById('razgovor-korime').innerText = kontaktKorime;
     document.getElementById('razgovor').style.display = 'block';
     await ucitajPoruke();
+}
+
+async function blokirajKorisnika(){
+    let trenutniKontakt = document.getElementById('razgovor-korime').innerText;
+    let potvrda = confirm(`Jeste li sigurni da želite blokirati korisnika ${trenutniKontakt}?`);
+    if (potvrda) {
+        let parametri = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ korime: trenutniKontakt })
+        };
+        let odgovor = await fetch(`${url}/baza/korisnici/blokiraj`, parametri);
+        if (odgovor.status == 200) {
+            alert("Korisnik je uspješno blokiran.");
+        } else {
+            console.error("Greška pri blokiranju korisnika!");
+        }
+    }
 }
