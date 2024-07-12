@@ -96,20 +96,23 @@ async function otvoriRazgovor(kontaktKorime) {
 
 async function blokirajKorisnika(){
     let trenutniKontakt = document.getElementById('razgovor-korime').innerText;
-    let potvrda = confirm(`Jeste li sigurni da želite blokirati korisnika ${trenutniKontakt}?`);
+    let potvrda = confirm("Jeste li sigurni da želite blokirati ovog korisnika?");
     if (potvrda) {
+        let korime = document.getElementById('korime').innerText;
         let parametri = {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({ korime: trenutniKontakt })
+            body: JSON.stringify({korime: korime, blokiraniKorime: trenutniKontakt})
         };
-        let odgovor = await fetch(`${url}/baza/korisnici/blokiraj`, parametri);
-        if (odgovor.status == 200) {
-            alert("Korisnik je uspješno blokiran.");
-        } else {
-            console.error("Greška pri blokiranju korisnika!");
-        }
+        fetch('/baza/blokiraj', parametri)
+        .then(response => {
+            if (response.status == 200) {
+                alert("Korisnik je uspješno blokiran.");
+            } else {
+                console.error("Greška pri blokiranju korisnika!");
+            }
+        });
     }
 }

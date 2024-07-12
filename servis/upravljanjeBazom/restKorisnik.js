@@ -115,4 +115,15 @@ exports.getNisuKontakti = function (zahtjev, odgovor) {
 		odgovor.status(200);
 		odgovor.send(JSON.stringify(korisnici));
 	})
-}
+};
+
+exports.blokirajKorisnika = async (zahtjev, odgovor) => {
+    let { korime, blokiraniKorime } = zahtjev.body;
+    try {
+        let kdao = new KorisnikDAO();
+        await kdao.blokirajKorisnika(korime, blokiraniKorime);
+        odgovor.status(200).send({ opis: "Korisnik blokiran!" });
+    } catch (error) {
+        odgovor.status(500).send({ greska: "Greška pri blokiranju korisnika!" });
+    }
+};

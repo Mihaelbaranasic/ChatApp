@@ -63,6 +63,18 @@ class KorisnikDAO {
 		this.baza.zatvoriVezu();
 		return podaci;
 	  }
+	  
+	  blokirajKorisnika = async function (korime, blokiraniKorime) {
+		this.baza.spojiSeNaBazu();
+		let sql = `INSERT INTO blokiranKorisnik (korisnik_id, blokiran_korisnik_id) 
+				   SELECT k1.id, k2.id 
+				   FROM korisnik k1, korisnik k2 
+				   WHERE k1.korime = ? AND k2.korime = ?`;
+		await this.baza.izvrsiUpit(sql, [korime, blokiraniKorime]);
+		this.baza.zatvoriVezu();
+		return true;
+	}
+	
 }
 
 module.exports = KorisnikDAO;
