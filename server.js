@@ -33,6 +33,8 @@ server.post('/prijava', fetchUpravitelj.prijava.bind(fetchUpravitelj));
 server.post('/registracija', fetchUpravitelj.registracija.bind(fetchUpravitelj));
 server.get('/odjava', fetchUpravitelj.odjava.bind(fetchUpravitelj));
 server.get('/profil', fetchUpravitelj.profil.bind(fetchUpravitelj));
+server.get('/statistika', fetchUpravitelj.statistika.bind(fetchUpravitelj));
+
 
 server.get('/baza/korisnici', restKorisnik.getKorisnici);
 server.post('/baza/korisnici', restKorisnik.postKorisnici);
@@ -61,6 +63,8 @@ server.post('/baza/datoteke', restDatoteka.posaljiDatoteku);
 
 
 server.get('/baza/zaprimljene/:korime', restDatoteka.dajZaprimljeneDatoteke);
+
+server.get('/baza/statistika/:korime', restKorisnik.dajStatistike);
 
 
 const httpServer = http.createServer(server);

@@ -125,6 +125,74 @@ class KorisnikDAO {
 		return true;
 	}
 	
+	dajStatistike = async function (korime) {
+		this.baza.spojiSeNaBazu();
+	
+		let sqlBrojRazgovora = `
+			SELECT COUNT(*) AS brojRazgovora 
+			FROM kontakt 
+			WHERE korisnik_id = (SELECT id FROM korisnik WHERE korime = ?) 
+			AND korisnik_id NOT IN (
+				SELECT blokiran_korisnik_id 
+				FROM blokiranKorisnik 
+				WHERE korisnik_id = (SELECT id FROM korisnik WHERE korime = ?)
+			)
+			AND korisnik_id NOT IN (
+				SELECT korisnik_id 
+				FROM blokiranKorisnik 
+				WHERE blokiran_korisnik_id = (SELECT id FROM korisnik WHERE korime = ?)
+			)
+		`;
+
+		let sqlBrojPoruka = `
+		SELECT COUNT(*) AS brojPoruka 
+		FROM poruka 
+		WHERE korisnik_id = (SELECT id FROM korisnik WHERE korime = ?) 
+		OR kontakt_id = (SELECT id FROM korisnik WHERE korime = ?)
+		`;
+
+		let sqlNajvisePoruka = `
+		SELECT
+		k.korime AS korisnik, COUNT(*) AS brojPoruka FROM poruka p JOIN korisnik k
+		ON (
+			(p.korisnik_id = k.id AND p.kontakt_id = (SELECT id FROM kontakt WHERE korime = ?))
+			OR (p.kontakt_id = k.id AND p.korisnik_id = (SELECT id FROM korisnik WHERE korime = ?))
+		) WHERE k.korime != ? GROUP BY k.korime ORDER BY brojPoruka DESC LIMIT 1;
+		`;
+
+		let sqlBrojDatoteka = `
+			SELECT COUNT(*) AS brojDatoteka 
+			FROM datoteka 
+			WHERE korisnik_id = (SELECT id FROM korisnik WHERE korime = ?)
+			OR kontakt_id = (SELECT id FROM korisnik WHERE korime = ?)
+		`;
+
+		let sqlNajviseDatoteka = `
+		SELECT
+    k.korime AS korisnik, COUNT(*) AS brojDatoteka FROM datoteka d JOIN korisnik k
+    ON (
+        (d.korisnik_id = k.id AND d.kontakt_id IN (SELECT id FROM korisnik WHERE korime = ?))
+        OR (d.kontakt_id = k.id AND d.korisnik_id IN (SELECT id FROM korisnik WHERE korime = ?))
+    ) WHERE k.korime != ? GROUP BY k.korime ORDER BY brojDatoteka DESC LIMIT 1;
+		`;
+	
+		let brojRazgovora = await this.baza.izvrsiUpit(sqlBrojRazgovora, [korime, korime, korime]);
+		let brojPoruka = await this.baza.izvrsiUpit(sqlBrojPoruka, [korime, korime]);
+		let najvisePoruka = await this.baza.izvrsiUpit(sqlNajvisePoruka, [korime, korime, korime]);
+		let brojDatoteka = await this.baza.izvrsiUpit(sqlBrojDatoteka, [korime, korime]);
+		let najviseDatoteka = await this.baza.izvrsiUpit(sqlNajviseDatoteka, [korime, korime, korime]);
+	
+		this.baza.zatvoriVezu();
+	
+		return {
+			brojRazgovora: brojRazgovora[0]?.brojRazgovora || 0,
+			brojPoruka: brojPoruka[0]?.brojPoruka || 0,
+			najvisePoruka: najvisePoruka[0] || { korisnik: 'N/A', brojPoruka: 0 },
+			brojDatoteka: brojDatoteka[0]?.brojDatoteka || 0,
+			najviseDatoteka: najviseDatoteka[0] || { korisnik: 'N/A', brojDatoteka: 0 }
+		};
+	}
+			
 }
 
 module.exports = KorisnikDAO;

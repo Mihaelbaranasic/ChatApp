@@ -86,6 +86,33 @@ class FetchUpravitelj {
             odgovor.status(500);
         }
 	}
+
+	statistika = async function (zahtjev, odgovor) {
+		let korisnik = zahtjev.session.korisnik;
+		if (!korisnik) {
+			odgovor.redirect('/prijava');
+			return;
+		}
+	
+		try {
+			let statistikeOdgovor = await fetch(`http://localhost:${this.port}/baza/statistika/${korisnik.korime}`);
+			if (statistikeOdgovor.status === 200) {
+				let statistike = await statistikeOdgovor.json();
+				let stranica = await ucitajStranicu("statistika");
+				stranica = stranica.replace("#korime#", korisnik.korime);
+				stranica = stranica.replace("#broj-razgovora#", statistike.brojRazgovora);
+				stranica = stranica.replace("#korisnik-najvise-poruka#", statistike.najvisePoruka.korime);
+				stranica = stranica.replace("#broj-poruka#", statistike.najvisePoruka.brojPoruka);
+				odgovor.send(stranica);
+			} else {
+				console.error("Greška pri dohvaćanju statistika");
+				odgovor.redirect('/prijava');
+			}
+		} catch (error) {
+			console.error("Greška pri dohvaćanju statistika:", error);
+			odgovor.redirect('/prijava');
+		}
+	};
 }
 module.exports = FetchUpravitelj;
 

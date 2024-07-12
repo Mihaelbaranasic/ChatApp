@@ -149,3 +149,15 @@ exports.odblokirajKorisnika = async (zahtjev, odgovor) => {
         odgovor.status(500).send({ greska: "Greška pri odblokiranju korisnika!" });
     }
 };
+
+exports.dajStatistike = async (zahtjev, odgovor) => {
+    let korime = zahtjev.params.korime;
+    try {
+        let kdao = new KorisnikDAO();
+        let statistike = await kdao.dajStatistike(korime);
+        odgovor.status(200).json(statistike);
+    } catch (error) {
+        console.error("Greška pri dohvaćanju statistika:", error);
+        odgovor.status(500).json({ greska: "Greška pri dohvaćanju statistika!" });
+    }
+};
