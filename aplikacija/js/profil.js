@@ -1,8 +1,14 @@
+let url = "http://localhost:3000";
+let datoteke = [];
+
 window.addEventListener('load', async () => {
     await ucitajPostavkeObavijesti();
     PromjenaObavijesti();
     await prikaziBlokiraneKorisnike();
+    await ucitajDatoteke();
     document.getElementById('delete-profile').addEventListener('click', obrisiProfil);
+    document.getElementById('pretraga-datoteka').addEventListener('input', filtrirajDatoteke);
+    document.getElementById('sortiraj-datoteke').addEventListener('change', sortirajDatoteke);
 });
 
 async function ucitajPostavkeObavijesti() {
@@ -117,4 +123,42 @@ async function odblokirajKorisnika(blokiraniKorime) {
             }
         });
     }
+}
+
+async function ucitajDatoteke() {
+    let korime = document.getElementById('korime').innerHTML;
+    let parametri = {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+        }
+    };
+    let odgovor = await fetch(`${url}/baza/zaprimljene/${korime}`, parametri);
+    datoteke = await odgovor.json();
+    prikaziDatoteke(datoteke);
+}
+
+function prikaziDatoteke(datoteke) {
+    let listaDatoteka = document.getElementById('lista-datoteka');
+    let html = "";
+    for (let datoteka of datoteke) {
+        html += `<li>${datoteka.naziv} - ${datoteka.posiljatelj}</li>`;
+    }
+    listaDatoteka.innerHTML = html;
+}
+
+function filtrirajDatoteke() {
+    let pretraga = document.getElementById('pretraga-datoteka').value.toLowerCase();
+    let filtriraneDatoteke = datoteke.filter(datoteka => datoteka.naziv.toLowerCase().includes(pretraga) || datoteka.posiljatelj.toLowerCase().includes(pretraga));
+    prikaziDatoteke(filtriraneDatoteke);
+}
+
+function sortirajDatoteke() {
+    let kriterij = document.getElementById('sortiraj-datoteke').value;
+    if (kriterij === "naziv") {
+        datoteke.sort((a, b) => a.naziv.localeCompare(b.naziv));
+    } else if (kriterij === "korisnik") {
+        datoteke.sort((a, b) => a.posiljatelj.localeCompare(b.posiljatelj));
+    }
+    prikaziDatoteke(datoteke);
 }

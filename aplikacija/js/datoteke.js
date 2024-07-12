@@ -18,5 +18,8 @@ async function posaljiDatoteku() {
             console.error('Greška kod slanja datoteke');
         }
     };
+    xhr.onerror = function () {
+        console.error('Greška kod slanja datoteke');
+    };
     xhr.send(formData);
 }

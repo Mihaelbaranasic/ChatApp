@@ -60,6 +60,9 @@ server.get('/baza/datoteke/:posiljatelj/:primatelj', restDatoteka.dajDatoteke);
 server.post('/baza/datoteke', restDatoteka.posaljiDatoteku);
 
 
+server.get('/baza/zaprimljene/:korime', restDatoteka.dajZaprimljeneDatoteke);
+
+
 const httpServer = http.createServer(server);
 const wss = new WebSocket.Server({ server: httpServer });
 

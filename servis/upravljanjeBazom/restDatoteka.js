@@ -3,34 +3,37 @@ const path = require('path');
 const multer = require('multer');
 const DatotekaDAO = require('./datotekaDAO');
 
-const upload = multer({ dest: 'uploads/' });
-
-exports.posaljiDatoteku = async (zahtjev, odgovor) => {
-    try {
-        upload.single('datoteka')(zahtjev, odgovor, async (err) => {
-            if (err) {
-                return odgovor.status(500).json({ greska: "Greška pri uploadu datoteke!" });
-            }
-
-            if (!zahtjev.file) {
-                return odgovor.status(400).json({ greska: "Nijedna datoteka nije odabrana!" });
-            }
-
-            let { posiljatelj, primatelj } = zahtjev.body;
-            let datoteka = zahtjev.file;
-
-            let novaPutanja = path.join('uploads', datoteka.originalname);
-            fs.renameSync(datoteka.path, novaPutanja);
-
-            let ddao = new DatotekaDAO();
-            await ddao.posaljiDatoteku(posiljatelj, primatelj, datoteka.originalname, novaPutanja);
-
-            odgovor.status(201).json({ putanja: novaPutanja });
-        });
-    } catch (error) {
-        odgovor.status(500).json({ greska: "Greška pri slanju datoteke!" });
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, './uploads/');
+    },
+    filename: (req, file, cb) => {
+        const originalName = file.originalname;
+        const fileExt = path.extname(originalName);
+        const baseName = path.basename(originalName, fileExt);
+        const timestamp = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
+        const newFilename = `${baseName}-${timestamp.replace(/:/g, '-')}${fileExt}`;
+        cb(null, newFilename);
     }
-};
+});
+
+const upload = multer({ storage: storage });
+
+exports.posaljiDatoteku = [upload.single('datoteka'), async (req, res) => {
+    let posiljatelj = req.body.posiljatelj;
+    let primatelj = req.body.primatelj;
+    let naziv = req.file.filename;
+    let putanja = req.file.path;
+
+    let ddao = new DatotekaDAO();
+    try {
+        await ddao.posaljiDatoteku(naziv, putanja, posiljatelj, primatelj);
+        res.status(201).json({ message: 'Datoteka poslana' });
+    } catch (error) {
+        console.error('Greška pri slanju datoteke:', error);
+        res.status(500).json({ error: 'Greška pri slanju datoteke' });
+    }
+}];
 
 exports.dajDatoteke = async (zahtjev, odgovor) => {
     let { posiljatelj, primatelj } = zahtjev.params;
@@ -40,5 +43,16 @@ exports.dajDatoteke = async (zahtjev, odgovor) => {
         odgovor.status(200).json(datoteke);
     } catch (error) {
         odgovor.status(500).json({ greska: "Greška pri dohvaćanju datoteka!" });
+    }
+};
+
+exports.dajZaprimljeneDatoteke = async function (zahtjev, odgovor) {
+    let korime = zahtjev.params.korime;
+    let ddao = new DatotekaDAO();
+    try {
+        let datoteke = await ddao.dajZaprimljeneDatoteke(korime);
+        odgovor.status(200).json(datoteke);
+    } catch (error) {
+        odgovor.status(500).json({ greska: "Greška pri dohvaćanju zaprimljenih datoteka!" });
     }
 };
