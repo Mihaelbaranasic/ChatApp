@@ -127,3 +127,25 @@ exports.blokirajKorisnika = async (zahtjev, odgovor) => {
         odgovor.status(500).send({ greska: "Greška pri blokiranju korisnika!" });
     }
 };
+
+exports.dajBlokirane = async (zahtjev, odgovor) => {
+    let korime = zahtjev.params.korime;
+    try {
+        let kdao = new KorisnikDAO();
+        let blokiraniKorisnici = await kdao.dajBlokirane(korime);
+        odgovor.status(200).json(blokiraniKorisnici);
+    } catch (error) {
+        odgovor.status(500).json({ greska: "Greška pri dohvaćanju blokiranih korisnika!" });
+    }
+};
+
+exports.odblokirajKorisnika = async (zahtjev, odgovor) => {
+    let { korime, blokiraniKorime } = zahtjev.body;
+    try {
+        let kdao = new KorisnikDAO();
+        await kdao.odblokirajKorisnika(korime, blokiraniKorime);
+        odgovor.status(200).send({ opis: "Korisnik odblokiran!" });
+    } catch (error) {
+        odgovor.status(500).send({ greska: "Greška pri odblokiranju korisnika!" });
+    }
+};

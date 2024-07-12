@@ -7,14 +7,34 @@ class KontaktDAO {
 	}
 
 	dajSve = async function (korime) {
-	this.baza.spojiSeNaBazu();
-	let sql = `SELECT k.id, k.korime, k.korisnik_id, u.korime AS kontakt_korime 
-	FROM kontakt k 
-	JOIN korisnik u ON k.korisnik_id = u.id
-	WHERE k.korime = ?`;
-	var podaci = await this.baza.izvrsiUpit(sql, [korime]);
-	this.baza.zatvoriVezu();
-	return podaci;
+		this.baza.spojiSeNaBazu();
+		let sql = `
+			SELECT k.id, k.korime, k.korisnik_id, u.korime AS kontakt_korime
+			FROM kontakt k
+			JOIN korisnik u ON k.korisnik_id = u.id
+			WHERE k.korime = ?
+			AND k.korisnik_id NOT IN (
+				SELECT blokiran_korisnik_id
+				FROM blokiranKorisnik
+				WHERE korisnik_id = (
+					SELECT id
+					FROM korisnik
+					WHERE korime = ?
+				)
+			)
+			AND k.korisnik_id NOT IN (
+				SELECT korisnik_id
+				FROM blokiranKorisnik
+				WHERE blokiran_korisnik_id = (
+					SELECT id
+					FROM korisnik
+					WHERE korime = ?
+				)
+			)
+		`;
+		var podaci = await this.baza.izvrsiUpit(sql, [korime, korime, korime]);
+		this.baza.zatvoriVezu();
+		return podaci;
 	};
 
 	daj = async function (korime) {

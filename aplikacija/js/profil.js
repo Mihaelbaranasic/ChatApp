@@ -1,6 +1,7 @@
 window.addEventListener('load', async () => {
     await ucitajPostavkeObavijesti();
     PromjenaObavijesti();
+    await prikaziBlokiraneKorisnike();
     document.getElementById('delete-profile').addEventListener('click', obrisiProfil);
 });
 
@@ -71,5 +72,49 @@ async function obrisiProfil() {
         } else {
             console.error("Greška pri brisanju profila!");
         }
+    }
+}
+
+async function prikaziBlokiraneKorisnike() {
+    let korime = document.getElementById('korime').innerText;
+    let odgovor = await fetch(`/baza/korisnici/${korime}/blokirani`);
+    if (odgovor.status == 200) {
+        let blokiraniKorisnici = await odgovor.json();
+        let listaBlokiranih = document.getElementById('blokiraniKorisnici');
+        listaBlokiranih.innerHTML = '';
+        for (let korisnik of blokiraniKorisnici) {
+            let li = document.createElement('li');
+            li.innerText = korisnik.korime;
+            let button = document.createElement('button');
+            button.innerText = 'Odblokiraj';
+            button.addEventListener('click', () => odblokirajKorisnika(korisnik.korime));
+            li.appendChild(button);
+            listaBlokiranih.appendChild(li);
+        }
+    } else {
+        console.error("Greška pri dohvaćanju blokiranih korisnika!");
+    }
+}
+
+async function odblokirajKorisnika(blokiraniKorime) {
+    let korime = document.getElementById('korime').innerText;
+    let potvrda = confirm(`Jeste li sigurni da želite odblokirati korisnika ${blokiraniKorime}?`);
+    if (potvrda) {
+        let parametri = {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({korime: korime, blokiraniKorime: blokiraniKorime})
+        };
+        fetch('/baza/odblokiraj', parametri)
+        .then(response => {
+            if (response.status == 200) {
+                alert("Korisnik je uspješno odblokiran.");
+                prikaziBlokiraneKorisnike();
+            } else {
+                console.error("Greška pri odblokiranju korisnika!");
+            }
+        });
     }
 }

@@ -46,6 +46,9 @@ server.post('/baza/korisnici/:korime/prijava', restKorisnik.getKorisnikPrijava);
 
 server.get('/baza/nisuKontakti/:korime', restKorisnik.getNisuKontakti);
 server.post('/baza/blokiraj', restKorisnik.blokirajKorisnika);
+server.delete('/baza/odblokiraj', restKorisnik.odblokirajKorisnika);
+server.get('/baza/korisnici/:korime/blokirani', restKorisnik.dajBlokirane);
+
 
 server.get('/baza/kontakti/:korime', restKontakt.getKontakti);
 server.post('/baza/kontakti/:korime', restKontakt.postKontakti);

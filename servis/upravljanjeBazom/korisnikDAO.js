@@ -58,11 +58,38 @@ class KorisnikDAO {
 	}
 	dajSveKojiNisuKontakti = async function (korime) {
 		this.baza.spojiSeNaBazu();
-		let sql = `SELECT * FROM korisnik WHERE uloge_id = 3 AND korime!=? AND id NOT IN (SELECT korisnik_id FROM kontakt WHERE korime = ?)`;
-		let podaci = await this.baza.izvrsiUpit(sql, [korime, korime]);
+		let sql = `
+			SELECT * 
+			FROM korisnik 
+			WHERE uloge_id = 3 
+			AND korime != ? 
+			AND id NOT IN (
+				SELECT korisnik_id 
+				FROM kontakt 
+				WHERE korime = ? 
+			)
+			AND id NOT IN (
+				SELECT blokiran_korisnik_id 
+				FROM blokiranKorisnik 
+				WHERE korisnik_id = (
+					SELECT id 
+					FROM korisnik 
+					WHERE korime = ?
+				)
+			)
+			AND id NOT IN (
+				SELECT korisnik_id 
+				FROM blokiranKorisnik 
+				WHERE blokiran_korisnik_id = (
+					SELECT id 
+					FROM korisnik 
+					WHERE korime = ?
+				)
+			)`;
+		let podaci = await this.baza.izvrsiUpit(sql, [korime, korime, korime, korime]);
 		this.baza.zatvoriVezu();
 		return podaci;
-	  }
+	};
 	  
 	  blokirajKorisnika = async function (korime, blokiraniKorime) {
 		this.baza.spojiSeNaBazu();
@@ -70,6 +97,29 @@ class KorisnikDAO {
 				   SELECT k1.id, k2.id 
 				   FROM korisnik k1, korisnik k2 
 				   WHERE k1.korime = ? AND k2.korime = ?`;
+		await this.baza.izvrsiUpit(sql, [korime, blokiraniKorime]);
+		this.baza.zatvoriVezu();
+		return true;
+	}
+
+	dajBlokirane = async function (korime) {
+		this.baza.spojiSeNaBazu();
+		let sql = `
+			SELECT k2.korime 
+			FROM blokiranKorisnik bk 
+			JOIN korisnik k1 ON k1.id = bk.korisnik_id 
+			JOIN korisnik k2 ON k2.id = bk.blokiran_korisnik_id 
+			WHERE k1.korime = ?`;
+		let podaci = await this.baza.izvrsiUpit(sql, [korime]);
+		this.baza.zatvoriVezu();
+		return podaci;
+	};
+
+	odblokirajKorisnika = async function (korime, blokiraniKorime) {
+		this.baza.spojiSeNaBazu();
+		let sql = `DELETE FROM blokiranKorisnik 
+				   WHERE korisnik_id = (SELECT id FROM korisnik WHERE korime = ?) 
+				   AND blokiran_korisnik_id = (SELECT id FROM korisnik WHERE korime = ?)`;
 		await this.baza.izvrsiUpit(sql, [korime, blokiraniKorime]);
 		this.baza.zatvoriVezu();
 		return true;
