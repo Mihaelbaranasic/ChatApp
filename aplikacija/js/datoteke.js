@@ -2,6 +2,7 @@ async function posaljiDatoteku() {
     let korime = document.getElementById('korime').innerHTML;
     let fileInput = document.getElementById('datoteka');
     let file = fileInput.files[0];
+    if(file == undefined) return;
     let formData = new FormData();
     formData.append('datoteka', file);
     formData.append('posiljatelj', korime);

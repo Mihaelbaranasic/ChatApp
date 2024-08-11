@@ -12,7 +12,8 @@ const storage = multer.diskStorage({
         const fileExt = path.extname(originalName);
         const baseName = path.basename(originalName, fileExt);
         const timestamp = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '');
-        const newFilename = `${baseName}-${timestamp.replace(/:/g, '-')}${fileExt}`;
+        const posiljatelj = req.body.posiljatelj; // Dohvati korisničko ime pošiljatelja
+        const newFilename = `${baseName}-${posiljatelj}-${timestamp.replace(/:/g, '-')}${fileExt}`;
         cb(null, newFilename);
     }
 });

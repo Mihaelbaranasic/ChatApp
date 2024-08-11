@@ -33,7 +33,18 @@ function prikaziPorukeIDatoteke(poruke, datoteke) {
             let procitano = item.procitano ? "✓" : "";
             html += `<li onmouseover='oznaciPorukuProcitanom(${item.id})'><small>${item.korime}</small><br>${item.sadrzaj}<br><small>${item.vrijemeSlanja}</small> ${procitano}</li>`;
         } else if (item.naziv) {
-            html += `<li><small>${item.korime}</small><br><a href="${item.putanja}" target="_blank">${item.naziv}</a><br><small>${item.vrijemePrimitka}</small></li>`;
+            let fileExt = item.naziv.split('.').pop().toLowerCase();
+            let fileHTML = "";
+            if (['jpg', 'jpeg', 'png', 'gif'].includes(fileExt)) {
+                fileHTML = `<img src="${item.putanja}" alt="${item.naziv}" style="max-width: 300px;"/>`;
+            } else if (['mp3', 'wav', 'ogg'].includes(fileExt)) {
+                fileHTML = `<audio controls><source src="${item.putanja}" type="audio/${fileExt}">Your browser does not support the audio element.</audio>`;
+            } else if (['mp4', 'webm', 'ogg'].includes(fileExt)) {
+                fileHTML = `<video controls style="max-width: 300px;"><source src="${item.putanja}" type="video/${fileExt}">Your browser does not support the video element.</video>`;
+            } else {
+                fileHTML = `<a href="${item.putanja}" target="_blank">${item.naziv}</a>`;
+            }
+            html += `<li><small>${item.korime}</small><br>${fileHTML}<br><small>${item.vrijemePrimitka}</small></li>`;
         }
     }
     popisPorukaHTML.innerHTML = html;
@@ -42,6 +53,7 @@ function prikaziPorukeIDatoteke(poruke, datoteke) {
 async function posaljiPoruku() {
     let korime = document.getElementById('korime').innerHTML;
     let sadrzaj = document.getElementById('novaPoruka').value;
+    if(sadrzaj == '') return;
     document.getElementById('novaPoruka').value = '';
     await ucitajPoruke();
     ws.send(JSON.stringify({ type: 'new_message', posiljatelj: korime, primatelj: trenutniKontakt, sadrzaj }));

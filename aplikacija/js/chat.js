@@ -11,7 +11,7 @@ function postaviWebSocket() {
             if (data.posiljatelj === trenutniKontakt || data.primatelj === trenutniKontakt) {
                 await ucitajPoruke();
             }
-            prikaziObavijest(data);
+            prikaziObavijest(data.posiljatelj, data.sadrzaj, data.primatelj);
         }
         if (data.type === 'new_file') {
             if (data.posiljatelj === trenutniKontakt || data.primatelj === trenutniKontakt) {
@@ -22,16 +22,18 @@ function postaviWebSocket() {
     ws.onclose = () => console.log('WebSocket veza zatvorena');
 }
 
-async function prikaziObavijest(data) {
+async function prikaziObavijest(posiljatelj, sadrzaj, primatelj) {
     let korime = document.getElementById('korime').innerText;
     let odgovor = await fetch(`/baza/korisnici/${korime}`);
     if (odgovor.status == 200) {
         let korisnik = await odgovor.json();
-        if (korisnik.notif_popup) {
-            prikaziPopup(data.posiljatelj, data.sadrzaj);
-        }
-        if (korisnik.notif_dashboard) {
-            azurirajDashboard(data.posiljatelj, data.sadrzaj);
+        if (korisnik.korime === primatelj) {
+            if (korisnik.notif_popup) {
+                prikaziPopup(posiljatelj, sadrzaj);
+            }
+            if (korisnik.notif_dashboard) {
+                azurirajDashboard(posiljatelj, sadrzaj);
+            }
         }
     } else {
         console.error('Greška pri dohvaćanju postavki obavijesti');
