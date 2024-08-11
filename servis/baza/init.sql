@@ -89,3 +89,18 @@ INSERT INTO uloga (naziv) VALUES ('administrator'), ('moderator'), ('registriran
 -- DROP TABLE dnevnik;
 -- DROP TABLE kontakt;
 -- DROP TABLE korisnik;
+
+DELETE FROM korisnik WHERE korime == 'admin';
+
+INSERT INTO korisnik (
+    korime, lozinka, email, punoIme, uloge_id, notif_dashboard, notif_popup, notif_email
+) VALUES (
+    'admin', 
+    'd82494f05d6917ba02f7aaa29689ccb444bb73f20380876cb05d1f37537b7892', 
+    'mihabarni123@gmail.com', 
+    'Administrator', 
+    1, 
+    0, 
+    0, 
+    0
+);

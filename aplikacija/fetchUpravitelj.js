@@ -54,16 +54,40 @@ class FetchUpravitelj {
 		let stranica = await ucitajStranicu("prijava", greska);
 		odgovor.send(stranica);
 	};
+
+	dnevnik = async (zahtjev, odgovor) => {
+		let korisnik = zahtjev.session.korisnik;
+		if (!korisnik) {
+			odgovor.redirect('/prijava');
+			return;
+		}
+		
+		if(korisnik.uloge_id != 1){
+			odgovor.redirect('/glavna');
+			return;
+		}
+	
+		let stranica = await ucitajStranicu("dnevnik");
+		stranica = stranica.replace("#korime#", korisnik.korime);
+		odgovor.send(stranica);
+	};
+	
 	glavna = async (zahtjev, odgovor) => {
 		let korisnik = zahtjev.session.korisnik;
 		if (!korisnik) {
-		  odgovor.redirect('/prijava');
-		  return;
+			odgovor.redirect('/prijava');
+			return;
 		}
+		
+		if(korisnik.uloge_id === 1){
+			odgovor.redirect('/dnevnik');
+			return;
+		}
+	
 		let stranica = await ucitajStranicu("glavna");
 		stranica = stranica.replace("#korime#", korisnik.korime);
 		odgovor.send(stranica);
-	  };
+	};
 	  
 	profil = async (zahtjev, odgovor) =>{
 		let korisnik = zahtjev.session.korisnik;
@@ -117,12 +141,17 @@ class FetchUpravitelj {
 module.exports = FetchUpravitelj;
 
 
-async function ucitajStranicu(nazivStranice, poruka = "") {
-	let stranice = [ucitajHTML(nazivStranice), ucitajHTML("navigacija")];
-	let [stranica, nav] = await Promise.all(stranice);
-	stranica = stranica.replace("#navigacija#", nav);
-	stranica = stranica.replace("#poruka#", poruka);
-	return stranica;
+async function ucitajStranicu(nazivStranice, poruka = "", korisnik = null) {
+    let stranice = [ucitajHTML(nazivStranice)];
+    if (korisnik && korisnik.uloga === 'admin') {
+        stranice.push(ucitajHTML("navigacija-admin"));
+    } else {
+        stranice.push(ucitajHTML("navigacija"));
+    }
+    let [stranica, nav] = await Promise.all(stranice);
+    stranica = stranica.replace("#navigacija#", nav);
+    stranica = stranica.replace("#poruka#", poruka);
+    return stranica;
 }
 
 function ucitajHTML(htmlStranica) {
