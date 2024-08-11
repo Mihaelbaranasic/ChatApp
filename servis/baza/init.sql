@@ -14,7 +14,7 @@ CREATE TABLE "korisnik"(
   "uloge_id" INTEGER,
   "notif_dashboard" INTEGER DEFAULT 0,
   "notif_popup" INTEGER DEFAULT 0,
-  "notif_email" INTEGER DEFAULT 0,
+  "notif_email" INTEGER DEFAULT 0,http://localhost:3000/prijava
   CONSTRAINT "korime_UNIQUE" UNIQUE("korime"),
   CONSTRAINT "fk_korisnici_uloge1" FOREIGN KEY("uloge_id") REFERENCES "uloga"("id")
 );
