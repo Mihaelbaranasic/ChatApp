@@ -6,6 +6,7 @@ const restKorisnik = require('./servis/upravljanjeBazom/restKorisnik');
 const restKontakt = require('./servis/upravljanjeBazom/restKontakt');
 const restPoruka = require('./servis/upravljanjeBazom/restPoruke');
 const restDatoteka = require('./servis/upravljanjeBazom/restDatoteka');
+const restDnevnik = require('./servis/upravljanjeBazom/restDnevnik');
 const http = require('http');
 
 const server = express();

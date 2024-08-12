@@ -27,10 +27,10 @@ class DnevnikDAO {
 
 	dodaj = async function (korisnik, aktivnost) {
 		this.baza.spojiSeNaBazu();
-		console.log(korisnik)
+		console.log("Evo korisnika: ", korisnik)
 		let sql = `INSERT INTO dnevnik (aktivnost, vrijeme, korisnik_id) VALUES (?, ?, (SELECT id FROM korisnik WHERE korime = ?));`;
 		let trenutniDatum = new Date().toISOString();
-        let podaci = [aktivnost, trenutniDatum, korisnik.korime]
+        let podaci = [aktivnost, trenutniDatum, korisnik]
 		await this.baza.izvrsiUpit(sql,podaci);
 		this.baza.zatvoriVezu();
 		return true;
