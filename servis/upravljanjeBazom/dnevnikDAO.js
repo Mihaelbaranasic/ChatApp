@@ -1,5 +1,16 @@
 const Baza = require("./baza.js");
 
+const formatirajDatumZaSQLite = (datum) => {
+    const date = new Date(datum);
+    const godina = date.getFullYear();
+    const mjesec = String(date.getMonth() + 1).padStart(2, '0');
+    const dan = String(date.getDate()).padStart(2, '0');
+    const sati = String(date.getHours()).padStart(2, '0');
+    const minuti = String(date.getMinutes()).padStart(2, '0');
+    const sekunde = String(date.getSeconds()).padStart(2, '0');
+    return `${godina}-${mjesec}-${dan} ${sati}:${minuti}:${sekunde}`;
+}
+
 class DnevnikDAO {
 
 	constructor() {
@@ -8,7 +19,11 @@ class DnevnikDAO {
 
 	dajSve = async function () {
 		this.baza.spojiSeNaBazu();
-		let sql = "SELECT * FROM dnevnik ORDER BY id DESC";
+		let sql = `
+			SELECT d.*, k.korime AS korisnicko_ime
+			FROM dnevnik d
+		 JOIN korisnik k ON d.korisnik_id = k.id
+		 ORDER BY d.id DESC`;
 		var podaci = await this.baza.izvrsiUpit(sql, []);
 		this.baza.zatvoriVezu();
 		return podaci;
@@ -26,14 +41,14 @@ class DnevnikDAO {
 	}
 
 	dodaj = async function (korisnik, aktivnost) {
-		this.baza.spojiSeNaBazu();
-		let sql = `INSERT INTO dnevnik (aktivnost, vrijeme, korisnik_id) VALUES (?, ?, (SELECT id FROM korisnik WHERE korime = ?));`;
-		let trenutniDatum = new Date().toISOString();
+        this.baza.spojiSeNaBazu();
+        let sql = `INSERT INTO dnevnik (aktivnost, vrijeme, korisnik_id) VALUES (?, ?, (SELECT id FROM korisnik WHERE korime = ?));`;
+        let trenutniDatum = formatirajDatumZaSQLite(new Date());
         let podaci = [aktivnost, trenutniDatum, korisnik]
-		await this.baza.izvrsiUpit(sql,podaci);
-		this.baza.zatvoriVezu();
-		return true;
-	}
+        await this.baza.izvrsiUpit(sql, podaci);
+        this.baza.zatvoriVezu();
+        return true;
+    }
 
 	obrisi = async function (korime) {
 		this.baza.spojiSeNaBazu();
