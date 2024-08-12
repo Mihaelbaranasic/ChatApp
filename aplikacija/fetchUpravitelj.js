@@ -18,7 +18,7 @@ class FetchUpravitelj {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    aktivnost: 'registracija',
+                    aktivnost: 'Registracija',
                     korisnik: zahtjev.body.korime
                 })
             });
@@ -42,7 +42,7 @@ class FetchUpravitelj {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({
-					aktivnost: 'odjava',
+					aktivnost: 'Odjava',
 					korisnik: korisnik.korime
 				})
 			});
@@ -68,7 +68,7 @@ class FetchUpravitelj {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    aktivnost: 'prijava',
+                    aktivnost: 'Prijava',
                     korisnik: korime
                 	})
             	});
