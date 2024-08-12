@@ -104,3 +104,4 @@ INSERT INTO korisnik (
     0, 
     0
 );
+
