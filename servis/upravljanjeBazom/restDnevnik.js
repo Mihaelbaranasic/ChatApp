@@ -42,7 +42,7 @@ exports.postDnevnik = function (zahtjev, odgovor) {
         odgovor.send(JSON.stringify({ greska: "Greška pri dodavanju zapisa u dnevnik." }));
     });
 };
-//hej
+
 exports.deleteDnevnikKorisnika = function (zahtjev, odgovor) {
     odgovor.type("application/json");
     let ddao = new DnevnikDAO();

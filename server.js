@@ -22,6 +22,7 @@ pokreniServer();
 pripremiPutanjeKorisnik();
 pripremiPutanjeKontakt();
 pripremiPutanjePorukeIDatoteke();
+pripremiPutanjeDnevnik();
 
 function pokreniServer(){
   server.use(express.urlencoded({ extended: true }));
@@ -75,6 +76,13 @@ function pripremiPutanjePorukeIDatoteke(){
   server.get('/baza/zaprimljene/:korime', restDatoteka.dajZaprimljeneDatoteke);
 
   server.get('/baza/statistika/:korime', restKorisnik.dajStatistike);
+}
+
+function pripremiPutanjeDnevnik() {
+  server.get('/baza/dnevnik', restDnevnik.getDnevnik);
+  server.get('/baza/dnevnik/:korime', restDnevnik.getDnevnikKorisnika);
+  server.post('/baza/dnevnik', restDnevnik.postDnevnik);
+  server.delete('/baza/dnevnik/:korime', restDnevnik.deleteDnevnikKorisnika);
 }
 
 const httpServer = http.createServer(server);
