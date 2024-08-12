@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil korisnika</title>
+    <link rel="stylesheet" href="/css/stil.css">
+</head>
+<body>
+    <header>
+        #navigacija#
+    </header>
+
+    <main>
+        <div id="korisnicke-informacije">
+            <span id="korime">#korime#</span>
+            <p id="poruka"></p>
+            <form id="profil">
+                <div>
+                    <h3>Profil</h3>
+                    <label>Puno ime: <input type="text" id="punoIme"></label>
+                    <label>Email: <input type="email" id="email"></label>
+                </div>
+                <div>
+                    <h3>Obavijesti</h3>
+                    <label><input type="checkbox" id="notif-dashboard"> Dashboard</label>
+                    <label><input type="checkbox" id="notif-popup"> Pop-up</label>
+                    <label><input type="checkbox" id="notif-email"> Email</label>
+                    <button type="submit" id="save-notifications">Spremi postavke</button>
+                </div>
+            </form>
+            <button type="button" id="delete-profile">Obriši profil</button>
+
+            <h3>Blokirani korisnici</h3>
+        <ul id="blokiraniKorisnici"></ul>
+
+        <h3>Zaprimljene datoteke</h3>
+        <input type="text" id="pretraga-datoteka" placeholder="Pretraži datoteke...">
+        <select id="sortiraj-datoteke">
+            <option value="naziv">Naziv</option>
+            <option value="korisnik">Korisnik</option>
+        </select>
+        <ul id="lista-datoteka"></ul>
+        </div>
+    </main>
+
+    <script src="/js/profil.js"></script>
+</body>
+</html>

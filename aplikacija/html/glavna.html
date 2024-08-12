@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatApp</title>
+    <link rel="stylesheet" href="/css/stil.css">
+</head>
+<body>
+    <header>
+        #navigacija#
+    </header>
+
+    <main>
+        <div id="korisnicke-informacije">
+            <span id="korime">#korime#</span>
+        </div>
+
+        <div id="dashboard-obavijest"></div>
+
+        <div id="korisnici">
+            <h2>Korisnici</h2>
+            <input type="text" id="pretraga-korisnici" placeholder="Pretraži korisnike...">
+            <div class="scrollable" id="lista-korisnika">
+                <div id="kontakti">
+                    <h3>Kontakti (<span id="broj-kontakata">0</span>)</h3>
+                    <ul id="listaKontakata">
+                    </ul>
+                </div>
+                <div id="svi-korisnici">
+                    <h3>Dodaj korisnike</h3>
+                    <ul id="sviKorisnici">
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div id="razgovor" style="display: none;" class="scrollable">
+            <h3>Razgovor s <span id="razgovor-korime"></span></h3>
+            <ul id="listaPoruka"></ul>
+            <input type="file" id="datoteka">
+            <textarea id="novaPoruka" placeholder="Upiši poruku..."></textarea>
+            <button type="submit" id="posaljiPoruku">Pošalji poruku</button>
+            <button type="submit" id="posaljiDatoteku">Pošalji datoteku</button>
+            <button type="submit" id="blokiraj">Blokiraj korisnika</button>
+        </div>
+    </main>
+
+    <script src="/js/kontakti.js"></script>
+    <script src="/js/datoteke.js"></script>
+    <script src="/js/poruke.js"></script>
+    <script src="/js/chat.js"></script>
+</body>
+</html>
