@@ -74,3 +74,15 @@ exports.getPorukeVremenskoRazdoblje = function (zahtjev, odgovor) {
         odgovor.send(JSON.stringify({ greska: "Greška pri dohvaćanju poruka po datumima." }));
     });
 };
+
+exports.getDatotekeVremenskoRazdoblje = function (zahtjev, odgovor) {
+    odgovor.type("application/json");
+    let ddao = new DnevnikDAO();
+    ddao.dajDatotekePoDatumima().then((rezultat) => {
+        odgovor.status(200);
+        odgovor.send(JSON.stringify(rezultat));
+    }).catch((error) => {
+        odgovor.status(500);
+        odgovor.send(JSON.stringify({ greska: "Greška pri dohvaćanju datoteka po datumima." }));
+    });
+};

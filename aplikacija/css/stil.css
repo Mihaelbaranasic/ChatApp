@@ -105,9 +105,9 @@ li:hover {
     color: #dc3545;
 }
 
-#grafPorukaPoDanima {
-    width: 80%;
+#grafPorukaPoDanima, #grafDatotekaPoDanima {
+    width: 100%;
     height: 400px;
+    max-height: 500px; 
     margin: auto;
-    display: block;
 }

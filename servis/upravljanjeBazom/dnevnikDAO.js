@@ -76,6 +76,26 @@ class DnevnikDAO {
 		this.baza.zatvoriVezu();
 		return podaci;
 	}
+
+	dajDatotekePoDatumima = async function () {
+        this.baza.spojiSeNaBazu();
+        let sql = `
+            SELECT 
+                strftime('%Y-%m-%d %H:00:00', vrijeme) AS datum, 
+                COUNT(*) AS broj_datoteka
+            FROM 
+                dnevnik
+            WHERE 
+                aktivnost LIKE '%datoteka%'
+            GROUP BY 
+                datum
+            ORDER BY 
+                datum ASC;
+        `;
+        var podaci = await this.baza.izvrsiUpit(sql, []);
+        this.baza.zatvoriVezu();
+        return podaci;
+    }
 }
 
 module.exports = DnevnikDAO;

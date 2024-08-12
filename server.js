@@ -89,6 +89,7 @@ function pripremiPutanjeDnevnik() {
 
   server.get('/baza/admin-statistika', restStatistika.getStatistika);
   server.get('/baza/poruke_vremensko_razdoblje', restDnevnik.getPorukeVremenskoRazdoblje);
+  server.get('/baza/datoteke_vremensko_razdoblje', restDnevnik.getDatotekeVremenskoRazdoblje);
 }
 
 const httpServer = http.createServer(server);
