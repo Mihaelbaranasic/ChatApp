@@ -96,7 +96,7 @@ class FetchUpravitelj {
 			return;
 		}
 	
-		let stranica = await ucitajStranicu("dnevnik");
+		let stranica = await ucitajStranicu("dnevnik", '', korisnik);
 		stranica = stranica.replace("#korime#", korisnik.korime);
 		odgovor.send(stranica);
 	};
@@ -172,7 +172,7 @@ module.exports = FetchUpravitelj;
 
 async function ucitajStranicu(nazivStranice, poruka = "", korisnik = null) {
     let stranice = [ucitajHTML(nazivStranice)];
-    if (korisnik && korisnik.uloga === 'admin') {
+    if (korisnik && korisnik.uloge_id === 1) {
         stranice.push(ucitajHTML("navigacija-admin"));
     } else {
         stranice.push(ucitajHTML("navigacija"));
