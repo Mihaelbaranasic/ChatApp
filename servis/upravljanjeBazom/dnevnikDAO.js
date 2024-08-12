@@ -8,7 +8,7 @@ class DnevnikDAO {
 
 	dajSve = async function () {
 		this.baza.spojiSeNaBazu();
-		let sql = "SELECT * FROM dnevnik";
+		let sql = "SELECT * FROM dnevnik ORDER BY id DESC";
 		var podaci = await this.baza.izvrsiUpit(sql, []);
 		this.baza.zatvoriVezu();
 		return podaci;
@@ -27,7 +27,6 @@ class DnevnikDAO {
 
 	dodaj = async function (korisnik, aktivnost) {
 		this.baza.spojiSeNaBazu();
-		console.log("Evo korisnika: ", korisnik)
 		let sql = `INSERT INTO dnevnik (aktivnost, vrijeme, korisnik_id) VALUES (?, ?, (SELECT id FROM korisnik WHERE korime = ?));`;
 		let trenutniDatum = new Date().toISOString();
         let podaci = [aktivnost, trenutniDatum, korisnik]
