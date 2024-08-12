@@ -104,3 +104,10 @@ li:hover {
     cursor: pointer;
     color: #dc3545;
 }
+
+#grafPorukaPoDanima {
+    width: 80%;
+    height: 400px;
+    margin: auto;
+    display: block;
+}

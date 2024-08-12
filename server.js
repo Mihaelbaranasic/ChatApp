@@ -88,7 +88,7 @@ function pripremiPutanjeDnevnik() {
   server.delete('/baza/dnevnik/:korime', restDnevnik.deleteDnevnikKorisnika);
 
   server.get('/baza/admin-statistika', restStatistika.getStatistika);
-  server.get('/baza/poruke_vremensko_razdoblje', restStatistika.getPorukeVremenskoRazdoblje);
+  server.get('/baza/poruke_vremensko_razdoblje', restDnevnik.getPorukeVremenskoRazdoblje);
 }
 
 const httpServer = http.createServer(server);

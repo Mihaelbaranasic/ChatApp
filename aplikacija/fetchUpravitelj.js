@@ -183,17 +183,17 @@ class FetchUpravitelj {
 			
 			if (adminStatistikeOdgovor.status === 200) {
 				let adminStatistike = await adminStatistikeOdgovor.json();
-				let stranica = await ucitajStranicu("statistika-admin");
+				let stranica = await ucitajStranicu("statistika-admin","", korisnik);
 				stranica = stranica.replace("#broj-registracija#", adminStatistike.brojRegistracija);
 				stranica = stranica.replace("#broj-korisnika#", adminStatistike.brojKorisnika);
 				odgovor.send(stranica);
 			} else {
 				console.error("Greška pri dohvaćanju admin statistika");
-				odgovor.redirect('/prijava');
+				odgovor.redirect('/odjava');
 			}
 		} catch (error) {
 			console.error("Greška pri dohvaćanju admin statistika:", error);
-			odgovor.redirect('/prijava');
+			odgovor.redirect('/odjava');
 		}
 	};
 	

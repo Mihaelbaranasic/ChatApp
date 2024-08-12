@@ -4,22 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Statistika Admin</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/stil.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
 </head>
 <body>
+    <header>
+        #navigacija#
+    </header>
     <h1>Statistika Admin</h1>
     <div>
         <h2>Broj korisnika</h2>
         <p id="brojKorisnika">#broj-korisnika#</p>
     </div>
     <div>
-        <h2>Broj registracija</h2>
-        <p id="brojRegistracija">#broj-registracija#</p>
-    </div>
-    <div>
         <h2>Poruke po vremenskom razdoblju</h2>
-        <canvas id="porukeVremenskoRazdoblje"></canvas>
+        <canvas id="grafPorukaPoDanima" width="300px"></canvas>
     </div>
 
     <script src="/js/statistikaAdmin.js"></script>

@@ -1,38 +1,49 @@
-document.addEventListener('DOMContentLoaded', async () => {
-    // Dohvati osnovne podatke za prikaz
-    const response = await fetch('/baza/statistika-admin');
-    const data = await response.json();
+async function dohvatiStatistikuPoruka() {
+    const odgovor = await fetch('/baza/poruke_vremensko_razdoblje');
+    const podaci = await odgovor.json();
+    console.log(podaci);
 
-    // Ažuriraj elemente na stranici
-    document.getElementById('brojKorisnika').textContent = data.brojKorisnika;
-    document.getElementById('brojRegistracija').textContent = data.brojRegistracija;
+    const datumi = podaci.map(p => new Date(p.datum));
+    const brojPoruka = podaci.map(p => p.broj_poruka);
 
-    // Dohvati podatke za grafikon
-    const ctx = document.getElementById('porukeVremenskoRazdoblje').getContext('2d');
-    const porukeData = await fetch('/baza/poruke_vremensko_razdoblje');
-    const poruke = await porukeData.json();
-
-    // Kreiraj grafikon
+    const ctx = document.getElementById('grafPorukaPoDanima').getContext('2d');
     new Chart(ctx, {
         type: 'line',
         data: {
-            labels: poruke.labels,
+            labels: datumi,
             datasets: [{
                 label: 'Broj poruka',
-                data: poruke.data,
+                data: brojPoruka,
                 borderColor: 'rgba(75, 192, 192, 1)',
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderWidth: 2,
+                fill: false
             }]
         },
         options: {
             scales: {
                 x: {
-                    beginAtZero: true
+                    type: 'time',
+                    time: {
+                        unit: 'hour',
+                        displayFormats: {
+                            hour: 'HH:mm'
+                        },
+                        tooltipFormat: 'HH:mm'
+                    },
+                    title: {
+                        display: true,
+                        text: 'Vrijeme'
+                    }
                 },
                 y: {
-                    beginAtZero: true
+                    title: {
+                        display: true,
+                        text: 'Broj poruka'
+                    }
                 }
             }
         }
     });
-});
+}
+
+window.onload = dohvatiStatistikuPoruka;
