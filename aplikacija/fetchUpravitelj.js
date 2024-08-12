@@ -166,6 +166,37 @@ class FetchUpravitelj {
 			odgovor.redirect('/prijava');
 		}
 	};
+	statistikaAdmin = async function (zahtjev, odgovor) {
+		let korisnik = zahtjev.session.korisnik;
+		if (!korisnik) {
+			odgovor.redirect('/prijava');
+			return;
+		}
+	
+		if (korisnik.uloge_id !== 1) {
+			odgovor.redirect('/glavna');
+			return;
+		}
+	
+		try {
+			let adminStatistikeOdgovor = await fetch(`http://localhost:${this.port}/baza/admin-statistika`);
+			
+			if (adminStatistikeOdgovor.status === 200) {
+				let adminStatistike = await adminStatistikeOdgovor.json();
+				let stranica = await ucitajStranicu("statistika-admin");
+				stranica = stranica.replace("#broj-registracija#", adminStatistike.brojRegistracija);
+				stranica = stranica.replace("#broj-korisnika#", adminStatistike.brojKorisnika);
+				odgovor.send(stranica);
+			} else {
+				console.error("Greška pri dohvaćanju admin statistika");
+				odgovor.redirect('/prijava');
+			}
+		} catch (error) {
+			console.error("Greška pri dohvaćanju admin statistika:", error);
+			odgovor.redirect('/prijava');
+		}
+	};
+	
 }
 module.exports = FetchUpravitelj;
 

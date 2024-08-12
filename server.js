@@ -7,6 +7,7 @@ const restKontakt = require('./servis/upravljanjeBazom/restKontakt');
 const restPoruka = require('./servis/upravljanjeBazom/restPoruke');
 const restDatoteka = require('./servis/upravljanjeBazom/restDatoteka');
 const restDnevnik = require('./servis/upravljanjeBazom/restDnevnik');
+const restStatistika = require('./servis/upravljanjeBazom/restStatistika');
 const http = require('http');
 
 const server = express();
@@ -41,6 +42,7 @@ function pokreniServer(){
   server.get('/odjava', fetchUpravitelj.odjava.bind(fetchUpravitelj));
   server.get('/profil', fetchUpravitelj.profil.bind(fetchUpravitelj));
   server.get('/statistika', fetchUpravitelj.statistika.bind(fetchUpravitelj));
+  server.get('/statistika-admin', fetchUpravitelj.statistikaAdmin.bind(fetchUpravitelj));
   server.get('/dnevnik', fetchUpravitelj.dnevnik.bind(fetchUpravitelj));
 }
 
@@ -84,6 +86,9 @@ function pripremiPutanjeDnevnik() {
   server.get('/baza/dnevnik/:korime', restDnevnik.getDnevnikKorisnika);
   server.post('/baza/dnevnik', restDnevnik.postDnevnik);
   server.delete('/baza/dnevnik/:korime', restDnevnik.deleteDnevnikKorisnika);
+
+  server.get('/baza/admin-statistika', restStatistika.getStatistika);
+  server.get('/baza/poruke_vremensko_razdoblje', restStatistika.getPorukeVremenskoRazdoblje);
 }
 
 const httpServer = http.createServer(server);
