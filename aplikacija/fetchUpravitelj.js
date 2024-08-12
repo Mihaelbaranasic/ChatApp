@@ -14,6 +14,14 @@ class FetchUpravitelj {
 		if (zahtjev.method == "POST") {
 			let uspjeh = await this.auth.dodajKorisnika(zahtjev.body);
 			if (uspjeh) {
+				await fetch(`http://localhost:${this.port}/baza/dnevnik`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    aktivnost: 'registracija',
+                    korisnik: zahtjev.body.korime
+                })
+            });
 				odgovor.redirect("/prijava");
 				return;
 			} else {
@@ -26,7 +34,20 @@ class FetchUpravitelj {
 	};
 
 	odjava = async function (zahtjev, odgovor) {
+		let korisnik = zahtjev.session.korisnik;
 		zahtjev.session.korisnik = null;
+	
+		if (korisnik) {
+			await fetch(`http://localhost:${this.port}/baza/dnevnik`, {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					aktivnost: 'odjava',
+					korisnik: korisnik.korime
+				})
+			});
+		}
+	
 		odgovor.redirect("/");
 	};
 
@@ -43,6 +64,14 @@ class FetchUpravitelj {
 				korisnik = JSON.parse(korisnik);
 				console.log(korisnik);
 				zahtjev.session.korisnik = korisnik;
+				let zapis = await fetch(`http://localhost:${this.port}/baza/dnevnik`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    aktivnost: 'prijava',
+                    korisnik: korime
+                	})
+            	});
 				odgovor.redirect("/");
 				return;
 			} else {
