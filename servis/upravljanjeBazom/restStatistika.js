@@ -11,10 +11,10 @@ exports.getStatistika = async (req, res) => {
         const korisnici = await korisnikDAO.dajSve();
         const brojKorisnika = korisnici.length;
         
-        const poruke = await porukaDAO.dajPoruke();
+        const poruke = await porukaDAO.dajSve();
         const brojPoruka = poruke.length;
         
-        const datoteke = await datotekaDAO.dajDatoteke();
+        const datoteke = await datotekaDAO.dajSve();
         const brojDatoteka = datoteke.length;
 
         const stat = {

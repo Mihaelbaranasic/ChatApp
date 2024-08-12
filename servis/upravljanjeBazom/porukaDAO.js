@@ -5,6 +5,14 @@ class PorukaDAO {
 		this.baza = new Baza("./servis/baza/ChatApp_baza.sqlite");
     }
 
+    async dajSve(){
+        this.baza.spojiSeNaBazu();
+        let sql = `SELECT * FROM poruka`;
+        let podaci = await this.baza.izvrsiUpit(sql, []);
+        this.baza.zatvoriVezu();
+        return podaci;
+    }
+
     async dajPoruke(posiljatelj, primatelj) {
         this.baza.spojiSeNaBazu();
         let sql = `SELECT p.*, k.korime

@@ -184,8 +184,9 @@ class FetchUpravitelj {
 			if (adminStatistikeOdgovor.status === 200) {
 				let adminStatistike = await adminStatistikeOdgovor.json();
 				let stranica = await ucitajStranicu("statistika-admin","", korisnik);
-				stranica = stranica.replace("#broj-registracija#", adminStatistike.brojRegistracija);
 				stranica = stranica.replace("#broj-korisnika#", adminStatistike.brojKorisnika);
+				stranica = stranica.replace("#broj-poruka#", adminStatistike.brojPoruka);
+				stranica = stranica.replace("#broj-datoteka#", adminStatistike.brojDatoteka);
 				odgovor.send(stranica);
 			} else {
 				console.error("Greška pri dohvaćanju admin statistika");

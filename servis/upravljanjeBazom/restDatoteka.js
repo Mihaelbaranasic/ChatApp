@@ -20,6 +20,20 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
+exports.getDatoteke = function (zahtjev, odgovor) {
+	odgovor.type("application/json");
+	if(!zahtjev.session.korisnik){
+		odgovor.status(403);
+		odgovor.send({ opis: "Zabranjen pristup!" });
+	}else{
+		let ddao = new DatotekaDAO();
+		ddao.dajSve().then((datoteke) => {
+			odgovor.status(200);
+			odgovor.send(JSON.stringify(datoteke));
+		});
+	}
+};
+
 exports.posaljiDatoteku = [upload.single('datoteka'), async (req, res) => {
     let posiljatelj = req.body.posiljatelj;
     let primatelj = req.body.primatelj;

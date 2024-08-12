@@ -71,9 +71,11 @@ function pripremiPutanjeKontakt(){
 function pripremiPutanjePorukeIDatoteke(){
   server.get('/baza/poruke/:posiljatelj/:primatelj', restPoruka.dajPoruke);
   server.post('/baza/poruke', restPoruka.posaljiPoruku);
+  server.get('/baza/poruke', restPoruka.dajSvePoruke);
 
   server.get('/baza/datoteke/:posiljatelj/:primatelj', restDatoteka.dajDatoteke);
   server.post('/baza/datoteke', restDatoteka.posaljiDatoteku);
+  server.get('/baza/datoteke', restDatoteka.getDatoteke);
 
 
   server.get('/baza/zaprimljene/:korime', restDatoteka.dajZaprimljeneDatoteke);
