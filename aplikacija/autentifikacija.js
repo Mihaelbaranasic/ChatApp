@@ -37,6 +37,7 @@ class Autentifikacija {
 	async prijaviKorisnika(korime, lozinka) {
 		console.log("PRIJAVA: " + korime + lozinka);
 		lozinka = kodovi.kreirajSHA256(lozinka, korime);
+		console.log(lozinka);
 		let tijelo = {
 			lozinka: lozinka,
 		};

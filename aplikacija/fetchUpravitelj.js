@@ -101,6 +101,23 @@ class FetchUpravitelj {
 		odgovor.send(stranica);
 	};
 	
+	glavnaModerator = async (zahtjev, odgovor) => {
+		let korisnik = zahtjev.session.korisnik;
+		if (!korisnik) {
+			odgovor.redirect('/prijava');
+			return;
+		}
+		
+		if(korisnik.uloge_id == 3){
+			odgovor.redirect('/');
+			return;
+		}
+	
+		let stranica = await ucitajStranicu("glavna-moderator", '', korisnik);
+		stranica = stranica.replace("#korime#", korisnik.korime);
+		odgovor.send(stranica);
+	}
+
 	glavna = async (zahtjev, odgovor) => {
 		let korisnik = zahtjev.session.korisnik;
 		if (!korisnik) {
@@ -110,6 +127,11 @@ class FetchUpravitelj {
 		
 		if(korisnik.uloge_id === 1){
 			odgovor.redirect('/dnevnik');
+			return;
+		}
+
+		if(korisnik.uloge_id === 2){
+			odgovor.redirect('/glavna-moderator');
 			return;
 		}
 	
@@ -217,7 +239,10 @@ async function ucitajStranicu(nazivStranice, poruka = "", korisnik = null) {
     let stranice = [ucitajHTML(nazivStranice)];
     if (korisnik && korisnik.uloge_id === 1) {
         stranice.push(ucitajHTML("navigacija-admin"));
-    } else {
+    } else if(korisnik && korisnik.uloge_id === 2){
+		stranice.push(ucitajHTML("navigacija-moderator"));
+	}
+	else {
         stranice.push(ucitajHTML("navigacija"));
     }
     let [stranica, nav] = await Promise.all(stranice);
