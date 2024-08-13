@@ -140,6 +140,17 @@ class FetchUpravitelj {
         }
 	}
 
+	korisnici = async (zahtjev, odgovor) => {
+		let korisnik = zahtjev.session.korisnik;
+		if(!korisnik || korisnik.uloge_id != 1){
+			odgovor.redirect('/');
+			return;
+		}
+		let stranica = await ucitajStranicu('korisnici', '', korisnik);
+		stranica = stranica.replace('#korime#', korisnik.korime);
+		odgovor.send(stranica);
+	}
+
 	statistika = async function (zahtjev, odgovor) {
 		let korisnik = zahtjev.session.korisnik;
 		if (!korisnik) {

@@ -44,6 +44,7 @@ function pokreniServer(){
   server.get('/statistika', fetchUpravitelj.statistika.bind(fetchUpravitelj));
   server.get('/statistika-admin', fetchUpravitelj.statistikaAdmin.bind(fetchUpravitelj));
   server.get('/dnevnik', fetchUpravitelj.dnevnik.bind(fetchUpravitelj));
+  server.get('/korisnici', fetchUpravitelj.korisnici.bind(fetchUpravitelj));
 }
 
 function pripremiPutanjeKorisnik(){
