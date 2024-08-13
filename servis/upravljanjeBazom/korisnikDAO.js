@@ -27,7 +27,6 @@ class KorisnikDAO {
 
 	dodaj = async function (korisnik) {
 		this.baza.spojiSeNaBazu();
-		console.log(korisnik)
 		let sql = `INSERT INTO korisnik (punoIme,lozinka,email,korime,uloge_id,zadnjaPrijava) VALUES (?,?,?,?,?,?)`;
 		let trenutniDatum = new Date().toISOString();
         let podaci = [korisnik.punoIme,korisnik.lozinka,korisnik.email,korisnik.korime,3, trenutniDatum];

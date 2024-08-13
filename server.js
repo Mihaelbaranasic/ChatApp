@@ -78,6 +78,7 @@ function pripremiPutanjePorukeIDatoteke(){
   server.post('/baza/datoteke', restDatoteka.posaljiDatoteku);
   server.get('/baza/datoteke', restDatoteka.getDatoteke);
 
+  server.post('/baza/saljiMail', fetchUpravitelj.saljiMail.bind(fetchUpravitelj));
 
   server.get('/baza/zaprimljene/:korime', restDatoteka.dajZaprimljeneDatoteke);
 

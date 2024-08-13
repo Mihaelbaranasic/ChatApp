@@ -44,6 +44,24 @@
             <button type="submit" id="posaljiDatoteku">Pošalji datoteku</button>
             <button type="submit" id="blokiraj">Blokiraj korisnika</button>
         </div>
+        <div id="prijavaModal" class="modal" style="display:none;">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Prijava poruke</h2>
+                <form id="prijavaForma">
+                    <label for="razlog">Razlog prijave:</label>
+                    <select id="razlog" name="razlog">
+                        <option value="uvredljivo">Uvredljiv sadržaj</option>
+                        <option value="spam">Spam</option>
+                        <option value="drugo">Drugo</option>
+                    </select>
+                    <label for="detalji">Dodatni detalji:</label>
+                    <textarea id="detalji" name="detalji" rows="4"></textarea>
+                    <input type="hidden" id="porukaId" name="porukaId" value="">
+                    <button type="submit">Pošalji prijavu</button>
+                </form>
+            </div>
+        </div>
     </main>
 
     <script src="/js/kontakti.js"></script>
