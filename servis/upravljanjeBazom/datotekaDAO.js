@@ -79,6 +79,24 @@ class DatotekaDAO {
         this.baza.zatvoriVezu();
         return datoteke;
     }
+
+    async obrisiSveDatotekeZaRazgovor(posiljatelj, primatelj) {
+        this.baza.spojiSeNaBazu();
+
+        let sql = `DELETE FROM datoteka 
+                   WHERE (korisnik_id = (SELECT id FROM korisnik WHERE korime = ?) 
+                          AND kontakt_id = (SELECT id FROM korisnik WHERE korime = ?))
+                      OR (korisnik_id = (SELECT id FROM korisnik WHERE korime = ?) 
+                          AND kontakt_id = (SELECT id FROM korisnik WHERE korime = ?))`;
+
+        try {
+            await this.baza.izvrsiUpit(sql, [posiljatelj, primatelj, primatelj, posiljatelj]);
+        } catch (error) {
+            throw error;
+        } finally {
+            this.baza.zatvoriVezu();
+        }
+    }
 }
 
 module.exports = DatotekaDAO;

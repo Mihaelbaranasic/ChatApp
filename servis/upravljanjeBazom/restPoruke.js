@@ -58,3 +58,20 @@ exports.obrisiPoruku = async function (zahtjev, odgovor) {
         odgovor.send(JSON.stringify({ greska: "Greška pri slanju poruke!" }))
     }
 };
+
+exports.obrisiSvePorukeZaRazgovor = async function (zahtjev, odgovor) {
+    odgovor.type("application/json");
+    if(!zahtjev.session.korisnik || zahtjev.session.korisnik.uloge_id != 2){
+        odgovor.status(403);
+        odgovor.send({ opis: "Zabranjen pristup!" });
+    }else{
+        let { posiljatelj, primatelj } = zahtjev.params;
+        let pdao = new PorukaDAO();
+        try {
+            await pdao.obrisiSvePorukeZaRazgovor(posiljatelj, primatelj);
+            odgovor.status(200).json({ message: "Sve poruke su uspješno obrisane." });
+        } catch (error) {
+            odgovor.status(500).json({ greska: "Greška pri brisanju poruka!" });
+        }
+    }
+};

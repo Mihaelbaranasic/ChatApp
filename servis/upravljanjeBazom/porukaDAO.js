@@ -51,6 +51,24 @@ class PorukaDAO {
         await this.baza.izvrsiUpit(sql, [id]);
         this.baza.zatvoriVezu();
     }
+
+    async obrisiSvePorukeZaRazgovor(posiljatelj, primatelj) {
+        this.baza.spojiSeNaBazu();
+
+        let sql = `DELETE FROM poruka 
+                   WHERE (korisnik_id = (SELECT id FROM korisnik WHERE korime = ?) 
+                          AND kontakt_id = (SELECT id FROM korisnik WHERE korime = ?))
+                      OR (korisnik_id = (SELECT id FROM korisnik WHERE korime = ?) 
+                          AND kontakt_id = (SELECT id FROM korisnik WHERE korime = ?))`;
+
+        try {
+            await this.baza.izvrsiUpit(sql, [posiljatelj, primatelj, primatelj, posiljatelj]);
+        } catch (error) {
+            throw error;
+        } finally {
+            this.baza.zatvoriVezu();
+        }
+    }
 }
 
 module.exports = PorukaDAO;

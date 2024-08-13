@@ -84,3 +84,20 @@ exports.dajZaprimljeneDatoteke = async function (zahtjev, odgovor) {
         odgovor.status(500).json({ greska: "Greška pri dohvaćanju zaprimljenih datoteka!" });
     }
 };
+
+exports.obrisiSveDatotekeZaRazgovor = async function (zahtjev, odgovor) {
+    odgovor.type("application/json");
+    if(!zahtjev.session.korisnik || zahtjev.session.korisnik.uloge_id != 2){
+        odgovor.status(403);
+        odgovor.send({ opis: "Zabranjen pristup!" });
+    }else{
+        let { posiljatelj, primatelj } = zahtjev.params;
+        let ddao = new DatotekaDAO();
+        try {
+            await ddao.obrisiSveDatotekeZaRazgovor(posiljatelj, primatelj);
+            odgovor.status(200).json({ message: "Sve datoteke su uspješno obrisane." });
+        } catch (error) {
+            odgovor.status(500).json({ greska: "Greška pri brisanju datoteka!" });
+        }
+    }
+};

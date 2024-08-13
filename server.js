@@ -76,11 +76,15 @@ function pripremiPutanjePorukeIDatoteke(){
   server.post('/baza/poruke', restPoruka.posaljiPoruku);
   server.get('/baza/poruke', restPoruka.dajSvePoruke);
   server.delete('/baza/poruke/:id', restPoruka.obrisiPoruku);
+  server.delete('/baza/poruke/:posiljatelj/:primatelj', restPoruka.obrisiSvePorukeZaRazgovor);
+
 
   server.get('/baza/datoteke/:posiljatelj/:primatelj', restDatoteka.dajDatoteke);
   server.post('/baza/datoteke', restDatoteka.posaljiDatoteku);
   server.get('/baza/datoteke', restDatoteka.getDatoteke);
   server.delete('/baza/datoteke/:id', restDatoteka.obrisiDatoteku);
+  server.delete('/baza/datoteke/:posiljatelj/:primatelj', restDatoteka.obrisiSveDatotekeZaRazgovor);
+
 
   server.post('/baza/saljiMail', fetchUpravitelj.saljiMail.bind(fetchUpravitelj));
 

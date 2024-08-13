@@ -5,6 +5,7 @@ window.addEventListener('load', async () => {
     await ucitajSveKorisnike();
     document.getElementById('pretraga-korisnici').addEventListener('input', pretraziKorisnike);
     document.getElementById('pretraga-kontakti').addEventListener('input', pretraziKontakte);
+    document.getElementById('brisiSve').addEventListener('click', obrisiCijeliRazgovor);
 });
 
 function pretraziKorisnike(event) {
@@ -140,5 +141,35 @@ async function obrisi(id, tip) {
         await ucitajPoruke(trenutniKontaktKorime, trenutniKorisnikKorime);
     } else {
         alert(`Došlo je do greške pri brisanju ${tip === "poruka" ? "poruke" : "datoteke"}.`);
+    }
+}
+
+async function obrisiCijeliRazgovor() {
+    if (!trenutniKorisnikKorime || !trenutniKontaktKorime) {
+        alert("Nije moguće obrisati razgovor. Odaberite razgovor prvo.");
+        return;
+    }
+
+    if (!confirm("Jeste li sigurni da želite obrisati cijeli razgovor?")) {
+        return;
+    }
+
+    let parametri = {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    };
+
+    let urlPoruke = `/baza/poruke/${trenutniKorisnikKorime}/${trenutniKontaktKorime}`;
+    let urlDatoteke = `/baza/datoteke/${trenutniKorisnikKorime}/${trenutniKontaktKorime}`;
+    let odgovorPoruke = await fetch(urlPoruke, parametri);
+    let odgovorDatoteke = await fetch(urlDatoteke, parametri);
+
+    if (odgovorPoruke.ok && odgovorDatoteke.ok) {
+        alert("Cijeli razgovor je uspješno obrisan.");
+        document.getElementById('razgovor').style.display = 'none';
+    } else {
+        alert("Došlo je do greške pri brisanju razgovora.");
     }
 }
