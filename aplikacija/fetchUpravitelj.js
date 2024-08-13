@@ -163,9 +163,10 @@ class FetchUpravitelj {
 	};
 
 	saljiMail = async (zahtjev, odgovor) => {
-		let { posiljatelj, sadrzaj, korime } = zahtjev.body;
+		let { posiljatelj, sadrzaj, korime, predmet } = zahtjev.body;
+		if(!predmet) predmet = "Nova poruka od " + korime;
         try {
-            await mail.posaljiMail(posiljatelj, korime, "Nova poruka", sadrzaj);
+            await mail.posaljiMail(posiljatelj, korime, predmet, sadrzaj);
             odgovor.status(200);
         } catch (error) {
             console.error('Greška pri slanju email obavijesti:', error);
