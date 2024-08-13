@@ -43,3 +43,18 @@ exports.posaljiPoruku = async function (zahtjev, odgovor) {
         odgovor.send(JSON.stringify({ greska: "Greška pri slanju poruke!" }))
     }
 };
+
+
+exports.obrisiPoruku = async function (zahtjev, odgovor) {
+    odgovor.type("application/json");
+    let id = zahtjev.params.id;
+    let pdao = new PorukaDAO();
+    try {
+        await pdao.obrisi(id);
+        odgovor.status(201);
+        odgovor.send(JSON.stringify({ opis: "Poruka poslana!" }));
+    } catch (error) {
+        odgovor.status(500);
+        odgovor.send(JSON.stringify({ greska: "Greška pri slanju poruke!" }))
+    }
+};

@@ -1,3 +1,6 @@
+let trenutniKorisnikKorime = null;
+let trenutniKontaktKorime = null;
+
 window.addEventListener('load', async () => {
     await ucitajSveKorisnike();
     document.getElementById('pretraga-korisnici').addEventListener('input', pretraziKorisnike);
@@ -63,6 +66,8 @@ function prikaziKontakte(kontakti, korime) {
 }
 
 async function otvoriRazgovor(kontaktKorime, korisnikKorime) {
+    trenutniKorisnikKorime = korisnikKorime;
+    trenutniKontaktKorime = kontaktKorime;
     document.getElementById('razgovor').style.display = 'block';
     await ucitajPoruke(kontaktKorime, korisnikKorime);
 }
@@ -100,7 +105,7 @@ function prikaziPorukeIDatoteke(poruke, datoteke) {
     for (let item of svePorukeIDatoteke) {
         if (item.sadrzaj) {
             let procitano = item.procitano ? "✓" : "";
-            html += `<li><small>${item.korime}</small><small><br>${item.sadrzaj}<br><small>${item.vrijemeSlanja}</small> ${procitano}</li>`;
+            html += `<li onclick='obrisi("${item.id}", "poruka")'><small>${item.korime}</small><small><br>${item.sadrzaj}<br><small>${item.vrijemeSlanja}</small> ${procitano}</li>`;
         } else if (item.naziv) {
             let fileExt = item.naziv.split('.').pop().toLowerCase();
             let fileHTML = "";
@@ -113,8 +118,27 @@ function prikaziPorukeIDatoteke(poruke, datoteke) {
             } else {
                 fileHTML = `<a href="${item.putanja}" target="_blank">${item.naziv}</a>`;
             }
-            html += `<li><small>${item.korime}</small><br>${fileHTML}<br><small>${item.vrijemePrimitka}</small></li>`;
+            html += `<li onclick='obrisi("${item.id}", "datoteka")'><small>${item.korime}</small><br>${fileHTML}<br><small>${item.vrijemePrimitka}</small></li>`;
         }
     }
     popisPorukaHTML.innerHTML = html;
+}
+
+async function obrisi(id, tip) {
+    let parametri = {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json"
+        }
+    };
+    
+    let url = tip === "poruka" ? `/baza/poruke/${id}` : `/baza/datoteke/${id}`;
+    let odgovor = await fetch(url, parametri);
+
+    if (odgovor.ok) {
+        alert(`${tip === "poruka" ? "Poruka" : "Datoteka"} je uspješno obrisana.`);
+        await ucitajPoruke(trenutniKontaktKorime, trenutniKorisnikKorime);
+    } else {
+        alert(`Došlo je do greške pri brisanju ${tip === "poruka" ? "poruke" : "datoteke"}.`);
+    }
 }

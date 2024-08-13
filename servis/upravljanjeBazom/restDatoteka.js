@@ -34,6 +34,19 @@ exports.getDatoteke = function (zahtjev, odgovor) {
 	}
 };
 
+exports.obrisiDatoteku = function (zahtjev, odgovor) {
+	odgovor.type("application/json");
+	if(!zahtjev.session.korisnik || zahtjev.session.korisnik.uloge_id != 2){
+		odgovor.status(403);
+		odgovor.send({ opis: "Zabranjen pristup!" });
+	}else{
+		let ddao = new DatotekaDAO();
+		ddao.obrisi().then((datoteke) => {
+			odgovor.status(200);
+		});
+	}
+};
+
 exports.posaljiDatoteku = [upload.single('datoteka'), async (req, res) => {
     let posiljatelj = req.body.posiljatelj;
     let primatelj = req.body.primatelj;

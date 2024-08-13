@@ -44,6 +44,13 @@ class PorukaDAO {
         await this.baza.izvrsiUpit(sql, [primatelj, posiljatelj]);
         this.baza.zatvoriVezu();
     }
+
+    async obrisi(id) {
+        this.baza.spojiSeNaBazu();
+        let sql = `DELETE FROM poruka WHERE id = ?`;
+        await this.baza.izvrsiUpit(sql, [id]);
+        this.baza.zatvoriVezu();
+    }
 }
 
 module.exports = PorukaDAO;

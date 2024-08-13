@@ -35,6 +35,13 @@ class DatotekaDAO {
         return podaci;
     }
 
+    async obrisi(id) {
+        this.baza.spojiSeNaBazu();
+        let sql = `DELETE FROM datoteka WHERE id = ?`;
+        let podaci = await this.baza.izvrsiUpit(sql, [id]);
+        this.baza.zatvoriVezu();
+    }
+
     async dajDatoteke(posiljatelj, primatelj) {
         this.baza.spojiSeNaBazu();
         let sql = `SELECT d.*, k.korime 
