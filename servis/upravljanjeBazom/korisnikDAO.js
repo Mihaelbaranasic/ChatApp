@@ -14,6 +14,14 @@ class KorisnikDAO {
 		return podaci;
 	}
 
+	dajSveKorisnike = async function () {
+		this.baza.spojiSeNaBazu();
+		let sql = "SELECT * FROM korisnik WHERE uloge_id = 3";
+		var podaci = await this.baza.izvrsiUpit(sql, []);
+		this.baza.zatvoriVezu();
+		return podaci;
+	}
+
 	daj = async function (korime) {
 		this.baza.spojiSeNaBazu();
 		let sql = "SELECT * FROM korisnik WHERE korime=?;"

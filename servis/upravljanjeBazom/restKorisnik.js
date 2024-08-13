@@ -15,6 +15,21 @@ exports.getKorisnici = function (zahtjev, odgovor) {
 	}
 };
 
+exports.getKorisniciId3 = function (zahtjev, odgovor) {
+	odgovor.type("application/json");
+	if(!zahtjev.session.korisnik){
+		odgovor.status(403);
+		odgovor.send({ opis: "Zabranjen pristup!" });
+	}else{
+		let kdao = new KorisnikDAO();
+		kdao.dajSveKorisnike().then((korisnici) => {
+			console.log(korisnici);
+			odgovor.status(200);
+			odgovor.send(JSON.stringify(korisnici));
+		});
+	}
+};
+
 exports.postKorisnici = function (zahtjev, odgovor) {
 	odgovor.type("application/json");
 	let podaci = zahtjev.body;

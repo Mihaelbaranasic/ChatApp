@@ -50,6 +50,7 @@ function pokreniServer(){
 
 function pripremiPutanjeKorisnik(){
   server.get('/baza/korisnici', restKorisnik.getKorisnici);
+  server.get('/baza/korisniciModerator', restKorisnik.getKorisniciId3);
   server.post('/baza/korisnici', restKorisnik.postKorisnici);
   server.delete('/baza/korisnici', restKorisnik.deleteKorisnici);
   server.put('/baza/korisnici', restKorisnik.putKorisnici);
