@@ -101,6 +101,17 @@ class FetchUpravitelj {
 		odgovor.send(stranica);
 	};
 	
+	upit = async (zahtjev, odgovor) =>{
+		let korisnik = zahtjev.session.korisnik;
+		if(!korisnik || korisnik.uloge_id != 2){
+			odgovor.redirect('/');
+			return;
+		}
+		let stranica = await ucitajStranicu("upit", '', korisnik);
+		stranica = stranica.replace('#korime', korisnik.korime);
+		odgovor.send(stranica);
+	}
+
 	glavnaModerator = async (zahtjev, odgovor) => {
 		let korisnik = zahtjev.session.korisnik;
 		if (!korisnik) {

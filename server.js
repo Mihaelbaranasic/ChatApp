@@ -46,6 +46,7 @@ function pokreniServer(){
   server.get('/dnevnik', fetchUpravitelj.dnevnik.bind(fetchUpravitelj));
   server.get('/korisnici', fetchUpravitelj.korisnici.bind(fetchUpravitelj));
   server.get('/glavna-moderator', fetchUpravitelj.glavnaModerator.bind(fetchUpravitelj));
+  server.get('/upit', fetchUpravitelj.upit.bind(fetchUpravitelj));
 }
 
 function pripremiPutanjeKorisnik(){

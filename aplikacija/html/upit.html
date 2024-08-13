@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pošalji Upit</title>
+    <link rel="stylesheet" href="/css/stil.css">
+</head>
+<body>
+    <header>
+        #navigacija#
+    </header>
+
+    <main class="kontakt">
+        <h2>Pošalji Upit Administratoru</h2>
+        <form id="upitForma">
+            <label for="naslov">Naslov:</label>
+            <input type="text" id="naslov" name="naslov" required>
+            <label>Tip upita:</label><br>
+            <input type="radio" id="brisanjeRacuna" name="tipUpita" value="brisanjeRacuna">
+            <label for="brisanjeRacuna">Zahtjev za brisanje računa</label><br>
+            <input type="radio" id="prijavaProblema" name="tipUpita" value="prijavaProblema">
+            <label for="prijavaProblema">Prijava problema</label><br>
+            <input type="radio" id="opciUpit" name="tipUpita" value="opciUpit" checked>
+            <label for="opciUpit">Opći upit</label><br>
+            <div id="dodatneInformacije" style="display:none;">
+                <label for="korisnickoIme">Korisničko ime (za brisanje računa):</label>
+                <input type="text" id="korisnickoIme" name="korisnickoIme">
+            </div>
+
+            <label for="poruka">Poruka:</label>
+            <textarea id="poruka" name="poruka" rows="5" required></textarea>
+            <button type="submit">Pošalji</button>
+        </form>
+        <p id="statusPoruka"></p>
+    </main>
+
+    <script src="/js/upit.js"></script>
+</body>
+</html>
