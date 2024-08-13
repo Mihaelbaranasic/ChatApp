@@ -52,7 +52,10 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (odgovor.status == 200) {
                 alert("Profil uspješno obrisan.");
                 prikaziKorisnike(await dohvatiKorisnike());
-            } else {
+            } else if(odgovor.status == 403){
+                alert("Zabranjeno brisanje administratora!");
+            }
+            else {
                 console.error("Greška pri brisanju profila!");
             }
         }
