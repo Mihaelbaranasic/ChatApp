@@ -1,8 +1,20 @@
 window.addEventListener('load', async () => {
     await ucitajSveKorisnike();
-    // document.getElementById('pretraga-korisnici').addEventListener('input', pretraziKorisnike);
-    // document.getElementById('pretraga-kontakti').addEventListener('input', pretraziKontakte);
+    document.getElementById('pretraga-korisnici').addEventListener('input', pretraziKorisnike);
+    document.getElementById('pretraga-kontakti').addEventListener('input', pretraziKontakte);
 });
+
+function pretraziKorisnike(event) {
+    let unos = event.target.value.toLowerCase();
+    let filtriraniKorisnici = sviKorisnici.filter(korisnik => korisnik.korime.toLowerCase().includes(unos));
+    prikaziSveKorisnike(filtriraniKorisnici);
+}
+
+function pretraziKontakte(event) {
+    let unos = event.target.value.toLowerCase();
+    let filtriraniKontakti = trenutniKontakti.filter(kontakt => kontakt.kontakt_korime.toLowerCase().includes(unos));
+    prikaziKontakte(filtriraniKontakti);
+}
 
 async function ucitajSveKorisnike() {
     let parametri = {
@@ -25,6 +37,8 @@ function prikaziSveKorisnike(korisnici) {
     popisKorisnikaHTML.innerHTML = html;
 }
 
+let trenutniKontakti = [];
+
 async function ucitajKontakte(korime) {
     let parametri = {
         method: "GET",
@@ -33,11 +47,12 @@ async function ucitajKontakte(korime) {
         }
     };
     let odgovor = await fetch(`/baza/kontakti/${korime}`, parametri);
-    kontakti = await odgovor.json();
-    prikaziKontakte(kontakti, korime);
+    trenutniKontakti = await odgovor.json();
+    prikaziKontakte(trenutniKontakti, korime);
 }
 
 function prikaziKontakte(kontakti, korime) {
+    document.getElementById('razgovor').style.display = 'none';
     document.getElementById('kontaktiModerator').style.display = 'block';
     let popisKontakata = document.getElementById('sviKontakti');
     let html = ""
