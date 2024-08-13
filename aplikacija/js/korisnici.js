@@ -51,6 +51,14 @@ document.addEventListener("DOMContentLoaded", async () => {
             let odgovor = await fetch(`/baza/korisnici/${korime}`, parametri);
             if (odgovor.status == 200) {
                 alert("Profil uspješno obrisan.");
+                let zapis = await fetch(`/baza/dnevnik`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        aktivnost: 'Brisanje profila od strane administratora',
+                        korisnik: korime
+                        })
+                    });
                 prikaziKorisnike(await dohvatiKorisnike());
             } else if(odgovor.status == 403){
                 alert("Zabranjeno brisanje administratora!");

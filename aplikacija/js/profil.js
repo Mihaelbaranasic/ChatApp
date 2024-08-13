@@ -74,6 +74,14 @@ function PromjenaObavijesti() {
         console.log(odgovor.status);
         if (odgovor.status == 201) {
             alert('Postavke spremljene!');
+            let zapis = await fetch(`/baza/dnevnik`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    aktivnost: 'Ažuriranje profila',
+                    korisnik: korime
+                	})
+            	});
         } else {
             console.error('Greška pri spremanju postavki!');
         }
@@ -93,6 +101,14 @@ async function obrisiProfil() {
         let odgovor = await fetch(`/baza/korisnici/${korime}`, parametri);
         if (odgovor.status == 200) {
             alert("Profil uspješno obrisan.");
+            let zapis = await fetch(`/baza/dnevnik`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    aktivnost: 'Brisanje profila',
+                    korisnik: korime
+                	})
+            	});
             window.location.href = "/odjava";
         } else {
             console.error("Greška pri brisanju profila!");
