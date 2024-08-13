@@ -104,7 +104,7 @@ const wss = new WebSocket.Server({ server: httpServer });
 wss.on('connection', (ws, req) => {
   ws.on('message', async (message) => {
     const data = JSON.parse(message);
-
+    console.log("Podaci: ", data);
     if (data.type === 'new_message' || data.type === 'new_file') {
       const rezultat = await obradiPoruku(data);
       if (!rezultat) return;
