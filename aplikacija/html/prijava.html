@@ -7,18 +7,18 @@
     <link rel="stylesheet" href="/css/stil.css">
 </head>
 <body>
-    <p>#poruka#</p>
     <div class="forma">
         <form action="/prijava" method="POST" id="prijava">
             <label for="korime">Korisničko ime: </label>
             <input type="text" name="korime" id="korime">
             <label for="lozinka">Lozinka: </label>
             <input type="password" name="lozinka" id="lozinka">
+            <p id="poruka"></p>
             <button type="submit">Prijava</button>
             <a href="/registracija">Registriraj se</a>
+            <p>#poruka#</p>
         </form>
     </div>
-    <div id="poruka"></div>
 
     <script src="/js/prijava.js"></script>
 </body>

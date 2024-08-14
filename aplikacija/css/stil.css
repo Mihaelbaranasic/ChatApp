@@ -22,7 +22,7 @@ main.korisnik {
     padding: 20px;
 }
 
-#sidebar #korime {
+span#korime, p.korime {
     color: #fff;
     font-size: 16px;
     font-weight: bold;
@@ -46,11 +46,18 @@ main.korisnik {
 #korisnici {
     flex-grow: 1;
     margin-top: 15px;
-    overflow-y: auto;
+    overflow: hidden;
     width: 100%;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     padding: 20px;
     background-color: #b1b1b194;
+    flex-direction: column;
+}
+
+#lista-korisnika {
+    overflow-y: auto;
+    flex-grow: 1;
+    padding: 10px;
 }
 
 #razgovor {
@@ -233,6 +240,7 @@ form textarea {
 } */
 
 header {
+    margin-bottom: 20px;
     background-color: #333;
     color: #fff;
     padding: 10px 0;
@@ -379,6 +387,48 @@ form *{
     border: none;
 }
 
+form#profil {
+    height: auto;
+    width: 100%;
+    max-width: 500px;
+    background-color: rgba(255, 255, 255, 0.13);
+    margin: 20px auto;
+    border-radius: 10px;
+    transform: none;
+    top: 0%;
+    left: 0%;
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
+    padding: 50px 35px;
+    display: block;
+    position: relative;
+}
+
+form#profil label {
+    display: flex;
+    align-items: center;
+    margin-top: 15px;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+form#profil input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    accent-color: #ffffff;
+}
+
+form#profil div {
+    margin-bottom: 20px;
+}
+
+form#profil {
+    max-width: 400px;
+    margin: 0 auto;
+}
+
 label{
     display: block;
     margin-top: 30px;
@@ -399,9 +449,10 @@ input{
 ::placeholder{
     color: #e5e5e5;
 }
+
 form button{
-    margin-top: 50px;
-    margin-bottom: 50px;
+    margin-top: 30px;
+    margin-bottom: 30px;
     width: 100%;
     background-color: #ffffff;
     color: #080710;
@@ -410,6 +461,13 @@ form button{
     font-weight: 600;
     border-radius: 5px;
     cursor: pointer;
+}
+
+p#poruka {
+    margin-top: 20px;
+    color: #ff0000;
+    font-size: 14px;
+    font-weight: 500;
 }
 
 a {

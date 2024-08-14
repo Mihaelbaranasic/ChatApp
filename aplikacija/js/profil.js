@@ -33,8 +33,6 @@ function PromjenaObavijesti() {
         let punoIme = document.getElementById('punoIme').value;
         let email = document.getElementById('email').value; 
         let poruka = document.getElementById('poruka');
-        poruka.id = 'poruka';
-        document.body.appendChild(poruka);
 
         let regexIme = /^[A-Za-zčćžšđČĆŽŠĐ\s]+$/;
         let regexEmail = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;

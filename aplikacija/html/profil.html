@@ -13,8 +13,7 @@
 
     <main>
         <div id="korisnicke-informacije">
-            <span id="korime">#korime#</span>
-            <p id="poruka"></p>
+            <p class="korime">Korisničko ime: <span id="korime">#korime#</span></p>
             <form id="profil">
                 <div>
                     <h3>Profil</h3>
@@ -27,10 +26,10 @@
                     <label><input type="checkbox" id="notif-popup"> Pop-up</label>
                     <label><input type="checkbox" id="notif-email"> Email</label>
                     <button type="submit" id="save-notifications">Spremi postavke</button>
+                    <button type="button" id="delete-profile">Obriši profil</button>
                 </div>
+                <p id="poruka"></p>
             </form>
-            <button type="button" id="delete-profile">Obriši profil</button>
-
             <h3>Blokirani korisnici</h3>
         <ul id="blokiraniKorisnici"></ul>
 
