@@ -22,6 +22,49 @@ main.korisnik {
     padding: 20px;
 }
 
+#dashboard-obavijest {
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    padding: 10px;
+    max-height: 80vh;
+    overflow-y: auto; 
+}
+
+.dashboard-obavijest {
+    background-color: #333;
+    border: 1px solid #444;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    position: relative;
+    color: #fff;
+}
+
+.dashboard-obavijest strong {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.dashboard-obavijest .close-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    padding: 2px 5px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.dashboard-obavijest .close-btn:hover {
+    background-color: #c82333;
+}
+
+
 span#korime, p.korime {
     color: #fff;
     font-size: 16px;
