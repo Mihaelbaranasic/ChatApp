@@ -1,17 +1,236 @@
 *,
 *:before,
-*:after{
+*:after {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
 }
 
 body {
-    font-family: 'Poppins',sans-serif;
+    font-family: 'Poppins', sans-serif;
     background-color: #080710;
+    color: #fff;
     margin: 0;
     padding: 0;
 }
+
+main.korisnik {
+    display: flex;
+    height: 90vh;
+    overflow: hidden;
+    justify-content: center;
+    padding: 20px;
+}
+
+#sidebar #korime {
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    margin: 15px;
+}
+
+#sidebar {
+    width: 25%;
+    background-color: #2a2f32;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#sidebar h2, #sidebar h3{
+    color: #080710;
+}
+
+#korisnici {
+    flex-grow: 1;
+    margin-top: 15px;
+    overflow-y: auto;
+    width: 100%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    background-color: #b1b1b194;
+}
+
+#razgovor {
+    width: 75%;
+    height: 100%;
+    margin-left: 40px;
+    background-color: #131c21;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    color: #fff;
+}
+
+.scrollable {
+    max-height: 60vh;
+    min-height: 60vh;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
+    padding: 10px;
+}
+
+#razgovor h2, #razgovor h3 {
+    color: #ccc;
+}
+
+#novaPoruka {
+    width: 100%;
+    padding: 5px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    resize: none;
+    overflow: hidden;
+    font-size: 16px;
+}
+
+#listaKontakata li, #sviKorisnici li {
+    padding: 10px;
+    background-color: #333;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #fff;
+}
+
+#listaKontakata li:hover, #sviKorisnici li:hover {
+    background-color: #40484d;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+}
+
+#listaPoruka {
+    margin-top: 20px;
+    flex-grow: 1;
+    padding: 20px;
+    background-color: #0b141a;
+    border-radius: 5px;
+    overflow-y: auto;
+}
+
+#unos-poruka {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+}
+
+form textarea {
+    padding: 10px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    margin-right: 10px;
+    height: 80px;
+    resize: none;
+}
+
+#unos-poruka textarea {
+    flex-grow: 2;
+    padding: 10px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    margin-right: 10px;
+    height: 80px;
+    resize: none;
+}
+
+#datoteka {
+    width: 200px;
+    margin-right: 10px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+#unos-poruka button {
+    padding: 10px 20px;
+    background-color: #ffffff;
+    color: #080710;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#unos-poruka button:hover {
+    background-color: #00796b;
+}
+
+#listaPoruka li {
+    position: relative;
+    padding: 10px 15px;
+    margin-bottom: 15px;
+    border-radius: 20px;
+    max-width: 60%;
+    clear: both;
+    font-size: 16px;
+}
+
+#listaPoruka li:not(.moja-poruka) {
+    background-color: #1e292f;
+    color: #ffffff;
+    margin-right: auto;
+}
+
+#listaPoruka li.moja-poruka {
+    background-color: #4caf50;
+    color: #ffffff;
+    margin-left: auto;
+}
+
+#listaPoruka li:not(.moja-poruka)::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -10px;
+    width: 0;
+    height: 0;
+    border-top: 10px solid transparent;
+    border-right: 10px solid #1e292f;
+    border-bottom: 10px solid transparent;
+}
+
+#listaPoruka li.moja-poruka::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: -10px;
+    width: 0;
+    height: 0;
+    border-top: 10px solid transparent;
+    border-left: 10px solid #4caf50;
+    border-bottom: 10px solid transparent;
+}
+
+.prijavaModal {
+    display: none;
+}
+
+/* .prijaviPoruku {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    font-size: 16px;
+    color: inherit; 
+} */
 
 header {
     background-color: #333;
@@ -34,35 +253,6 @@ nav a {
     text-decoration: none;
 }
 
-main.korisnik {
-    display: flex;
-    justify-content: center;
-    padding: 20px;
-}
-
-#korisnici {
-    width: 60%;
-    background: #fff;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.scrollable {
-    max-height: 300px;
-    overflow-y: auto;
-    border: 1px solid #ccc;
-    margin-bottom: 20px;
-    padding: 10px;
-}
-
-input[type="text"] {
-    width: 100%;
-    padding: 10px;
-    margin-top: 10px;
-    box-sizing: border-box;
-    border: 1px solid #ccc;
-}
-
 h2 {
     margin-top: 0;
 }
@@ -79,10 +269,6 @@ ul {
 li {
     padding: 5px 0;
     cursor: pointer;
-}
-
-li:hover {
-    background-color: #f0f0f0;
 }
 
 .dashboard-notifications {
@@ -151,17 +337,11 @@ li:hover {
     padding-top: 60px;
 }
 
-.modal-content {
-    background-color: #fefefe;
-    margin: 5% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-}
-
 .close {
+    position: absolute;
+    top: 10px;
+    right: 20px;
     color: #aaa;
-    float: right;
     font-size: 28px;
     font-weight: bold;
 }

@@ -10,6 +10,12 @@ window.addEventListener('load', async () => {
     document.getElementById('posaljiPoruku').addEventListener('click', posaljiPoruku);
     document.getElementById('posaljiDatoteku').addEventListener('click', posaljiDatoteku);
     document.getElementById('blokiraj').addEventListener('click', blokirajKorisnika);
+    const textarea = document.getElementById('novaPoruka');
+
+    textarea.addEventListener('input', function () {
+        this.style.height = 'auto';
+        this.style.height = this.scrollHeight + 'px';
+    });
 });
 
 async function ucitaj() {

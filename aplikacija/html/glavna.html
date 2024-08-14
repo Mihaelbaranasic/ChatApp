@@ -12,52 +12,53 @@
     </header>
 
     <main class="korisnik">
-        <div id="korisnicke-informacije">
-            <span id="korime">#korime#</span>
-        </div>
+        <div id="sidebar">
+            <div id="korisnicke-informacije">
+                <span id="korime">#korime#</span>
+            </div>
 
-        <div id="dashboard-obavijest"></div>
+            <div id="dashboard-obavijest"></div>
 
-        <div id="korisnici">
-            <h2>Korisnici</h2>
-            <input type="text" id="pretraga-korisnici" placeholder="Pretraži korisnike...">
-            <div class="scrollable" id="lista-korisnika">
-                <div id="kontakti">
-                    <h3>Kontakti (<span id="broj-kontakata">0</span>)</h3>
-                    <ul id="listaKontakata">
-                    </ul>
-                </div>
-                <div id="svi-korisnici">
-                    <h3>Dodaj korisnike</h3>
-                    <ul id="sviKorisnici">
-                    </ul>
+            <div id="korisnici">
+                <h2>Korisnici</h2>
+                <input type="text" id="pretraga-korisnici" placeholder="Pretraži korisnike...">
+                <div class="scrollable" id="lista-korisnika">
+                    <div id="kontakti">
+                        <h3>Kontakti (<span id="broj-kontakata">0</span>)</h3>
+                        <ul id="listaKontakata">
+                        </ul>
+                    </div>
+                    <div id="svi-korisnici">
+                        <h3>Dodaj korisnike</h3>
+                        <ul id="sviKorisnici">
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <div id="razgovor" style="display: none;" class="scrollable">
+        <div id="razgovor">
             <h3>Razgovor s <span id="razgovor-korime"></span></h3>
-            <ul id="listaPoruka"></ul>
-            <input type="file" id="datoteka">
-            <textarea id="novaPoruka" placeholder="Upiši poruku..."></textarea>
-            <button type="submit" id="posaljiPoruku">Pošalji poruku</button>
-            <button type="submit" id="posaljiDatoteku">Pošalji datoteku</button>
-            <button type="submit" id="blokiraj">Blokiraj korisnika</button>
+            <ul id="listaPoruka" class="scrollable"></ul>
+            <div id="unos-poruka">
+                <textarea id="novaPoruka" placeholder="Upiši poruku..."></textarea>
+                <input type="file" id="datoteka">
+                <button type="submit" id="posaljiPoruku">Pošalji poruku</button>
+                <button type="submit" id="posaljiDatoteku">Pošalji datoteku</button>
+                <button type="submit" id="blokiraj">Blokiraj korisnika</button>
+            </div>
         </div>
-        <div id="prijavaModal" class="modal" style="display:none;">
+
+        <div id="prijavaModal" class="modal">
             <div class="modal-content">
-                <span class="close">&times;</span>
-                <h2>Prijava poruke</h2>
                 <form id="prijavaForma">
-                    <label for="razlog">Razlog prijave:</label>
-                    <select id="razlog" name="razlog">
-                        <option value="uvredljivo">Uvredljiv sadržaj</option>
-                        <option value="spam">Spam</option>
-                        <option value="drugo">Drugo</option>
-                    </select>
-                    <label for="detalji">Dodatni detalji:</label>
-                    <textarea id="detalji" name="detalji" rows="4"></textarea>
-                    <input type="hidden" id="porukaId" name="porukaId" value="">
+                    <h2>Prijavi poruku</h2>
+                    <span class="close">&times;</span>
+                    <label for="razlog">Razlog prijave</label>
+                    <input type="text" id="razlog" name="razlog" placeholder="Unesite razlog prijave..." required>
+                    <label for="detalji">Dodatni detalji</label>
+                    <textarea id="detalji" name="detalji" placeholder="Unesite dodatne detalje..." rows="4" required></textarea>
+                    <input type="hidden" id="porukaId" name="porukaId">
                     <button type="submit">Pošalji prijavu</button>
                 </form>
             </div>

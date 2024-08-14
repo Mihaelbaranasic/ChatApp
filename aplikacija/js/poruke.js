@@ -29,12 +29,14 @@ function prikaziPorukeIDatoteke(poruke, datoteke) {
 
     let html = "";
     for (let item of svePorukeIDatoteke) {
+        let liClass = item.korime === document.getElementById('korime').innerHTML ? 'moja-poruka' : '';
+        
         if (item.sadrzaj) {
             let procitano = item.procitano ? "✓" : "";
-            html += `<li><small>${item.korime}</small><small><button onclick="prijaviPoruku(${item.id})" class="prijaviPoruku">🚩</button></small><br>${item.sadrzaj}<br><small>${item.vrijemeSlanja}</small> ${procitano}</li>`;
+            html += `<li class="${liClass}"><small>${item.korime}</small><small><button onclick="prijaviPoruku(${item.id})" class="prijaviPoruku">🚩</button></small><br>${item.sadrzaj}<br><small>${item.vrijemeSlanja}</small> ${procitano}</li>`;
         } else if (item.naziv) {
             let fileExt = item.naziv.split('.').pop().toLowerCase();
-            let fileHTML = "";
+            let fileHTML = '';
             if (['jpg', 'jpeg', 'png', 'gif'].includes(fileExt)) {
                 fileHTML = `<img src="${item.putanja}" alt="${item.naziv}" style="max-width: 300px;"/>`;
             } else if (['mp3', 'wav', 'ogg'].includes(fileExt)) {
@@ -44,7 +46,7 @@ function prikaziPorukeIDatoteke(poruke, datoteke) {
             } else {
                 fileHTML = `<a href="${item.putanja}" target="_blank">${item.naziv}</a>`;
             }
-            html += `<li><small>${item.korime}</small><small><button onclick="prijaviPoruku(${item.id})" class="prijaviPoruku">🚩</button></small><br>${fileHTML}<br><small>${item.vrijemePrimitka}</small></li>`;
+            html += `<li class="${liClass}"><small>${item.korime}</small><small><button onclick="prijaviPoruku(${item.id})" class="prijaviPoruku">🚩</button></small><br>${fileHTML}<br><small>${item.vrijemePrimitka}</small></li>`;
         }
     }
     popisPorukaHTML.innerHTML = html;
