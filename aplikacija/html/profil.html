@@ -30,16 +30,22 @@
                 </div>
                 <p id="poruka"></p>
             </form>
-            <h3>Blokirani korisnici</h3>
-        <ul id="blokiraniKorisnici"></ul>
+            <div class="smanjiPrikaz">
+                <h3>Blokirani korisnici</h3>
+            <div id="blokiraniKorisnici-container" class="scrollable">
+                <ul id="blokiraniKorisnici"></ul>
+            </div>
 
-        <h3>Zaprimljene datoteke</h3>
-        <input type="text" id="pretraga-datoteka" placeholder="Pretraži datoteke...">
-        <select id="sortiraj-datoteke">
-            <option value="naziv">Naziv</option>
-            <option value="korisnik">Korisnik</option>
-        </select>
-        <ul id="lista-datoteka"></ul>
+            <h3>Zaprimljene datoteke</h3>
+            <div id="datoteke-pretraga">
+                <input type="text" id="pretraga-datoteka" placeholder="Pretraži datoteke...">
+                <select id="sortiraj-datoteke">
+                    <option value="naziv">Naziv</option>
+                    <option value="korisnik">Korisnik</option>
+                </select>
+            </div>
+            <ul id="lista-datoteka" class="scrollable card-list"></ul>
+            </div>
         </div>
     </main>
 

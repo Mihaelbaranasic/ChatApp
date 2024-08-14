@@ -175,14 +175,24 @@ function prikaziDatoteke(datoteke) {
     let listaDatoteka = document.getElementById('lista-datoteka');
     let html = "";
     for (let datoteka of datoteke) {
-        html += `<li>${datoteka.naziv} - ${datoteka.posiljatelj}</li>`;
+        html += `
+            <li class="card-item">
+                <div class="file-info">
+                    <h4>${datoteka.naziv}</h4>
+                    <div class="sender">${datoteka.posiljatelj}</div>
+                </div>
+            </li>
+        `;
     }
     listaDatoteka.innerHTML = html;
 }
 
 function filtrirajDatoteke() {
     let pretraga = document.getElementById('pretraga-datoteka').value.toLowerCase();
-    let filtriraneDatoteke = datoteke.filter(datoteka => datoteka.naziv.toLowerCase().includes(pretraga) || datoteka.posiljatelj.toLowerCase().includes(pretraga));
+    let filtriraneDatoteke = datoteke.filter(datoteka => 
+        datoteka.naziv.toLowerCase().includes(pretraga) || 
+        datoteka.posiljatelj.toLowerCase().includes(pretraga)
+    );
     prikaziDatoteke(filtriraneDatoteke);
 }
 
