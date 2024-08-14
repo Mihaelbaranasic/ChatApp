@@ -28,10 +28,20 @@ class PorukaDAO {
 
     async posaljiPoruku(posiljatelj, primatelj, sadrzaj) {
         this.baza.spojiSeNaBazu();
+        let korisnikSQL = `SELECT id FROM korisnik WHERE korime = ?`;
+        let kontaktSQL = `SELECT id FROM korisnik WHERE korime = ?`;
+        let korisnikId = await this.baza.izvrsiUpit(korisnikSQL, [posiljatelj]);
+        let kontaktId = await this.baza.izvrsiUpit(kontaktSQL, [primatelj]);
+        if (!korisnikId.length || !kontaktId.length) {
+            console.error("Korisnik ili kontakt ne postoji");
+            this.baza.zatvoriVezu();
+            throw new Error("Korisnik ili kontakt ne postoji");
+        }
+    
         let sql = `INSERT INTO poruka (korisnik_id, kontakt_id, sadrzaj, vrijemeSlanja) 
-                   VALUES ((SELECT id FROM korisnik WHERE korime = ?), (SELECT id FROM korisnik WHERE korime = ?), ?, datetime('now'))`;
-        await this.baza.izvrsiUpit(sql, [posiljatelj, primatelj, sadrzaj]);
-        console.log("šalje poruku");
+                   VALUES (?, ?, ?, datetime('now'))`;
+    
+        await this.baza.izvrsiUpit(sql, [korisnikId[0].id, kontaktId[0].id, sadrzaj]);
         this.baza.zatvoriVezu();
     }
 

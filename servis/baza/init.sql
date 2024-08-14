@@ -14,7 +14,7 @@ CREATE TABLE "korisnik"(
   "uloge_id" INTEGER,
   "notif_dashboard" INTEGER DEFAULT 0,
   "notif_popup" INTEGER DEFAULT 0,
-  "notif_email" INTEGER DEFAULT 0,http://localhost:3000/prijava
+  "notif_email" INTEGER DEFAULT 0,
   CONSTRAINT "korime_UNIQUE" UNIQUE("korime"),
   CONSTRAINT "fk_korisnici_uloge1" FOREIGN KEY("uloge_id") REFERENCES "uloga"("id")
 );
@@ -47,7 +47,7 @@ CREATE TABLE "poruka"(
   "procitano" INTEGER NOT NULL DEFAULT 0,
   "kontakt_id" INTEGER NOT NULL,
   "korisnik_id" INTEGER NOT NULL,
-  CONSTRAINT "fk_poruka_kontakt1" FOREIGN KEY("kontakt_id") REFERENCES "kontakt"("id") ON DELETE CASCADE,
+  CONSTRAINT "fk_poruka_kontakt1" FOREIGN KEY("kontakt_id") REFERENCES "korisnik"("id") ON DELETE CASCADE,
   CONSTRAINT "fk_poruka_korisnik1" FOREIGN KEY("korisnik_id") REFERENCES "korisnik"("id") ON DELETE CASCADE
 );
 
@@ -62,7 +62,7 @@ CREATE TABLE "datoteka"(
   "korisnik_id" INTEGER NOT NULL,
   "kontakt_id" INTEGER NOT NULL,
   CONSTRAINT "fk_datoteka_korisnik1" FOREIGN KEY("korisnik_id") REFERENCES "korisnik"("id") ON DELETE CASCADE,
-  CONSTRAINT "fk_datoteka_kontakt1" FOREIGN KEY("kontakt_id") REFERENCES "kontakt"("id") ON DELETE CASCADE
+  CONSTRAINT "fk_datoteka_kontakt1" FOREIGN KEY("kontakt_id") REFERENCES "korisnik"("id") ON DELETE CASCADE
 );
 
 CREATE INDEX "datoteka.fk_datoteka_korisnik1_idx" ON "datoteka" ("korisnik_id");
