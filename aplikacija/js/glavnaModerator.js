@@ -85,8 +85,6 @@ async function ucitajPoruke(kontaktKorime, korisnikKorime) {
     
     let datoteke = await fetch(`/baza/datoteke/${korisnikKorime}/${kontaktKorime}`, parametri);
     let datotekeData = await datoteke.json();
-    console.log("Tu je korisnik: ", korisnikKorime);
-    console.log("Tu je kontakt: ", kontaktKorime);
     prikaziPorukeIDatoteke(poruke, datotekeData);
     scrollajNaKraj();
 }
@@ -135,7 +133,6 @@ async function obrisi(id, tip) {
     
     let url = tip === "poruka" ? `/baza/poruke/${id}` : `/baza/datoteke/${id}`;
     let odgovor = await fetch(url, parametri);
-
     if (odgovor.ok) {
         alert(`${tip === "poruka" ? "Poruka" : "Datoteka"} je uspješno obrisana.`);
         await ucitajPoruke(trenutniKontaktKorime, trenutniKorisnikKorime);

@@ -1,4 +1,19 @@
 const Baza = require("./baza.js");
+const fs = require('fs');
+const path = require('path');
+
+function obrisiDatotekuSaDiska(putanjaDatoteke) {
+    return new Promise((resolve, reject) => {
+        fs.unlink(path.join(__dirname, '../../', putanjaDatoteke), (error) => {
+            if (error) {
+                console.error('Greška pri brisanju datoteke:', error);
+                reject(new Error('Greška pri brisanju datoteke'));
+            } else {
+                resolve();
+            }
+        });
+    });
+}
 
 class DatotekaDAO {
     constructor() {
@@ -37,9 +52,26 @@ class DatotekaDAO {
 
     async obrisi(id) {
         this.baza.spojiSeNaBazu();
-        let sql = `DELETE FROM datoteka WHERE id = ?`;
-        let podaci = await this.baza.izvrsiUpit(sql, [id]);
-        this.baza.zatvoriVezu();
+    
+        let sqlGetPath = `SELECT putanja FROM datoteka WHERE id = ?`;
+        let rezultat = await this.baza.izvrsiUpit(sqlGetPath, [id]);
+    
+        if (rezultat.length === 0) {
+            this.baza.zatvoriVezu();
+            throw new Error("Datoteka ne postoji!");
+        }
+    
+        let putanjaDatoteke = rezultat[0].putanja;
+    
+        let sqlDelete = `DELETE FROM datoteka WHERE id = ?`;
+        try {
+            await this.baza.izvrsiUpit(sqlDelete, [id]);
+            this.baza.zatvoriVezu();
+            await obrisiDatotekuSaDiska(putanjaDatoteke);
+        } catch (error) {
+            this.baza.zatvoriVezu();
+            throw error;
+        }
     }
 
     async dajDatoteke(posiljatelj, primatelj) {
@@ -83,15 +115,40 @@ class DatotekaDAO {
     async obrisiSveDatotekeZaRazgovor(posiljatelj, primatelj) {
         this.baza.spojiSeNaBazu();
 
-        let sql = `DELETE FROM datoteka 
-                   WHERE (korisnik_id = (SELECT id FROM korisnik WHERE korime = ?) 
-                          AND kontakt_id = (SELECT id FROM korisnik WHERE korime = ?))
-                      OR (korisnik_id = (SELECT id FROM korisnik WHERE korime = ?) 
-                          AND kontakt_id = (SELECT id FROM korisnik WHERE korime = ?))`;
+        let sqlGetPaths = `SELECT putanja FROM datoteka 
+                           WHERE (korisnik_id = (SELECT id FROM korisnik WHERE korime = ?) 
+                                  AND kontakt_id = (SELECT id FROM korisnik WHERE korime = ?))
+                              OR (korisnik_id = (SELECT id FROM korisnik WHERE korime = ?) 
+                                  AND kontakt_id = (SELECT id FROM korisnik WHERE korime = ?))`;
+
+        let putanjeDatoteka;
+        try {
+            putanjeDatoteka = await this.baza.izvrsiUpit(sqlGetPaths, [posiljatelj, primatelj, primatelj, posiljatelj]);
+        } catch (error) {
+            this.baza.zatvoriVezu();
+            throw error;
+        }
+
+        let obrisanePutanje = [];
+        for (const datoteka of putanjeDatoteka) {
+            try {
+                await obrisiDatotekuSaDiska(datoteka.putanja);
+                obrisanePutanje.push(datoteka.putanja);
+            } catch (error) {
+                console.error(`Greška pri brisanju datoteke ${datoteka.putanja}:`, error);
+            }
+        }
+
+        let sqlDelete = `DELETE FROM datoteka 
+                         WHERE (korisnik_id = (SELECT id FROM korisnik WHERE korime = ?) 
+                                AND kontakt_id = (SELECT id FROM korisnik WHERE korime = ?))
+                            OR (korisnik_id = (SELECT id FROM korisnik WHERE korime = ?) 
+                                AND kontakt_id = (SELECT id FROM korisnik WHERE korime = ?))`;
 
         try {
-            await this.baza.izvrsiUpit(sql, [posiljatelj, primatelj, primatelj, posiljatelj]);
+            await this.baza.izvrsiUpit(sqlDelete, [posiljatelj, primatelj, primatelj, posiljatelj]);
         } catch (error) {
+            this.baza.zatvoriVezu();
             throw error;
         } finally {
             this.baza.zatvoriVezu();
