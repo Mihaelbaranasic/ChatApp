@@ -11,39 +11,34 @@
         #navigacija#
     </header>
 
-    <main class="korisnik">
+    <main class="korisnikModerator">
         <div id="korisnicke-informacije">
             <span id="korime">#korime#</span>
         </div>
+        <aside>
 
-
-        <div id="korisnici">
-            <h2>Korisnici</h2>
-            <input type="text" id="pretraga-korisnici" placeholder="Pretraži korisnike...">
-            <div class="scrollable" id="lista-korisnika">
-                <div id="svi-korisnici">
-                    <ul id="sviKorisnici">
-                    </ul>
+            <div id="korisniciModerator">
+                <h2>Korisnici</h2>
+                <input type="text" id="pretraga-korisnici" placeholder="Pretraži korisnike...">
+                <div class="scrollable" id="lista-korisnika">
+                    <ul id="sviKorisnici"></ul>
                 </div>
             </div>
-        </div>
 
-        <div id="kontaktiModerator">
-            <h2>Kontakti</h2>
-            <input type="text" id="pretraga-kontakti" placeholder="Pretraži korisnike...">
-            <div class="scrollable" id="lista-kontakata">
-                <div id="svi-kontakti">
-                    <ul id="sviKontakti">
-                    </ul>
+            <div id="kontaktiModerator">
+                <h2>Kontakti</h2>
+                <input type="text" id="pretraga-kontakti" placeholder="Pretraži kontakte...">
+                <div class="scrollable" id="lista-kontakata">
+                    <ul id="sviKontakti"></ul>
                 </div>
             </div>
-        </div>
-        <br>
+        </aside>
+
+        <section id="razgovor" style="display: none;" class="scrollable">
+            <ul id="listaPoruka"></ul>
+            <button type="submit" id="brisiSve">Briši cijeli razgovor</button>
+        </section>
     </main>
-    <div id="razgovor" style="display: none;" class="scrollable">
-        <ul id="listaPoruka"></ul>
-        <button type="submit" id="brisiSve">Brisi cijeli razgovor</button>
-    </div>
     <script src="/js/glavnaModerator.js"></script>
 </body>
 </html>

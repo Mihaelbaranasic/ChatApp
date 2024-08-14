@@ -139,7 +139,7 @@ span#korime, p.korime {
     font-size: 16px;
 }
 
-#listaKontakata li, #sviKorisnici li {
+#listaKontakata li, #sviKorisnici li, #sviKontakti li {
     padding: 10px;
     background-color: #333;
     margin-bottom: 5px;
@@ -148,7 +148,7 @@ span#korime, p.korime {
     color: #fff;
 }
 
-#listaKontakata li:hover, #sviKorisnici li:hover {
+#listaKontakata li:hover, #sviKorisnici li:hover, #sviKontakti li:hover {
     background-color: #40484d;
 }
 
@@ -272,15 +272,6 @@ form textarea {
 .prijavaModal {
     display: none;
 }
-
-/* .prijaviPoruku {
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    padding: 5px;
-    font-size: 16px;
-    color: inherit; 
-} */
 
 header {
     margin-bottom: 20px;
@@ -718,4 +709,154 @@ main.korisnikStat {
 .card-item .sender {
     font-size: 14px;
     color: #ccc;
+}
+
+.korisnikModerator {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+aside {
+    display: grid;
+    grid-template-columns: 40% 40%;
+    gap: 20%;
+    margin: auto;
+    width: 80vw;
+    margin-bottom: 15px;
+    margin-top: 20px;
+}
+
+#korisniciModerator, #kontaktiModerator {
+    padding: 10px;
+    background-color: #333;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #fff;
+}
+
+aside h2 {
+    color: #007bff;
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.scrollable {
+    max-height: 400px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+}
+
+#brisiSve {
+    margin-top: 20px;
+    padding: 10px 15px;
+    border: none;
+    background-color: #dc3545;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
+#brisiSve:hover {
+    background-color: #c82333;
+}
+
+form.custom-form {
+    width: 600px;
+    max-height: auto;
+    background-color: rgba(255,255,255,0.13);
+    margin: 20px auto;
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255,255,255,0.1);
+    box-shadow: 0 0 40px rgba(8,7,16,0.6);
+    padding: 30px 35px;
+    margin-top: 50px;
+}
+
+form.custom-form * {
+    font-family: 'Poppins', sans-serif;
+    color: #ffffff;
+    letter-spacing: 0.5px;
+    outline: none;
+    border: none;
+}
+
+form.custom-form label {
+    display: block;
+    margin-top: 20px;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+form.custom-form input,
+form.custom-form textarea {
+    display: block;
+    width: 100%;
+    background-color: rgba(255,255,255,0.07);
+    border-radius: 3px;
+    padding: 10px;
+    margin-top: 8px;
+    font-size: 14px;
+    font-weight: 300;
+}
+
+form.custom-form button {
+    margin-top: 20px;
+    width: 100%;
+    background-color: #ffffff;
+    color: #080710;
+    padding: 15px 0;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Stiliziranje radio buttona */
+.radio-group {
+    margin-top: 10px;
+}
+
+.radio-group input[type="radio"] {
+    display: none; /* Skriva zadani radio button */
+}
+
+.radio-group label {
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    margin-right: 20px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.radio-group label:before {
+    content: "";
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.7);
+    background-color: rgba(255, 255, 255, 0.1);
+    transition: background 0.3s, border-color 0.3s;
+}
+
+.radio-group input[type="radio"]:checked + label:before {
+    background-color: #ffffff;
+    border-color: #ffffff;
+}
+
+.radio-group input[type="radio"]:focus + label:before {
+    outline: 2px solid rgba(255, 255, 255, 0.5);
 }
