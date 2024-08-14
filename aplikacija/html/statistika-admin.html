@@ -12,24 +12,33 @@
     <header>
         #navigacija#
     </header>
-    <h1>Statistika Admin</h1>
-    <div>
-        <p>Ukupan broj korisnika: #broj-korisnika#</p>
-    </div>
-    <div>
-        <p>Ukupan broj poruka: #broj-poruka#</p>
-    </div>
-    <div>
-        <h2>Poruke po vremenskom razdoblju</h2>
-        <canvas id="grafPorukaPoDanima" width="300px"></canvas>
-    </div>
-    <div>
-        <p>Ukupan broj datoteka: #broj-datoteka#</p>
-    </div>
-    <div>
-        <h2>Datoteke po vremenskom razdoblju</h2>
-        <canvas id="grafDatotekaPoDanima"></canvas>
-    </div>
+    <main class="smanjiPrikaz">
+        <h1>Statistika Admin</h1>
+        <section class="statistika-kartice">
+            <div class="stat-card">
+                <h3>Ukupan broj korisnika</h3>
+                <p id="broj-korisnika">#broj-korisnika#</p>
+            </div>
+            <div class="stat-card">
+                <h3>Ukupan broj poruka</h3>
+                <p id="broj-poruka">#broj-poruka#</p>
+            </div>
+            <div class="stat-card">
+                <h3>Ukupan broj datoteka</h3>
+                <p id="broj-datoteka">#broj-datoteka#</p>
+            </div>
+        </section>
+        <section class="grafici">
+            <div class="grafik">
+                <h2>Poruke po vremenskom razdoblju</h2>
+                <canvas id="grafPorukaPoDanima"></canvas>
+            </div>
+            <div class="grafik">
+                <h2>Datoteke po vremenskom razdoblju</h2>
+                <canvas id="grafDatotekaPoDanima"></canvas>
+            </div>
+        </section>
+    </main>
     <script src="/js/statistikaAdmin.js"></script>
 </body>
 </html>

@@ -362,6 +362,8 @@ li {
     flex-direction: column;
     gap: 15px;
     padding: 20px;
+    max-width: 1200px; /* Ograničavamo širinu kontejnera */
+    margin: 0 auto; /* Centriramo kontejner */
 }
 
 .korisnik-container {
@@ -372,14 +374,14 @@ li {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     color: #fff;
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: stretch;
-    position: relative;
+    flex-direction: row; /* Promijenjeno u row kako bi se informacije prikazale u istom redu */
+    justify-content: space-between; /* Razmak između informacija i gumba */
+    align-items: center; /* Vertikalno poravnanje */
 }
 
 .korisnik-info {
-    margin-bottom: 10px;
+    flex: 1; /* Omogućuje da se informacije o korisniku šire */
+    margin-right: 20px; /* Razmak između informacija i gumba */
 }
 
 .korisnik-info strong {
@@ -389,6 +391,7 @@ li {
 
 .korisnik-gumbovi {
     display: flex;
+    flex-direction: column;
     gap: 10px;
 }
 
@@ -397,15 +400,15 @@ li {
     color: #fff;
     border: none;
     border-radius: 5px;
-    padding: 5px 10px;
+    padding: 10px 15px;
     cursor: pointer;
     font-size: 14px;
+    text-align: center;
 }
 
 .korisnik-gumbovi button:hover {
     background-color: #004d40;
 }
-
 .modal {
     display: none;
     position: fixed;
