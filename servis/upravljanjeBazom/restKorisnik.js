@@ -90,7 +90,7 @@ exports.postKorisnik = function (zahtjev, odgovor) {
 exports.deleteKorisnik = function (zahtjev, odgovor) {
 	odgovor.type("application/json");
 	let kdao = new KorisnikDAO();
-	let korime = zahtjev.session.korisnik.korime;
+	let korime = zahtjev.params.korime;
 	if(korime == "admin"){
 		odgovor.status(403);
 		odgovor.send({opis: "Zabranjeno je brisanje admina"});
