@@ -31,6 +31,7 @@ class PorukaDAO {
         let sql = `INSERT INTO poruka (korisnik_id, kontakt_id, sadrzaj, vrijemeSlanja) 
                    VALUES ((SELECT id FROM korisnik WHERE korime = ?), (SELECT id FROM korisnik WHERE korime = ?), ?, datetime('now'))`;
         await this.baza.izvrsiUpit(sql, [posiljatelj, primatelj, sadrzaj]);
+        console.log("šalje poruku");
         this.baza.zatvoriVezu();
     }
 
