@@ -357,21 +357,53 @@ li {
     margin: auto;
 }
 
-.korisnik-container {
-    border: 1px solid #ccc;
-    padding: 10px;
-    margin: 5px 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-.korisnik-info {
+.container {
     display: flex;
     flex-direction: column;
+    gap: 15px;
+    padding: 20px;
 }
+
+.korisnik-container {
+    background-color: #444;
+    border: 1px solid #555;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: stretch;
+    position: relative;
+}
+
+.korisnik-info {
+    margin-bottom: 10px;
+}
+
+.korisnik-info strong {
+    display: block;
+    margin-bottom: 5px;
+}
+
 .korisnik-gumbovi {
     display: flex;
     gap: 10px;
+}
+
+.korisnik-gumbovi button {
+    background-color: #00796b;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.korisnik-gumbovi button:hover {
+    background-color: #004d40;
 }
 
 .modal {
@@ -636,4 +668,51 @@ form a {
 
 .card-item .button:hover {
     background-color: #004d40;
+}
+
+main.korisnikStat {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    height: calc(100vh - 70px);
+    overflow: hidden;
+}
+
+#statistika {
+    width: 100%;
+    max-width: 800px;
+}
+
+.stat-card {
+    background-color: #222;
+    border: 1px solid #444;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.stat-card h3 {
+    margin: 0 0 10px;
+    font-size: 18px;
+}
+
+.stat-card p {
+    font-size: 16px;
+    margin: 5px 0;
+}
+
+.stat-card span {
+    font-weight: bold;
+}
+
+.card-item h4 {
+    margin: 0;
+    font-size: 16px;
+}
+
+.card-item .sender {
+    font-size: 14px;
+    color: #ccc;
 }

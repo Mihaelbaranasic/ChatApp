@@ -1,8 +1,7 @@
 document.addEventListener("DOMContentLoaded", async () => {
-    const korisniciLista = document.getElementById("korisnici-lista");
+    const korisniciLista = document.querySelector(".container");
     const traziKorisnika = document.getElementById("trazi-korisnika");
 
-    // Funkcija za dohvat svih korisnika iz API-a
     const dohvatiKorisnike = async () => {
         try {
             const response = await fetch("/baza/korisnici");
@@ -60,10 +59,9 @@ document.addEventListener("DOMContentLoaded", async () => {
                         })
                     });
                 prikaziKorisnike(await dohvatiKorisnike());
-            } else if(odgovor.status == 403){
+            } else if (odgovor.status == 403) {
                 alert("Zabranjeno brisanje administratora!");
-            }
-            else {
+            } else {
                 console.error("Greška pri brisanju profila!");
             }
         }

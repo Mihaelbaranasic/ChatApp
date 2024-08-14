@@ -37,7 +37,14 @@ function prikaziFiltriraneZapise(zapisi) {
     let prikaz = document.getElementsByClassName('container')[0];
     let html = '';
     for (let zapis of zapisi) {
-        html += '<div class="zapis">' + zapis.id + ' | ' + zapis.korisnicko_ime + ' | ' + zapis.aktivnost + ' | ' + zapis.vrijeme + '</div>';
+        html += `
+            <div class="card-item">
+                <h4>ID: ${zapis.id}</h4>
+                <div class="sender">Korisnik: ${zapis.korisnicko_ime}</div>
+                <div>Aktivnost: ${zapis.aktivnost}</div>
+                <div>Vrijeme: ${zapis.vrijeme}</div>
+            </div>
+        `;
     }
     prikaz.innerHTML = html;
 }

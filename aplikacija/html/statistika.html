@@ -9,16 +9,28 @@
     <header>
         #navigacija#
     </header>
-    <main>
-        <h1>Statistika za korisnika: <span id="korime">#korime#</span></h1> <br>
-        <div id="statistika">
-            <h3>Ukupan broj razgovora: <span id="broj-razgovora"></span></h3>
-            <h3>Ukupan broj poruka: <span id="broj-poruka"></span></h3>
-            <h3>Korisnik s najviše razmijenjenih poruka: <span id="korisnik-najvise-poruka"></span></h3>
-            <h3>Broj razmijenjenih poruka: <span id="broj-najvise-poruka"></span></h3>
-            <h3>Korisnik s najviše razmijenjenih datoteka: <span id="korisnik-najvise-datoteka"></span></h3>
-            <h3>Broj razmijenjenih datoteka: <span id="broj-najvise-datoteka"></span></h3>
-        </div>
+    <main class="korisnikStat">
+        <section id="statistika">
+            <h2>Statistika za korisnika: <span id="korime">#korime#</span></h2>
+            <div class="stat-card">
+                <h3>Ukupan broj razgovora</h3>
+                <p id="broj-razgovora"></p>
+            </div>
+            <div class="stat-card">
+                <h3>Ukupan broj poruka</h3>
+                <p id="broj-poruka"></p>
+            </div>
+            <div class="stat-card">
+                <h3>Korisnik s najviše razmijenjenih poruka</h3>
+                <p id="korisnik-najvise-poruka"></p>
+                <p>Broj razmijenjenih poruka: <span id="broj-najvise-poruka"></span></p>
+            </div>
+            <div class="stat-card">
+                <h3>Korisnik s najviše razmijenjenih datoteka</h3>
+                <p id="korisnik-najvise-datoteka"></p>
+                <p>Broj razmijenjenih datoteka: <span id="broj-najvise-datoteka"></span></p>
+            </div>
+        </section>
     </main>
     <script src="/js/statistika.js"></script>
 </body>
