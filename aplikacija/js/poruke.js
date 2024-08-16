@@ -104,7 +104,7 @@ function pratiFormu(porukaId) {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ posiljatelj, sadrzaj, korime: 'Moderator' })
+            body: JSON.stringify({ posiljatelj, sadrzaj, korime: 'moderator' })
         });
         
         document.getElementById('prijavaModal').style.display = 'none';

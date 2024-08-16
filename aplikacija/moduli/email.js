@@ -21,7 +21,6 @@ exports.posaljiMail = async (salje, prima, predmet, poruka) => {
     let podaci = await fetch(`${url}/baza/korisnici/${prima}`, parametri);
     let korisnik = await podaci.json();
     if (!korisnik) {
-        odgovor.status(404).json({ greska: "Korisnik nije pronađen!" });
         return;
     }
     let mailOptions = {
