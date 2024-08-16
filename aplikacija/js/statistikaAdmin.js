@@ -1,16 +1,44 @@
+function generirajRasponDatuma(datumPocetka, datumKraja) {
+    let datumi = [];
+    let trenutniDatum = new Date(datumPocetka);
+    let kraj = new Date(datumKraja);
+
+    while (trenutniDatum <= kraj) {
+        datumi.push(new Date(trenutniDatum));
+        trenutniDatum.setDate(trenutniDatum.getDate() + 1);
+    }
+    
+    return datumi;
+}
+
 async function dohvatiStatistikuPoruka() {
     const odgovor = await fetch('/baza/poruke_vremensko_razdoblje');
     const podaci = await odgovor.json();
-    console.log(podaci);
 
-    const datumi = podaci.map(p => new Date(p.datum));
-    const brojPoruka = podaci.map(p => p.broj_poruka);
+    const datumKraja = new Date();
+    const datumPocetka = new Date();
+    datumPocetka.setDate(datumKraja.getDate() - 9);
+
+    const sviDatumi = generirajRasponDatuma(datumPocetka, datumKraja);
+
+    const podaciMapirani = new Map(podaci.map(p => [new Date(p.datum).toDateString(), p.broj_poruka]));
+
+    const datumi = [];
+    const brojPoruka = [];
+
+    sviDatumi.forEach(datum => {
+        const datumStr = datum.toDateString();
+        datumi.push(datum);
+        brojPoruka.push(podaciMapirani.get(datumStr) || 0);
+    });
+
+    const formatter = new Intl.DateTimeFormat('hr-HR', { month: 'short', day: 'numeric' });
 
     const ctx = document.getElementById('grafPorukaPoDanima').getContext('2d');
     new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: datumi,
+            labels: datumi.map(d => formatter.format(d)),
             datasets: [{
                 label: 'Broj poruka',
                 data: brojPoruka,
@@ -24,17 +52,12 @@ async function dohvatiStatistikuPoruka() {
             maintainAspectRatio: false,
             scales: {
                 x: {
-                    type: 'time',
-                    time: {
-                        unit: 'hour',
-                        displayFormats: {
-                            hour: 'HH:mm'
-                        },
-                        tooltipFormat: 'HH:mm'
-                    },
                     title: {
                         display: true,
-                        text: 'Vrijeme'
+                        text: 'Datum'
+                    },
+                    ticks: {
+                        maxTicksLimit: 10
                     }
                 },
                 y: {
@@ -47,7 +70,7 @@ async function dohvatiStatistikuPoruka() {
             },
             plugins: {
                 legend: {
-                    display: true
+                    display: false
                 }
             }
         }
@@ -57,16 +80,31 @@ async function dohvatiStatistikuPoruka() {
 async function dohvatiStatistikuDatoteka() {
     const odgovor = await fetch('/baza/datoteke_vremensko_razdoblje');
     const podaci = await odgovor.json();
-    console.log(podaci);
 
-    const datumi = podaci.map(p => new Date(p.datum));
-    const brojDatoteka = podaci.map(p => p.broj_datoteka);
+    const datumKraja = new Date();
+    const datumPocetka = new Date();
+    datumPocetka.setDate(datumKraja.getDate() - 9);
+
+    const sviDatumi = generirajRasponDatuma(datumPocetka, datumKraja);
+
+    const podaciMapirani = new Map(podaci.map(p => [new Date(p.datum).toDateString(), p.broj_datoteka]));
+
+    const datumi = [];
+    const brojDatoteka = [];
+
+    sviDatumi.forEach(datum => {
+        const datumStr = datum.toDateString();
+        datumi.push(datum);
+        brojDatoteka.push(podaciMapirani.get(datumStr) || 0);
+    });
+
+    const formatter = new Intl.DateTimeFormat('hr-HR', { month: 'short', day: 'numeric' });
 
     const ctx = document.getElementById('grafDatotekaPoDanima').getContext('2d');
     new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: datumi,
+            labels: datumi.map(d => formatter.format(d)),
             datasets: [{
                 label: 'Broj datoteka',
                 data: brojDatoteka,
@@ -80,17 +118,12 @@ async function dohvatiStatistikuDatoteka() {
             maintainAspectRatio: false,
             scales: {
                 x: {
-                    type: 'time',
-                    time: {
-                        unit: 'hour',
-                        displayFormats: {
-                            hour: 'HH:mm'
-                        },
-                        tooltipFormat: 'HH:mm'
-                    },
                     title: {
                         display: true,
                         text: 'Datum'
+                    },
+                    ticks: {
+                        maxTicksLimit: 10
                     }
                 },
                 y: {
@@ -103,7 +136,7 @@ async function dohvatiStatistikuDatoteka() {
             },
             plugins: {
                 legend: {
-                    display: true
+                    display: false
                 }
             }
         }
