@@ -1,7 +1,7 @@
 {
   "name": "chatapp",
   "version": "1.0.0",
-  "description": "Web aplikacija za razmjenu poruka u stvarnom vremenu koristeći Node.js, Express, WebSocket i PostgreSQL.",
+  "description": "Web aplikacija za razmjenu poruka u stvarnom vremenu koristeći Node.js, Express, WebSocket i SQLite.",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
