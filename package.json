@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",
-    "pripremi": "npm link --save express sqlite3 ws express-session cookie-parser"
+    "pripremi": "npm link --save express sqlite3 ws express-session cookie-parser multer dotenv nodemailer"
   },
   "keywords": [
     "nodejs",
@@ -17,13 +17,13 @@
   ],
   "author": "Mihael Baranašić",
   "dependencies": {
-    "bcrypt": "^5.1.1",
     "cookie-parser": "file:../../../../usr/lib/node_modules/cookie-parser",
     "crypto": "^1.0.1",
     "dotenv": "file:../../../../usr/lib/node_modules/dotenv",
     "express": "file:../../../../usr/lib/node_modules/express",
     "express-session": "file:../../../../usr/lib/node_modules/express-session",
-    "multer": "^1.4.5-lts.1",
+    "multer": "file:../../../../usr/lib/node_modules/multer",
+    "nodemailer": "file:../../../../usr/lib/node_modules/nodemailer",
     "sqlite3": "file:../../../../usr/lib/node_modules/sqlite3",
     "ws": "file:../../../../usr/lib/node_modules/ws"
   },
