@@ -59,7 +59,7 @@ async function posaljiPoruku() {
     document.getElementById('novaPoruka').value = '';
     await ucitajPoruke();
     ws.send(JSON.stringify({ type: 'new_message', posiljatelj: korime, primatelj: trenutniKontakt, sadrzaj }));
-    await fetch(`http://localhost:3000/baza/dnevnik`, {
+    await fetch(`https://localhost:3100/baza/dnevnik`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

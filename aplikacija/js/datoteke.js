@@ -15,7 +15,7 @@ async function posaljiDatoteku() {
             console.log('Datoteka poslana');
             ws.send(JSON.stringify({ type: 'new_file', posiljatelj: korime, primatelj: trenutniKontakt, naziv: file.name, putanja: xhr.responseURL }));
             fileInput.value = '';
-            await fetch(`http://localhost:3000/baza/dnevnik`, {
+            await fetch(`https://localhost:3100/baza/dnevnik`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

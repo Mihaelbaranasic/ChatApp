@@ -1,4 +1,4 @@
-let url = "http://localhost:3000";
+let url = "https://localhost:3100";
 let datoteke = [];
 
 window.addEventListener('load', async () => {

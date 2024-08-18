@@ -14,7 +14,7 @@ class FetchUpravitelj {
 		if (zahtjev.method == "POST") {
 			let uspjeh = await this.auth.dodajKorisnika(zahtjev.body);
 			if (uspjeh) {
-				await fetch(`http://localhost:${this.port}/baza/dnevnik`, {
+				await fetch(`https://localhost:${this.port}/baza/dnevnik`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -38,7 +38,7 @@ class FetchUpravitelj {
 		zahtjev.session.korisnik = null;
 	
 		if (korisnik) {
-			await fetch(`http://localhost:${this.port}/baza/dnevnik`, {
+			await fetch(`https://localhost:${this.port}/baza/dnevnik`, {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify({
@@ -64,7 +64,7 @@ class FetchUpravitelj {
 				korisnik = JSON.parse(korisnik);
 				console.log(korisnik);
 				zahtjev.session.korisnik = korisnik;
-				let zapis = await fetch(`http://localhost:${this.port}/baza/dnevnik`, {
+				let zapis = await fetch(`https://localhost:3100/baza/dnevnik`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -193,7 +193,7 @@ class FetchUpravitelj {
 		}
 	
 		try {
-			let statistikeOdgovor = await fetch(`http://localhost:${this.port}/baza/statistika/${korisnik.korime}`);
+			let statistikeOdgovor = await fetch(`https://localhost:${this.port}/baza/statistika/${korisnik.korime}`);
 			if (statistikeOdgovor.status === 200) {
 				let statistike = await statistikeOdgovor.json();
 				let stranica = await ucitajStranicu("statistika");
@@ -224,7 +224,7 @@ class FetchUpravitelj {
 		}
 	
 		try {
-			let adminStatistikeOdgovor = await fetch(`http://localhost:${this.port}/baza/admin-statistika`);
+			let adminStatistikeOdgovor = await fetch(`https://localhost:${this.port}/baza/admin-statistika`);
 			
 			if (adminStatistikeOdgovor.status === 200) {
 				let adminStatistike = await adminStatistikeOdgovor.json();

@@ -1,4 +1,4 @@
-const url = 'http://localhost:3000';
+const url = 'https://localhost:3100';
 let zapisi = [];
 
 window.addEventListener('load', () => {

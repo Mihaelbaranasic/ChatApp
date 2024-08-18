@@ -20,7 +20,7 @@ class Autentifikacija {
 			headers: zaglavlje,
 		};
 		let odgovor = await fetch(
-			"http://localhost:" + this.port + "/baza/korisnici",
+			"https://localhost:3100/baza/korisnici",
 			parametri
 		);
 
@@ -50,7 +50,7 @@ class Autentifikacija {
 			headers: zaglavlje,
 		};
 		let odgovor = await fetch(
-			"http://localhost:" + this.port + "/baza/korisnici/" + korime + "/prijava",
+			"https://localhost:3100/baza/korisnici/" + korime + "/prijava",
 			parametri
 		);
 		if (odgovor.status == 200) {

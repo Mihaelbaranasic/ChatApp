@@ -8,17 +8,30 @@ const restPoruka = require('./servis/upravljanjeBazom/restPoruke');
 const restDatoteka = require('./servis/upravljanjeBazom/restDatoteka');
 const restDnevnik = require('./servis/upravljanjeBazom/restDnevnik');
 const restStatistika = require('./servis/upravljanjeBazom/restStatistika');
-const http = require('http');
+const https = require('https');
+const fs = require('fs');
+const helmet = require('helmet');
 
 const server = express();
-const port = 3000;
+const port = 3100;
 const fetchUpravitelj = new FetchUpravitelj(port);
+
+const httpsPostavke = {
+  key: fs.readFileSync('./privatekey.pem'),
+  cert: fs.readFileSync('./server.crt')
+};
+
+server.use(helmet.hsts({
+  maxAge: 31536000,
+  includeSubDomains: true,
+  preload: true
+}));
 
 server.use(sesija({
   secret: 'abc',
   resave: false,
   saveUninitialized: true,
-  cookie: { secure: false }
+  cookie: { secure: true }
 }));
 pokreniServer();
 pripremiPutanjeKorisnik();
@@ -105,8 +118,8 @@ function pripremiPutanjeDnevnik() {
   server.get('/baza/datoteke_vremensko_razdoblje', restDnevnik.getDatotekeVremenskoRazdoblje);
 }
 
-const httpServer = http.createServer(server);
-const wss = new WebSocket.Server({ server: httpServer });
+const httpsServer = https.createServer(httpsPostavke, server);
+const wss = new WebSocket.Server({ server: httpsServer });
 
 wss.on('connection', (ws, req) => {
   ws.on('message', async (message) => {
@@ -142,7 +155,7 @@ wss.on('connection', (ws, req) => {
       stvarniSadrzaj = naziv;
     }
   
-    const korisnikOdgovor = await fetch(`http://localhost:3000/baza/korisnici/${primatelj}`);
+    const korisnikOdgovor = await fetch(`https://localhost:3100/baza/korisnici/${primatelj}`);
     if (korisnikOdgovor.status !== 200) {
       console.error('Korisnik nije pronađen!');
       return null;
@@ -174,6 +187,18 @@ wss.on('connection', (ws, req) => {
   });
 });
 
-httpServer.listen(port, () => {
-  console.log(`Server je pokrenut na http://localhost:${port}`);
+const httpRedirectServer = express();
+
+httpRedirectServer.use((zahtjev, odgovor) => {
+  const targetUrl = `https://${zahtjev.hostname}:3100`;
+  console.log(`Preusmjeravanje: ${targetUrl}`);
+  odgovor.redirect(targetUrl);
+});
+
+httpRedirectServer.listen(3000, () => {
+  console.log('HTTP server za preusmjeravanje pokrenut na portu 3000');
+});
+
+httpsServer.listen(3100, () => {
+  console.log('HTTPS server pokrenut na portu: https://localhost:3100');
 });

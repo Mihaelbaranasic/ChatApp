@@ -1,5 +1,3 @@
-let url = "http://localhost:3000";
-
 window.addEventListener('load', () => {
     provjeriUnos();
 });
@@ -39,7 +37,7 @@ function provjeriUnos() {
 }
 
 async function provjeriKorisnickoIme(korime) {
-    let odgovor = await fetch(`${url}/baza/korisnici/${korime}`);
+    let odgovor = await fetch(`/baza/korisnici/${korime}`);
     let rezultat = await odgovor.json();
     if (rezultat == null) {
         return true;
@@ -51,7 +49,7 @@ async function provjeriKorisnickoIme(korime) {
 
 async function posaljiFormu(punoIme, email, korime, lozinka) {
     try {
-        let odgovor = await fetch(url + '/registracija', {
+        let odgovor = await fetch('/registracija', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

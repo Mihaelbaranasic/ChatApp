@@ -3,7 +3,7 @@ window.addEventListener('load', async () => {
 });
 
 function postaviWebSocket() {
-    ws = new WebSocket('ws://localhost:3000');
+    ws = new WebSocket('wss://localhost:3100');
     ws.onopen = () => console.log('WebSocket veza otvorena');
     ws.onmessage = async (event) => {
         let data = JSON.parse(event.data);
