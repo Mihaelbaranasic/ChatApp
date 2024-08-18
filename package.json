@@ -4,7 +4,7 @@
   "description": "Web aplikacija za razmjenu poruka u stvarnom vremenu koristeći Node.js, Express, WebSocket i SQLite.",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "NODE_TLS_REJECT_UNAUTHORIZED='0' node server.js",
     "dev": "nodemon server.js",
     "pripremi": "npm link --save express sqlite3 ws express-session cookie-parser multer dotenv nodemailer helmet"
   },
