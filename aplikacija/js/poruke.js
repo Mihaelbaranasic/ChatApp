@@ -17,7 +17,7 @@ async function ucitajPoruke() {
 }
 
 function scrollajNaKraj() {
-    let razgovorDiv = document.getElementById('razgovor');
+    let razgovorDiv = document.getElementById('listaPoruka');
     razgovorDiv.scrollTop = razgovorDiv.scrollHeight;
 }
 
