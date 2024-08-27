@@ -353,8 +353,8 @@ li {
     flex-direction: column;
     gap: 15px;
     padding: 20px;
-    max-width: 1200px; /* Ograničavamo širinu kontejnera */
-    margin: 0 auto; /* Centriramo kontejner */
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .korisnik-container {
@@ -365,14 +365,14 @@ li {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
     color: #fff;
     display: flex;
-    flex-direction: row; /* Promijenjeno u row kako bi se informacije prikazale u istom redu */
-    justify-content: space-between; /* Razmak između informacija i gumba */
-    align-items: center; /* Vertikalno poravnanje */
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .korisnik-info {
-    flex: 1; /* Omogućuje da se informacije o korisniku šire */
-    margin-right: 20px; /* Razmak između informacija i gumba */
+    flex: 1;
+    margin-right: 20px;
 }
 
 .korisnik-info strong {
