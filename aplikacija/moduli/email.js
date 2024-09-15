@@ -1,4 +1,4 @@
-let url = "http://localhost:3000";
+let url = "https://localhost:3100";
 const nodemailer = require('nodemailer');
 require('dotenv').config({path:__dirname+'/.env'});
 
