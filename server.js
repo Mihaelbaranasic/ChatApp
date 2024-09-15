@@ -195,8 +195,8 @@ httpRedirectServer.use((zahtjev, odgovor) => {
   odgovor.redirect(targetUrl);
 });
 
-httpRedirectServer.listen(3000, () => {
-  console.log('HTTP server za preusmjeravanje pokrenut na portu 3000');
+httpRedirectServer.listen(3200, () => {
+  console.log('HTTP server za preusmjeravanje pokrenut na portu 3200');
 });
 
 httpsServer.listen(3100, () => {
